@@ -1,0 +1,14 @@
+C:\blog> chcp 65001
+
+이제 Ruby에서 지원하는 gem 명령어를 통해 Jekyll은 물론 종속된 필요한 라이브러리를 설치하자. 아래 코드와 그림을 참고하면 된다. 참고로, gem이란 루비에서 제공하는 라이브러리를 편리하게 설치할 수 있도록 지원되는 도구이다.
+ C:\blog> gem install bundler jekyll minima jekyll-feed tzinfo-data rdiscount
+
+​
+
+잠시 뒤 완료되면
+
+ C:\blog> bundle update --bundler
+
+C:\blog> bundle install
+
+C:\blog> bundle exec jekyll serve
