@@ -147,7 +147,8 @@ tipue_search:
 
 # Set your Google Analytics id to receive `pageview` events.
 # To remove Google Anaylics from your page, remove the line below.
-google_analytics:      G-JLYQQ238M2
+google_analytics:      G-4MPZ2SP20B
+
 
 # Set which comment system to use.
 comments:

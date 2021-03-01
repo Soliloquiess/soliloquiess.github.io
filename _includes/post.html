@@ -27,6 +27,8 @@
   {% unless include.excerpt %}
     <div class="markdown-body">
 
+     
+
 
 {% if post.header-img %}<div class="head-image"><img src="{{ site.url }}/{% if post.header-img %}assets/{{ post.header-img }}{% endif %}"/></div>
 <br/>{% elsif tag.header-img %}
@@ -72,6 +74,19 @@
   {% endunless %}
 
 </article>
+
+<!-- <div style="text-align: center;">
+  <a href="http://hits.dwyl.com/{{ site.url | remove_first: 'https://' | remove_first: 'http://' }}{{ page.url }}"
+    target="_blank">
+    <img
+      src="http://hits.dwyl.com/{{ site.url | remove_first: 'https://' | remove_first: 'http://' }}{{ page.url }}.svg" />
+  </a>
+</div> -->
+
+<!-- <a href="https://hits.seeyoufarm.com//{{ site.url | remove_first: 'https://' | remove_first: 'http://' }}{{ page.url }}">
+  <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2F{{ site.url | remove_first: 'https://' | remove_first: 'http://' }}{{ page.url }}%2Fhit-counter&count_bg=%23CD00F9&title_bg=%23555555&icon=twitch.svg&icon_color=%23E7E7E7&title=%EC%8B%9C%EC%B2%AD%EC%9E%90&edge_flat=false"/></a>
+</a>   -->
+
 {% unless include.link_title %}
   <hr class="dingbat" />
 <!--공유, 트위터, 페이스북-->
