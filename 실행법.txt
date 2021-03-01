@@ -12,3 +12,4 @@ C:\blog> chcp 65001
 C:\blog> bundle install
 
 C:\blog> bundle exec jekyll serve
+aaa
