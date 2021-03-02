@@ -54,3 +54,6 @@ PS C:\githubblog>
 
 class = ssafy 수업
 study = 개인수업
+
+태그 추가는 _featured_tag에서
+카테고리 추가는 _featured_categories에서
