@@ -17,3 +17,36 @@ C:\blog> bundle exec jekyll serve
 
 bundle install bundle exec jekyll serve
 
+
+PS C:\githubblog> git remote add Soliloquiess https://github.com/Soliloquiess/soliloquiess.github.io.git
+error: remote Soliloquiess already exists.
+PS C:\githubblog> git remote add yacho  https://github.com/Soliloquiess/soliloquiess.github.io.git
+error: remote yacho already exists.
+PS C:\githubblog> git remote add  https://github.com/Soliloquiess/soliloquiess.github.io.git      
+usage: git remote add [<options>] <name> <url>
+
+    -f, --fetch           fetch the remote branches
+    --tags                import all tags and associated objects when fetching
+    -t, --track <branch>  branch(es) to track
+    -m, --master <branch>
+                          master branch
+    --mirror[=(push|fetch)]
+                          set up remote as a mirror to push to or fetch from
+PS C:\githubblog> git push yacho
+fatal: The current branch master has no upstream branch.
+To push the current branch and set the remote as upstream, use
+
+    git push --set-upstream yacho master
+
+PS C:\githubblog> git push --set-upstream yacho master
+Enumerating objects: 36, done.
+Counting objects: 100% (36/36), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (25/25), done.
+Writing objects: 100% (25/25), 588.21 KiB | 9.97 MiB/s, done.
+Total 25 (delta 7), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (7/7), completed with 3 local objects.
+To https://github.com/Soliloquiess/soliloquiess.github.io.git
+   d86ecf2..fff7fc5  master -> master
+Branch 'master' set up to track remote branch 'master' from 'yacho'.
+PS C:\githubblog>

@@ -51,14 +51,10 @@ font-weight:bold">
 ## Project
 ---
 
-
-## Awards
----
-
-
 ## Work Experiences
+42 seoul 2020.09.15~
+Ssafy 2021.01.08~
 ---
-
 
 ## Skills and Certification
 ---
