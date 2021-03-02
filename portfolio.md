@@ -57,7 +57,7 @@ font-weight:bold">
 -42 seoul 2020.09.15~
 >
 >
--Ssafy 2021.01.08~
+- Ssafy 2021.01.08~
 ---
 
 ## Skills and Certification

@@ -50,3 +50,7 @@ To https://github.com/Soliloquiess/soliloquiess.github.io.git
    d86ecf2..fff7fc5  master -> master
 Branch 'master' set up to track remote branch 'master' from 'yacho'.
 PS C:\githubblog>
+
+
+class = ssafy 수업
+study = 개인수업
