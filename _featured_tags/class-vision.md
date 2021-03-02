@@ -1,7 +1,7 @@
 ---
 layout: tag-blog
-title: VISION
-slug: vision
+title: Front
+slug: Front
 category: class
 menu: false
 order: 2
