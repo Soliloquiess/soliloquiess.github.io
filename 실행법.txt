@@ -6,7 +6,7 @@ C:\blog> chcp 65001
 ​
 
 잠시 뒤 완료되면
-
+.
  C:\blog> bundle update --bundler
 
 C:\blog> bundle install
