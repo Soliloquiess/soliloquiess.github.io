@@ -33,22 +33,20 @@ font-weight:bold">
 > Mar.2018 ~ Feb.2020 삼육머학교
 >
 > 컴퓨터학부
-> Feb.2021 ~ 현재 : 42 seoul, ssafy
+>
+> Feb.2021 ~ 현재 : 42 seoul 3th Cadet, Ssafy 5th hitchhiker
 >
 
 ## Research Interest
 ---
 
-* Computer Vision
-    + image Object Detection
-    + Vot
-    + Semantic/Instance Segmentation
-    + Super Resolution
+* Spring
+    + modern java
 
-* Machine Learning / Deep Learning
-    + GAN
-    + Few-Shot Learning
-    + Meta Learning
+* Algorithm
+    + 42 gam
+    + don't panic
+    + fucking recursion
 
 ## Project
 ---
@@ -64,9 +62,9 @@ font-weight:bold">
 
 ## Skills and Certification
 ---
--Language : Python, C/C++
+-Language : Python, C/C++ ,java ,js
 
--FrameWork: Pytorch, 
+-FrameWork: Spring, flask, django, node.js
 
 ## Patents
 ---
