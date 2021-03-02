@@ -23,8 +23,10 @@ font-weight:bold">
 ## Personal Data
 ---
 > 1994.12.19 대한민국
+>
+>
 > 연락처: cyh1219@naver.com
-
+>
 > Github : <a href="https://github.com/Soliloquiess">https://github.com/Soliloquiess</a>
 
 
@@ -52,8 +54,10 @@ font-weight:bold">
 ---
 
 ## Work Experiences
-42 seoul 2020.09.15~
-Ssafy 2021.01.08~
+-42 seoul 2020.09.15~
+>
+>
+-Ssafy 2021.01.08~
 ---
 
 ## Skills and Certification
