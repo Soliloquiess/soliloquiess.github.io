@@ -1,22 +1,10 @@
 ---
 layout: list
-type: category
-bigtitle: Etc
+title: etc
 slug: etc
 menu: true
-submenu: true
-order: 5
+submenu: false
+order: 6
 description: >
-  일기, 여행등 기타 이것저것
-sitemap: true
+  etc
 ---
-
-## ETC
-
-## 카테고리
-
-* [Diary]{:.heading.flip-title} --- Diary  
-* [Travel]{:.heading.flip-title} --- Travel
-
-[Diary]: /diary/
-[Travel]: /travel/

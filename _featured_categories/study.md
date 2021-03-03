@@ -1,10 +1,10 @@
 ---
 layout: list
-bigtitle: Study
+title: Study
 slug: study
 menu: true
-submenu: false
-order: 3
+submenu: true
+order: 5
 description: >
-   연구, 공부
+  개인 공부
 ---

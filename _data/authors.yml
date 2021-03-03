@@ -1,35 +1,31 @@
 # The primary author of this blog.
 # Must be the same as `author` in `_config.yml`.
-# Change `author1` to your shortname.
-author1:
-  name:              김현우(따라쟁이)
-  email:             khw11044@gmail.com
+# Change `qwtel` to your shortname (used in the front matter to set a page's author, e.g. `author: qwtel`).
+vvs:
+  name:              yanghoon cho
+  email:             cyh1219@naver.com
 
   # Used at the bottom of each page and at the top of the `about` layout
   # Markdown enabled, can use multiple paragraphs (enabled by `|`)
+  # 자기 소개
   about:             |
-    풀스택 개발자를 꿈꾸는 AI 대학원생
+    갤럭시를 여행하는 히치하이커
 
-    Please check my [CV](/public.CV.pdf) to find out for more about me !
 
   # This photo will be used in the about section
   picture:
-    path:            /assets/img/me.jpg
+    src:             /assets/img/me.png
     # srcset is optional, but can be used to provide higher res versions for retina displays
     srcset:
-      1x:            /assets/img/me.jpg
-      2x:            /assets/img/me.jpg
+      1x:            /assets/img/me.png
+      2x:            /assets/img/me.png
 
   # Social media icons in sidebar
   # Comment/uncommet to show/hide
-  # Rearrange to change the order in which they appear
+  # Icons appear in order, can be rearranged:
   social:
-    instagram:       hyunew_dude
-    github:          khw11044
-    email:           mailto:khw11044@gmail.com
-    rss:             https://khw11044.github.io
+    facebook:         cyh1219
     # twitter:         <username>
-    # facebook:        <username>
     # google:          <number>
     # vk:              <username>
     # youtube:         <string_string_string>
@@ -38,7 +34,7 @@ author1:
     # spotify:         <user>/<number>
     # soundcloud:      <username>
     # lastfm:          <username>
-    # instagram:       <username>
+    # instagram:        <username>
     # flickr:          <string@string>
     # 500px:           <username>
     # dribbble:        <username>
@@ -52,6 +48,7 @@ author1:
     # pinterest:       <username>
     # foursquare:      <number>
     # yelp:            <string>
+    github:          Soliloquiess
     # stackoverflow:   <number/username>
     # npm:             <username>
     # hackernews:      <username>
@@ -62,20 +59,39 @@ author1:
     # delicious:       <username>
     # stumbleupon:     <username>
     # paypal:          <username>
-    # download:        <url>
-    # keybase          <username>
+    email:           cyh1219@naver.com
+    # rss:             https://khw11044.github.io/feed.xml
+    rss:              https://soliloquiess.github.io/about.html
+# Another author
+author2:
+  name:              <firtname> <lastname>
+  email:             <mail@domain.tld>
+  about:             |
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
 
-# Another author (optional)
-# author2:
-#   name:              <firtname> <lastname>
-#   email:             <mail@domain.tld>
-#   about:             |
-#     Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-#     sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-#     Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+    Open `_data/authors.yml` to edit this text.
+  picture:           https://placehold.it/128x128
+  social:
+    github:          <username>
+    twitter:         <username>
+  image: 'data:image/gif;base64,R0lGODlhAQABAPAAACAgIP///yH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==' # http://jsfiddle.net/LPxrT/
+  color: '#268bd2'
 
-#     Open `_data/authors.yml` to edit this text.
+# Another author
+author2:
+  name:              <firtname> <lastname>
+  email:             <mail@domain.tld>
+  about:             |
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
 
-#   picture:           https://placehold.it/128x128
-#   twitter:           <username>
-#   github:            <username>
+    Open `_data/authors.yml` to edit this text.
+  picture:           https://placehold.it/128x128
+  social:
+    github:          <username>
+    twitter:         <username>
+  image: 'data:image/gif;base64,R0lGODlhAQABAPAAACAgIP///yH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==' # http://jsfiddle.net/LPxrT/
+  color: '#268bd2'
