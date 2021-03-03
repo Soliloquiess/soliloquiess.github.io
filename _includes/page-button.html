@@ -1,12 +1,15 @@
-<div class="page-control">
+{% assign post = include.post %}
+{% assign format = include.format | default:site.data.strings.date_formats.related_post | default:"%Y %m %d" %}
+
+<div class="page-button">
 	<div>
-		{% if page.previous.url %}
-		<a id="prev" class="button" href="{{ page.previous.url }}">&laquo; Previous</a>
+		{% if post.previous.url %}
+		<a id="prev" class="button" href="{{ post.previous.url | relative_url }}">&laquo; 이전글</a>
 		{% endif %}
 	</div>
 	<div>
-		{% if page.next.url %}
-		<a id="next" class="button" href="{{ page.next.url }}">Next &raquo;</a>
+		{% if post.next.url %}
+		<a id="next" class="button" href="{{ post.next.url | relative_url }}">다음글 &raquo;</a>
 		{% endif %}
 	</div>
 </div>

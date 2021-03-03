@@ -4,10 +4,11 @@
   </{{ include.heading_tag | default:'h2' }}>
 <div class="author-body">
   {% if include.author.picture %}
-    {% include srcset-img.html class="me" img=include.author.picture alt=include.author.name %}
+    {% include srcset-img.html class="avatar" img=include.author.picture alt=include.author.name %}
   {% endif %}
   <div class="author-body-description">
-    {{ include.author.about | markdownify }}
+    <span style = " font-size:1.5em;  color: rgb(0, 0, 0);"><strong>김현우</strong></span>
+    <b style = "font-size:0.8em; color: rgb(141, 141, 141);">{{ author.about | markdownify }}</b>
   </div>
 </div>
 </div>
