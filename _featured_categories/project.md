@@ -1,10 +1,10 @@
 ---
 layout: list
-title: Project
+bigtitle: Project
 slug: project
 menu: true
 submenu: false
-order: 3
+order: 2
 description: >
-  Project
+  인공지능 프로젝트
 ---
