@@ -506,7 +506,7 @@ https://www.w3schools.com/bootstrap4/bootstrap_get_started.asp
 
 ![20210309_153437](/assets/20210309_153437.png)
 
-<div class = "container"> 를 추가해주자
+div class = "container" 를 추가해주자
 
 
 ---
@@ -529,8 +529,6 @@ https://www.w3schools.com/bootstrap4/bootstrap_get_started.asp
 
 그리고 java Traverse 로 가보자.(순회하는거)
 원하는 애를 찾는 걸 traverse라 한다.
-
-
 
 
 
