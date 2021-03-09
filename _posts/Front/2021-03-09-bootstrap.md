@@ -2,7 +2,7 @@
 title: "[front] BootStrap&Ajax"
 layout: post
 subtitle: front
-date: '2021-03-08 19:45:51 +0900'
+date: '2021-03-09 19:45:51 +0900'
 
 categories: class
 tags: Front
