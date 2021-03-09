@@ -733,6 +733,7 @@ https://www.w3schools.com/bootstrap4/bootstrap_get_started.asp
 
 
 ```
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -767,8 +768,10 @@ https://www.w3schools.com/bootstrap4/bootstrap_get_started.asp
 	<div id = "result"></div>
 </body>
 </html>
-
 ```
+
+
+
 
 실행해보면 console에 document값이 들어온다
 
