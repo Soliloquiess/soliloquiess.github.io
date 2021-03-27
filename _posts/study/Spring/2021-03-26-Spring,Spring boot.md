@@ -449,3 +449,190 @@ mysql workbench에서 id2컬럼 선택후 read를 테스트 해보면
 
 Assert.assertTrue(user.isPresent()); // 반드시 값이 있는 값 통과해서
 그리고 이제 1번 컬럼이 지워졌으므로 여기에서는 false가 리턴받게 된다.
+
+
+@Transactional :
+ //마지막 데이터 남으면 그거에 대한 동작은 안 일어남.(아예 비면 그건 데이터베이스의 의미가 없어서)
+
+
+------
+
+### JPA 연관관계
+
+
+![20210327_173544](/assets/20210327_173544.png)
+
+![20210327_174916](/assets/20210327_174916.png)
+
+workbench에서 ERD를 그려보자
+
+
+![20210327_174916](/assets/20210327_174916_1rx1avy1d.png)
+![20210327_175143](/assets/20210327_175143.png)
+내 정보를 적어주고
+
+![20210327_175153](/assets/20210327_175153.png)
+![20210327_175214](/assets/20210327_175214.png)
+
+관련 디비를 체크해주면
+
+![20210327_175615](/assets/20210327_175615.png)
+
+
+ERD 그릴수 있는 창이 나오게 되며 관련 DB가 생성된다.
+
+
+![20210327_180656](/assets/20210327_180656.png)
+
+이 관계도를  ERD로  매핑해보자.
+
+실선은 한쪽만 양쪽 다 가지는 경우, 점선은 한쪽만 가지는 경우
+
+![20210327_180905](/assets/20210327_180905.png)
+
+그리고 여기서 상단에 database- forward engineer를 클릭하자.
+
+아까 Reverse 엔지니어로 erd로 만들었다면 이번엔 반대로 erd를 데이터테이블로 만들것
+
+어디스키마에 어떤 테이블 만들게 나오고
+
+기본적으로 워크벤치가 어떤 거 만들어 주는 지 다 나온다.
+
+
+![20210327_181250](/assets/20210327_181250.png)
+
+![20210327_181402](/assets/20210327_181402.png)
+
+![20210327_181659](/assets/20210327_181659.png)
+
+근데 나같은 경우는 안되서 일일히 study에서 테이블 다 만들고 진행했다.. ㅠ
+
+![20210327_191751](/assets/20210327_191751.png)
+
+그리고 study에 이렇게 3개의 테이블이 생기면 일단은 성공.
+
+
+(정 안되면 아래 sql 문 실행)
+
+```
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+-- -----------------------------------------------------
+-- Schema study
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema study
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `study` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin ;
+USE `study` ;
+
+-- -----------------------------------------------------
+-- Table `study`.`user`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `study`.`user` ;
+
+CREATE TABLE IF NOT EXISTS `study`.`user` (
+  `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
+  `account` VARCHAR(45) NOT NULL,
+  `email` VARCHAR(45) NULL DEFAULT NULL,
+  `phone_number` VARCHAR(45) NULL DEFAULT NULL,
+  `created_at` DATETIME NOT NULL,
+  `created_by` VARCHAR(45) NOT NULL,
+  `updated_at` DATETIME NULL DEFAULT NULL,
+  `updated_by` VARCHAR(45) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 7
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_bin;
+
+
+-- -----------------------------------------------------
+-- Table `study`.`item`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `study`.`item` ;
+
+CREATE TABLE IF NOT EXISTS `study`.`item` (
+  `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(45) NOT NULL,
+  `price` INT NOT NULL,
+  `content` VARCHAR(45) NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `study`.`order_detail`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `study`.`order_detail` ;
+
+CREATE TABLE IF NOT EXISTS `study`.`order_detail` (
+  `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
+  `order_at` DATETIME NULL,
+  `user_id` BIGINT(20) NOT NULL,
+  `item_id` BIGINT(20) NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+```
+
+---
+
+
+```
+package com.example.study.repository;
+
+import com.example.study.StudyApplicationTests;
+import com.example.study.model.entity.OrderDetail;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.time.LocalDateTime;
+
+public class OrderDetailRepositoryTest extends StudyApplicationTests {
+
+    @Autowired
+    private OrderDetailRepository orderDetailRepository;
+
+    @Test
+    public void create(){
+        OrderDetail orderDetail = new OrderDetail();
+
+        orderDetail.setOrderAt(LocalDateTime.now());
+        //어떤 사람? 4번 아이디를 가진 사람이
+        orderDetail.setItemId(7L);
+        //어떤 상품?    1번의 인덱스 아이디.
+        orderDetail.setUserId(1L);
+    }
+}
+
+```
+
+
+1번의 인덱스 아이디를 가진 상품을 7번 아이디 가진 사람이 구매했다.
+
+![20210327_203929](/assets/20210327_203929.png)
+
+![20210327_225956](/assets/20210327_225956.png)
+
+----------
+
+
+#### JPA의 쿼리메서드
+
+
+//1:N
+//fetch 타입
+//Lazy = 지연 로딩 , Eager = 즉시로딩.
+@OneToMany(fetch = FetchType.LAZY, mappedBy = "item")
+private List<OrderDetail> orderDetailList;
