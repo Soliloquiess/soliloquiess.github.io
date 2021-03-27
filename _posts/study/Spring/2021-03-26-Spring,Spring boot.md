@@ -253,3 +253,92 @@ DELETE : 삭제
 ![20210327_042630](/assets/20210327_042630.png)
 
 --------
+
+
+![20210327_111228](/assets/20210327_111228.png)
+
+여기서 main은 실제 서비스 하는 내용들이고 test는 실제 작동에는 영향을 안 미치고 테스트 하게 만들어둔 폴더이다.
+
+
+```
+package com.example.study.repository;
+
+
+import com.example.study.StudyApplicationTests;
+import com.example.study.model.entity.User;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.time.LocalDate;
+
+public class UserRepositoryTest extends StudyApplicationTests {
+
+    @Autowired//DI로 Dependency Inㅓection으로 우선순위 주입을 뜻한다. 직접 객체를 만들지 않고(new) 스프링이 직접 관리하겠다는 뜻.
+    private UserRepository userRepository;
+
+    @Test
+    public void create(){
+        //String sql = insert into user(%s,%s,%d) value (account, email, age);
+        User user = new User();//싱글톤으로 User는 매번 다른 값이 들어갈 수 있어 매번 생성하고 사용해야
+        user.setAccount("TestUser01");
+        user.setEmail("TestUser01@gmail.com");
+        user.setPhoneNumber("010-1111-1111");
+        user.setCreatedAt(LocalDate.now());
+        user.setCreatedBy("admin");
+        //데이터 들어갈 타입 맞춰서 컬럼으로 생성
+
+        User  newUser = userRepository.save(user);
+        System.out.println("newUser:"+newUser);
+    }
+
+    public void read(){
+
+    }
+    public void update(){
+
+    }
+    public void delete(){
+
+    }
+}
+
+```
+
+
+참고로 위 코드를 실행하기 전 setting에 가서
+
+![20210327_121252](/assets/20210327_121252.png)
+
+저 Run Test using 부분을 intelj로 바꿔줘야 정상 실행되고
+
+![20210327_121329](/assets/20210327_121329.png)
+
+이처럼 넣은 값이 잘 나오는게 보인다.
+
+롬복에서 자동으로 toString형태로 재정의 해줬기 떄문에 깔끔하게 어떤 값들이 들어있는지 볼 수 있다.
+
+![20210327_121456](/assets/20210327_121456.png)
+
+이걸 누르고 테이블 가보면
+
+![20210327_121522](/assets/20210327_121522.png)
+
+자동으로 쿼리문 생성되었고 안에 들어간 내용도 확인 할 수 있다.
+
+
+그리고 build.gradle 부분에
+
+```
+
+#이 부분을 추가해주자. jpa가 실행한 옵션에 대해 보겠다는 뜻.
+
+spring.jpa.show-sql=true
+```
+
+
+![20210327_121927](/assets/20210327_121927.png)
+
+실행하면 Hibernate가 뜨고 옵션에 대해 보이게 된다.(sql이 어떻게 동작하는 지 알 수 있다.)
+
+
+-----
