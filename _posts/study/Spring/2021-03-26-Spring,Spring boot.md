@@ -342,3 +342,110 @@ spring.jpa.show-sql=true
 
 
 -----
+
+```
+@Test
+  public void read(){
+      Optional<User> user= userRepository.findById(2L);
+      //2L는 lonlong이고 옵셔널은 제너릭 타입으로 받게 됨.
+
+      user.ifPresent(selectUser->{       //있을때만 실행에 대한 결과를 받겠다.
+          //seleectUser가 있으면 그 값을 꺼내 달라는 뜻.
+          System.out.println("user:"+selectUser);
+      });
+  }
+```
+
+이번엔 read부분에 @Test를 넣고
+mysql workbench에서 id2컬럼 선택후 read를 테스트 해보면
+
+![20210327_125918](/assets/20210327_125918.png)
+
+
+정보가 잘 나온다.
+
+````
+@Test
+    public void update(){
+        Optional<User> user= userRepository.findById(2L);   //2번 셀렉트
+        //2L는 lonlong이고 옵셔널은 제너릭 타입으로 받게 됨.
+
+        user.ifPresent(selectUser->{
+           selectUser.setAccount("PPPP");
+           selectUser.setUpdatedAt(LocalDate.now());
+           selectUser.setUpdatedBy("update Method");
+           //값은 이거만 바꿨지만  jpa에서는 셀렉트유저값에 들어있는 특정 아이디값을 검색하고 한번더 꺼낸 다음
+            //한번 더 업데이트 쳐줌.
+
+           userRepository.save(selectUser);
+           //쿼리문 통해 특정 유저 셀렉트 해주고 아이디를 한번 더 셀렉트 값 변경되서 값 찾고 그 값에 대해 업데이트 시킴.
+        });
+    }
+````
+
+
+업데이트 부분.
+
+![20210327_131149](/assets/20210327_131149.png)
+
+실행결과 값이 변경된게 확인 된다.
+
+-----
+
+삭제부분
+
+````
+@Test
+   public void delete(){
+       Optional<User> user= userRepository.findById(2L);   //2번 셀렉트
+       //2L는 lonlong이고 옵셔널은 제너릭 타입으로 받게 됨.
+
+       user.ifPresent(selectUser->{
+           userRepository.delete(selectUser);
+       });
+
+       //이제 유저가 진짜 삭제 됐는지 확인해보자,(딜리트 된 유저 삭제 되었는지 확인)
+       Optional<User> deleteUser = userRepository.findById(2L);
+       if(deleteUser.isPresent()){
+           System.out.println("데이터 존재: "+ deleteUser.get());
+       }else{
+           System.out.println("데이터 삭제 데이터 없음. ");
+
+       }
+````
+
+
+![20210327_160203](/assets/20210327_160203.png)
+
+![20210327_160222](/assets/20210327_160222.png)
+
+확인해보면 id2 가지고 있던 PPPP 도 삭제된 모습이 보인다.
+
+근데 테스트 코드엔 Assert 사용하는 것이 좋다.
+
+
+```
+@Test
+    public void delete(){
+        Optional<User> user= userRepository.findById(1L);   //2번 셀렉트
+        //2L는 lonlong이고 옵셔널은 제너릭 타입으로 받게 됨.
+
+        Assert.assertTrue(user.isPresent()); // 반드시 값이 있는 값 통과해서
+
+        user.ifPresent(selectUser->{
+            userRepository.delete(selectUser);
+        });
+
+        //이제 유저가 진짜 삭제 됐는지 확인해보자,(딜리트 된 유저 삭제 되었는지 확인)
+        Optional<User> deleteUser = userRepository.findById(1L);
+
+        Assert.assertFalse(deleteUser.isPresent()); //false 그값이 삭제해서 반드시 false가 된다
+```
+
+![20210327_162221](/assets/20210327_162221.png)
+
+
+값이 잘 지워진게 보이고 워크벤치에서 확인해도 1번 컬럼이 지워져있다.
+
+Assert.assertTrue(user.isPresent()); // 반드시 값이 있는 값 통과해서
+그리고 이제 1번 컬럼이 지워졌으므로 여기에서는 false가 리턴받게 된다.
