@@ -636,3 +636,7 @@ public class OrderDetailRepositoryTest extends StudyApplicationTests {
 //Lazy = 지연 로딩 , Eager = 즉시로딩.
 @OneToMany(fetch = FetchType.LAZY, mappedBy = "item")
 private List<OrderDetail> orderDetailList;
+
+
+Lazy를 우선으로 쓰는 게 좋으며 eager은 1:1 같은 경우에만 쓰는 게 좋다.(연관관계에 있어 한건만 있을 때)
+여러개의 연관관계 존재시 Lazy 써야한다!
