@@ -2,7 +2,7 @@
 layout: tag-blog
 title: SQL
 slug: SQL
-category: study
+category: class
 menu: false
-order: 6
+order: 5
 ---
