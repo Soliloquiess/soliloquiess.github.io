@@ -13,7 +13,7 @@ url:                 https://soliloquiess.github.io/
 baseurl:             ""
 
 # A very short description of your page
-tagline:             "Ssafy를 여행하는 히치하이커를 위한 안내서"
+tagline:             "갤럭시를 여행하는 히치하이커를 위한 안내서"
 
 # A short description of the page, used in the sidebar and as fallback for the meta description tag.
 # Markdown enabled, but don't use more than one paragraph (enforced by `>`)

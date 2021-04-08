@@ -5,6 +5,6 @@ menu: true
 order: 2
 ---
 
-## 소개
+## 42 HONOR CODE
 
-간단한 블로그 소개 또는 자기 소개
+![42 SEOUL Honor Code](/assets/42%20SEOUL%20Honor%20Code.jpg)
