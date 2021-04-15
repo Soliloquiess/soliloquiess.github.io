@@ -53,11 +53,13 @@ font-weight:bold">
 ## Project
 ---
 
-## Work Experiences
--42 seoul 2020.09.15~
->
->
-- Ssafy 2021.01.08~
+## Experiences
+
+- google dsc samyook korea 동아리
+
+- 42 seoul 2020.09.15 ~
+
+- Ssafy 2021.01.08 ~
 ---
 
 ## Skills and Certification
