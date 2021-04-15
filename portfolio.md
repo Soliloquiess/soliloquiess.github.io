@@ -55,7 +55,7 @@ font-weight:bold">
 
 ## Experiences
 
-- google dsc samyook korea 동아리
+- Google dsc samyook korea 동아리
 
 - 42 seoul 2020.09.15 ~
 
