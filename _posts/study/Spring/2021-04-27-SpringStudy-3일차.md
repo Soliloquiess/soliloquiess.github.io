@@ -14,6 +14,14 @@ tags: Spring
 comments: true
 ---
 
+Mybatis 는 객체를 실제로 파라미터로 전달하고 sql로 사용하고  jdbc로 사용하고 끝남.
+디비에서 조회하면 sql이 조회되고 그걸 객체화 해서 전달.
+
+jpa는 마이바티스는 1,3의 전달되는게 같지 않음.
+jpa는 객체를 persist Context에 넣고 통신함. 디비와 통신하진 않음.(메모리를 담음)
+
+
+
 
 DTO = 데이터 주고 받을 때 새로 클래스를 만들어서 사용하자.
 기존에 있는 클래스를 사요하지 말자는 뜻.
@@ -82,6 +90,18 @@ Domain Model을 아무리 잘 설계했다고 해도 각 View 내에서 Domain M
 
 
 
+![20210501_031532](/assets/20210501_031532.png)
+
+
+
+DTO는 Data Transfer Object의 약자로, 계층 간 데이터 교환 역할을 한다. DB에서 꺼낸 데이터를 저장하는 Entity를 가지고 만드는 일종의 Wrapper라고 볼 수 있는데, Entity를 Controller 같은 클라이언트단과 직접 마주하는 계층에 직접 전달하는 대신 DTO를 사용해 데이터를 교환한다.
+
+DTO는 그저 계층간 데이터 교환이 이루어 질 수 있도록 하는 객체이기 때문에, 특별한 로직을 가지지 않는 순수한 데이터 객체여야 한다. 또한 DB에서 꺼낸 값을 DTO에서 임의로 조작할 필요가 없기 때문에 DTO에는 Setter를 만들 필요가 없고 생성자에서 값을 할당한다. 개인적으로는 생성자 또한 사용하지 않고 Entity처럼 Builder 패턴을 통해 값을 할당하는 것이 가장 좋은 것 같다.
+
+---
+
+
+
 - 자바로 DB를 사용하도록 도와주는 녀석이 JPA 라고 말씀드렸습니다.
 - 그럼 DB를 이용하는데 핵심이었던 "테이블"과 "SQL"과 동일한 개념의 자바 용어가 있겠죠?
 - "테이블"은 Domain, "SQL"은 Repository 입니다.
@@ -100,7 +120,6 @@ public class Week02Application {
         SpringApplication.run(Week02Application.class, args);
     }
 
-    // Week02Application.java 의 main 함수 아래에 붙여주세요.
     @Bean
     public CommandLineRunner demo(CourseRepository repository) {
         return (args) -> {
@@ -178,6 +197,23 @@ public class CourseService {
 이런식으로 코스를 바로 넣고 넘겨주고 하면(전달용도로) 사용하는 건 안좋다. 왜? 테이블을 막 건드리면 다른사람이 실수로 변경하면 오류가 날 확률이 매우 커진다.
 
 디비를 물고 다닐 녀석을 따로 만드는데 이게 DTO.
+
+
+
+
+```
+Guestbook entity = Guestbook.builder()
+                .gno(dto.getGno())
+                .title(dto.getTitle())
+                .content(dto.getContent())
+                .writer(dto.getWriter())
+                .build();
+        return entity;
+
+```
+이 부분이 DTO를 ENTITY로 바꿔주는 거.
+
+
 
 
 
