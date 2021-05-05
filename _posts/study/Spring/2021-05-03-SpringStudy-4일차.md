@@ -14,6 +14,7 @@ tags: Spring
 comments: true
 ---
 
+
 ```
 GuestbookDTO read(Long gno);
 void modify(GuestbookDTO dto);

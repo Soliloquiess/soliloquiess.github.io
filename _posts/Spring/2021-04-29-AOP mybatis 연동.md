@@ -1,5 +1,5 @@
 ---
-title: "[Spring] Spring MVC"
+title: "[Spring] AOP Mybatis"
 layout: post
 subtitle: Spring
 date: '2021-04-29 19:45:51 +0900'
