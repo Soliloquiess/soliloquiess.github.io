@@ -115,4 +115,153 @@ impl을 직접 만들었었는데 이젠 안 만들어도 된다.
 
 DAO 인터페이스 안의 메서드이름 = Mapper파일 안의 쿼리 id는 동일해야함
 
-그래야 메서드 호출했을 때 그 쿼리가 실행이 된다.
+그래야 메서드 호출했을 때 그 쿼리가 실행이 된다
+
+
+-----------
+
+
+resources에 넣는다.
+
+![20210506_012421](/assets/20210506_012421.png).
+
+
+디비 프로퍼티 잇던거(db연결하는거)
+
+mybatis에 전달하는건 하나밖에 안되서 맵이나 DTO를 쓴다 아!
+
+![20210506_014417](/assets/20210506_014417.png)
+
+
+![20210506_014506](/assets/20210506_014506.png)
+
+이 메서드와 아이디를 맞춰주는게 좋다.
+
+
+```
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="">
+<!--
+	<select id = "login" parameterType = "map" resultType = "com.ssafy.guestbook.model.MemberDto"> -->
+	<select id = "login" parameterType = "map" resultType = "member">
+		select username, userid, email
+		from ssafy_member
+		where userid = #{userid} and userpwd = #{userpwd}
+		<!-- 맵 안에있는 프로퍼티를 세팅함#{}안에 -->
+	</select>
+</mapper>
+
+```
+그리고 매퍼 부분도 네임스페이스 명시(자세하게\)
+
+
+<mapper namespace="com.ssafy.guestbook.model.dao.UserDao">
+
+
+그리고 매퍼는 네임스페이스가 항상 채워져 있어야 한다(비어있으면 안된다.)
+
+
+![20210506_015708](/assets/20210506_015708.png)
+
+마이바티스에서 이 시점에 이미 읽어서 사용 안해도 비어있으면 안된다.
+
+--------
+
+servlet.context는 웹에 관련된거
+root.context는 비웹에 관련된거
+
+![20210506_022455](/assets/20210506_022455.png)
+
+
+에러 나는지 안나는지 잘 보자 $는 statement방식 #는 preparedStatement방식
+
+dto안엔 getter,setter 다 필요
+
+------------
+
+![20210506_025852](/assets/20210506_025852.png)
+
+controller가 service에 일 시키고 service가 daoimpl에 일 시킴
+여기서 daoimpl은 sqlssesion만 있으면 mybatis가 알아서 다 처리해주고 db연동.
+dao에서
+
+
+![20210506_025907](/assets/20210506_025907.png)
+
+![20210506_025918](/assets/20210506_025918.png)
+
+![20210506_025930](/assets/20210506_025930.png)
+
+![20210506_025941](/assets/20210506_025941.png)
+
+![20210506_025951](/assets/20210506_025951.png)
+
+![20210506_025959](/assets/20210506_025959.png)
+참고로 여기 dao가 아니라 serviceimpl
+
+![20210506_030009](/assets/20210506_030009.png)
+
+
+mybatis 쓰면 dao를 통해 직접 연결할 필요 없이 서비스에서 매퍼를 통해 다이렉트로 연결 가능.
+
+```
+package com.ssafy.guestbook.model.service;
+
+import java.util.List;
+import java.util.Map;
+
+import org.apache.ibatis.session.SqlSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.ssafy.guestbook.model.MemberDto;
+import com.ssafy.guestbook.model.mapper.UserMapper;
+
+@Service
+public class UserServiceImpl implements UserService {
+
+	private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+
+	@Autowired
+	private SqlSession sqlSession;
+
+	@Override
+	public MemberDto login(Map<String, String> map) throws Exception {
+		if(map.get("userid") == null || map.get("userpwd") == null)
+			return null;
+		return sqlSession.getMapper(UserMapper.class).login(map);
+	}
+
+	@Override
+	public List<MemberDto> userList() {
+		return sqlSession.getMapper(UserMapper.class).userList();
+	}
+
+	@Override
+	public MemberDto userInfo(String userid) {
+		return sqlSession.getMapper(UserMapper.class).userInfo(userid);
+	}
+
+	@Override
+	public int userRegister(MemberDto memberDto) {
+		return sqlSession.getMapper(UserMapper.class).userRegister(memberDto);
+	}
+
+	@Override
+	public int userModify(MemberDto memberDto) {
+		return sqlSession.getMapper(UserMapper.class).userModify(memberDto);
+	}
+
+	@Override
+	public int userDelete(String userid) {
+		return sqlSession.getMapper(UserMapper.class).userDelete(userid);
+	}
+}
+
+
+```

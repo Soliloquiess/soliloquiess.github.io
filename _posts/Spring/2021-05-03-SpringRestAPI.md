@@ -156,3 +156,10 @@ PathVariable 는 경로에 들어있는 값 중 하나를 의미한다.앞이 nu
 
 
 raw 면 바로 넣겠다는 뜻
+
+---------
+
+
+@RestController
+쓰면 자동으로 @ResponseBOdy 붙는
+그럼 알아서 제이슨으로 리턴이 됨.
