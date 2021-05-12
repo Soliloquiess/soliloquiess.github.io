@@ -20,7 +20,6 @@ comments: true
 
 - Repository를 확장해서 JPQLQuery를 이용해 직접 JPQL을 생성해서 처리.
 
-
 Repository에 search 패키지 추가하고
 
 인터페이스와 Impl파일 추가.
@@ -54,18 +53,15 @@ configurations {
 
 - 쿼리 메서드나 @Query로 처리 할 수 없는 기능은 별도의 인터페이스로 설계
 
-- 별도의 인터페이스에 대한 구현클래스를 작성. 이때  QueryRepositorySupport라는 클래스를 부모로 사용.
+- 별도의 인터페이스에 대한 구현클래스를 작성. 이때 QueryRepositorySupport라는 클래스를 부모로 사용.
 - 구현 클래스에 Q도메인 클래스와 JPQLQuery를이용.
 
 QueryRepositorySupport 참고 :
 https://awse2050.tistory.com/26
 
-
 이 클래스느 ㄴJPA에 포함된 클래스로 Querydsl라이브러리로 직접 뭔가 구현할때 사용.
 
 repository에 search 패키지 작성.
-
-
 
 ![20210512_013612](/assets/20210512_013612_tbltfkxdy.png)
 
@@ -82,21 +78,21 @@ public interface SearchBoardRepository {
 
 ```
 
-
 이 인터페이스를 구현하기 위한 SearchBoardRepositoryImpl에서 QuerydslRepositorySupport클래스를 상속해야함. 이 클래스는 생성자가 존재해서 super()를 이용해서 호출해야하고 이때 도메인 클래스를 지정하는 데 null값을 넣을 수는 없음.
 
 정상동작은 BoardRepositoryTest로 확인
+
 ```
 2021-05-12 01:50:48.121  INFO 22632 --- [    Test worker] o.z.b.r.s.SearchBoardRepositoryImpl      : search1........................
 ```
+
 search 로그가 찍힘.
 
 위와같이 로그가 기록되는게 확인되면 실제 JPQL을 작성하고 실행해보는 단계로 감.
 
 이 과정에서 Querydsl의 라이브러리 내 JPQLQuery라는 인터페이스 활용.
 
-활용하기 위해  코드 설정
-
+활용하기 위해 코드 설정
 
 ```
 QBoard board = QBoard.board;
@@ -144,7 +140,7 @@ select() 결과를 JPQLQuery <tuple>을 이용해서 처리하도록 변경하�
 
 -> 다 가져오는게 아니라 부분적으로 가져오고 싶을때 튜플 사용한다 생각 하면 됨.
 
-----
+---
 
 목록 만들고 페이지 처리 해줘야함
 
@@ -164,10 +160,7 @@ public interface SearchBoardRepository {
 
 ```
 
-
-
-﻿searchPage()에서 검색타입, 키워드 페이지 정보를 파라미터로 받아왔는데, pageRequestDTO자체를 파라미터로 처리하지 않는 이유는DTO를 가능하면 Repository영역에서 다루지 않기 때문
-
+searchPage()에서 검색타입, 키워드 페이지 정보를 파라미터로 받아왔는데, pageRequestDTO자체를 파라미터로 처리하지 않는 이유는DTO를 가능하면 Repository영역에서 다루지 않기 때문
 
 ```
 public Page<Object[]> searchPage(String type, String keyword, Pageable pageable) {
@@ -216,7 +209,6 @@ public Page<Object[]> searchPage(String type, String keyword, Pageable pageable)
 
 ```
 
-
 여기 까지 하면 목록 생성한 게 확인 됨
 
 ```
@@ -250,8 +242,7 @@ Hibernate:
 
 ```
 
-
-----
+---
 
 pageable의 sort객체는 jpqlQuery의 order파라미터로 전달되어야 하지만 jpql에선 sort를 지원하지 않아서 OrderSpecifier<T extends COmparable> 을 파라미터로 처리
 
@@ -298,7 +289,6 @@ OrderSpecifier엔 정렬이 필요해서 Sort객체의 정렬 관련 정보를 O
 ```
 
 JPQLQUery를 이용해서 동적으로 검색 조건을 처리해보면 복잡하지만 한번의 개발로 count쿼리도 같이 처리 가능(다른 쿼리도 같이 처리)
-
 
 ---
 
