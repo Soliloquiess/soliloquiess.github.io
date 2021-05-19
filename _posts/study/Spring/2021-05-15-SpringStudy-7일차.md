@@ -148,4 +148,4 @@ $(".uploadResult ").on("click", "li button", function(e){
 2. Submit버튼을 클릭하면 <form>태그내에 태그들이 생성된다.
 3. MovieController에서 POST방식으로 전달된 데이터들은 MovieImageDTO로 수집된다.
 4. MovieService에서 MovieImageDTO들은 Movie 엔티티 객체내에 MovieImage로 처리된다.
-5. JPA에 의해서 save( )처리후에 데이터베이스에 기록된다. 
+5. JPA에 의해서 save( )처리후에 데이터베이스에 기록된다.
