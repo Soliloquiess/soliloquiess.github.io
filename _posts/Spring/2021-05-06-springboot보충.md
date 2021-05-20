@@ -14,7 +14,7 @@ tags: Spring
 comments: true
 ---
 
-스웨거 대신 포스트맨 써도 되긴함.
+스웨거 대신 포스트맨 써도 되긴함 .
 
 1. 프로젝트 생성(starter project)
    package name: com.TODO
