@@ -2,7 +2,7 @@
 title: "[Spring] SpringStudy-4일차"
 layout: post
 subtitle: Spring
-date: '2021-05-07-23:46:51 +0900'
+date: "2021-05-07-23:46:51 +0900"
 
 categories: study
 tags: Spring
@@ -13,7 +13,6 @@ tags: Spring
 # tags: java
 comments: true
 ---
-
 
 ```
 GuestbookDTO read(Long gno);
@@ -52,17 +51,13 @@ ServiceImpl의 Read부분으로 이동
 
 
 ```
+
 여기서 read하면 read.html이 떠야한다.
 modify도 동일. 두가지 한번에 처리하도록 묶어서 (배열로)처리
 
-
-
 ![20210505_194843](/assets/20210505_194843.png)
 
-
 read.html에 dto라고 담겨있어서 dto로 출력하게 된다.
-
-
 
 ![20210505_013119](/assets/20210505_013119.png)
 
@@ -70,12 +65,11 @@ modify도 동일.
 
 modify는 대신 수정이 가능한 것만 수정하게 해줘야 한다.
 
-
-
 ```
 <input type="hidden" name="page" th:value="${requestDTO.page}"><!--페이지 번호   수정 한 다음 어떤 페이지로 이동할건지 이런건 히든처리해서 보내는게 좋음-->
 
 ```
+
 이걸 post방식으로 service에 전달하면
 
 ![20210505_195153](/assets/20210505_195153.png)
@@ -87,7 +81,6 @@ modify는 대신 수정이 가능한 것만 수정하게 해줘야 한다.
 여기서 제목과 내용만 수정 가능하게
 만들었다.
 
-
 ```
 entity.changeTitle(dto.getTitle());
 entity.changeContent(dto.getContent());
@@ -96,7 +89,6 @@ entity.changeContent(dto.getContent());
 
 컨트롤러에서 modify를 post방식으로 받고
 post방식으로 modify가 다 끝나면
-
 
 ```
 
@@ -114,18 +106,15 @@ post방식으로 modify가 다 끝나면
      redirectAttributes.addAttribute("page",requestDTO.getPage());
      redirectAttributes.addAttribute("type",requestDTO.getType());
      redirectAttributes.addAttribute("keyword",requestDTO.getKeyword());
-//     
+//
 
  }
 
 ```
 
-
 modify를 포스트 방식으로 받게 되고 끝나면
 
-
-
-return "redirect:/guestbook/read";  
+return "redirect:/guestbook/read";
 
 로 인해 다시 read페이지로 가라
 
@@ -146,4 +135,5 @@ remove 또한 동일
 
  }
 ```
+
 addAttribute는 값을 지속적으로 사용해야할때 addFlashAttribute는 일회성으로 사용해야할때 사용해야합니다.
