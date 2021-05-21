@@ -18,6 +18,7 @@ comments: true
 GuestbookDTO read(Long gno);
 void modify(GuestbookDTO dto);
 void remove(Long gno);
+
 ```
 
 ServiceImpl의 Read부분으로 이동
