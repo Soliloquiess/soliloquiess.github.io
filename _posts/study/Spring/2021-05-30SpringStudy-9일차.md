@@ -77,7 +77,6 @@ public class Member {
 
     // Getter, Setter
     ...
-
 }
 Team
 
@@ -92,7 +91,6 @@ public class Team {
 
     // Getter, Setter
     ...
-
 }
 회원은 Member.team을 통해서 Team 엔티티를 조회할 수 있다.
 반대로 팀은 회원을 참조하는 필드가 없기에 다대일 단방향 연관관계가 되었다.
@@ -127,7 +125,6 @@ public class Member {
             team.getMembers().add(this);
         }
     }
-
 }
 Team
 
@@ -149,7 +146,6 @@ public class Team {
             member.setTeam(this);
         }
     }
-
 }
 양방향은 외래 키가 있는 쪽이 연관관계의 주인이다.
 일대다와 다대일 연관관계는 항상 다에 외래 키가 있다.
@@ -170,7 +166,7 @@ JPA는 외래 키를 관리할 때 연관관계의 주인만 사용한다.
 이거 다음에 물어볼 것
 
 **실무에서는 어떻게 사용할까?**  
-연관관계의 주인만을 사용하는 것 같다.
+연관관계의 주인만을 사용하는 것 같다.    
 
 ![20210530_025301](/assets/20210530_025301.png)
 
@@ -179,6 +175,7 @@ JPA는 외래 키를 관리할 때 연관관계의 주인만 사용한다.
 일대다 관계는 엔티티를 하나 이상 참조할 수 있으므로 JCF를 이용한다.
 다대일과의 차이점으로는 연관관계의 주인을 일에 둔다는 것이다.
 무조건 다쪽에 외래키가 들어간다.
+
 
 일대다 단방향
 하나의 Team은 여러 Member를 참조할 수 있다.
@@ -203,7 +200,6 @@ public class Team {
     private List<Member> members = new ArrayList<>();
 
     // Getter, Setter ...
-
 }
 Member
 
@@ -218,7 +214,6 @@ public class Member {
 
     // Getter, Setter
     ...
-
 }
 일대다 단방향 관계를 매핑할 때는 @JoinColumn을 명시해야 한다.
 그렇지 않으면 JPA는 연결테이블을 중간에 두고 연관관계를 관리하는
@@ -241,13 +236,13 @@ team1.getMembers().add(member2);
 
 em.persist(member1); // INSERT
 em.persist(member2); // INSERT
-em.persist(team1); // INSERT
-// UPDATE  
+em.persist(team1);   // INSERT
+                     // UPDATE  
 transaction.commit();
 실행된 SQL
 
 insert into Member (MEMBER_ID, username) values (null, ?);  
-insert into Member (MEMBER_ID, username) values (null, ?);  
+insert into Member (MEMBER_ID, username) values (null, ?);   
 insert into Team (TEAM_ID, name) values(null, ?);
 update Member set TEAM_ID=? where MEMBER_ID=?;  
 update Member set TEAM_ID=? where MEMBER_ID=?;  
@@ -290,7 +285,6 @@ public class Team {
     private List<Member> members = new ArrayList<>();
 
     // Getter, Setter ...
-
 }
 Member
 
@@ -308,7 +302,6 @@ public class Member {
     private Team team;
 
     // Getter, Setter...
-
 }
 이 방법은 일대다 양방향 매핑이라기보다는
 일대다 단방향 매핑 반대편에 다대일 단방향 매핑을 읽기 전용으로 추가해서
@@ -316,6 +309,7 @@ public class Member {
 
 하지만, 단방향 매핑이 가지는 단점을 그대로 가져가기에
 될 수 있으면 다대일 양방향 매핑을 사용하도록 하자
+
 
 ![20210530_032722](/assets/20210530_032722.png)
 
@@ -350,11 +344,10 @@ public class Member {
     private String username;
 
     @OneToOne
-    @JoinColumn(name = "LOCKER_ID")
+    @JoinColumn(name = "LOCKER_ID")   
     private Locker locker;
 
     ...
-
 }
 Locker
 
@@ -366,7 +359,6 @@ public class Locker {
     private Long id;
 
     private String name;
-
 }
 일대일 관계 이므로 객체 매핑에 @OneToOne을 사용했다.
 
@@ -383,11 +375,10 @@ public class Member {
     private String username;
 
     @OneToOne
-    @JoinColumn(name = "LOCKER_ID")
+    @JoinColumn(name = "LOCKER_ID")   
     private Locker locker;
 
     ...
-
 }
 Locker
 
@@ -400,10 +391,9 @@ public class Locker {
 
     private String name;
 
-    @OneToOne(mappedBy = "locker")
+    @OneToOne(mappedBy = "locker")   
     private Member member;
     ...
-
 }
 양방향 관계이므로 연관관계의 주인을 지정해야한다.
 일단 현재 단의 컨셉은 주 테이블이 연관관계의 주인이 되는 것이므로
@@ -433,11 +423,10 @@ public class Member {
 
     private String username;
 
-    @OneToOne(mappedBy = "member")
+    @OneToOne(mappedBy = "member")   
     private Locker locker;
 
     ...
-
 }
 Locker
 
@@ -450,11 +439,10 @@ public class Locker {
 
     private String name;
 
-    @OneToOne
-    @JoinColumn(name = "MEMBER_ID")
+    @OneToOne   
+    @JoinColumn(name = "MEMBER_ID")   
     private Member member;
     ...
-
 }
 일대일 매핑에서 대상 테이블에 외래 키를 두고 싶으면 이렇게 양방향으로 매핑한다.
 주 엔티티인 Member 엔티티 대신에
@@ -477,6 +465,7 @@ JPA 입장에서, 프록시 객체를 만들려면 참조하는 값이 무조건
 주 테이블이 아닌 대상 테이블에 외래키가 있다면
 주 테이블은 무조건 대상 객체를 통해서 대상 테이블의 외래키를 탐색해야 한다.
 그렇기에 지연로딩을 설정했다 하더라도 프록시를 위해 즉시로딩이 되는 것이다.
+
 
 ![20210530_034703](/assets/20210530_034703.png)
 
@@ -502,8 +491,7 @@ public class Member {
     @JoinTable(name = "MEMBER_PRODUCT",
                joinColumns = @JoinColumn(name = "MEMBER_ID"),
                inverseJoinColumns = @JoinColumn(name = "PRODUCT_ID"),
-    private LIst<Product> products = new ArrayList<>();
-
+    private LIst<Product> products = new ArrayList<>();           
 }
 Product
 
@@ -515,7 +503,6 @@ public class Product {
 
     private String name;
     ...
-
 }
 Member와 Product 엔티티를 @ManyToMany로 매핑했다.
 여기서 중요한 점은 @ManyToMany와 @JoinTable로 매핑을 진행했다는 것이다.
@@ -525,9 +512,9 @@ Member와 Product 엔티티를 @ManyToMany로 매핑했다.
 @JoinTable(name = "이름") : 연결 테이블을 생성하고, 이름을 지정한다.
 joinColumns = @JoinColumn(name = "이름") : 현재 방향인 Member와 매핑할 조인 컬럼 정보를 지정한다.
 inverseJoinColumns = @JoinColumn(name = "이름"): 반대 방향인 상품과 매핑할 조인 컬럼 정보를 지정한다.
-속성 기능
-joinColumns 현재 엔티티를 참조하는 연결 테이블간의 외래키
-inverseJoinColumns 반대방향 엔티티를 참조하는 연결 테이블간의 외래키
+속성	기능
+joinColumns	현재 엔티티를 참조하는 연결 테이블간의 외래키
+inverseJoinColumns	반대방향 엔티티를 참조하는 연결 테이블간의 외래키
 @ManyToMany를 통해 다대다 관계를 설정할 경우
 DB 테이블의 연결 테이블과 매핑된 연결 엔티티를 신경쓰지 않고도 구현할 수 있다.
 
@@ -544,31 +531,30 @@ DB 테이블 관점에서 보면 연결 테이블에서 데이터를 가져오�
        productA.setName("상품A");
        em.persist(productA);
 
-       // 유저에 상품 등록, 단방향에다가 주인은 Member 이기에 JCF에 값만 넣어줘도 연관관계 등록이 된다.
+       // 유저에 상품 등록, 단방향에다가 주인은 Member 이기에 JCF에 값만 넣어줘도 연관관계 등록이 된다.   
        Member member1 = new Member();
        member1.setId("member1");
        member1.setUsername("회원1");
        member1.getProducts().add(productA);
        em.persist(member1);
-
 }
 INSERT INTO PRODUCT..
 INSERT INTO MEMBER..
-INSERT INTO MEMBER_PRODUCT..  
+INSERT INTO MEMBER_PRODUCT..   
 회원1과 상품 A의 연관관계를 설정했으므로 회원1을 저장할 때 연결 테이블에도 값이 저장된다.
 
 탐색
 
 public void find() {
-Member member = em.find(Member.class, "member1");
-List<Product> products = member.getProducts();
-for (Product product : products) {
-System.out.println("product.name = " + product.getNmae());
-}
+       Member member = em.find(Member.class, "member1");
+       List<Product> products = member.getProducts();
+       for (Product product : products) {
+           System.out.println("product.name = " + product.getNmae());
+       }
 }
 List<Product> products = member.getProducts();에 대한 SQL을 보자면 아래와 같다.
 
-SELECT \* FROM MEMBER_PRODUCT MP
+SELECT * FROM MEMBER_PRODUCT MP
 INNER JOIN PRODUCT P ON MP.PRODUCT_ID=P.PRODUCT_ID
 WHERE MP.MEMBER_ID=?
 실행된 SQL을 보면,
@@ -593,8 +579,7 @@ public class Member {
     @JoinTable(name = "MEMBER_PRODUCT",
                joinColumns = @JoinColumn(name = "MEMBER_ID"),
                inverseJoinColumns = @JoinColumn(name = "PRODUCT_ID"),
-    private List<Product> products = new ArrayList<>();
-
+    private List<Product> products = new ArrayList<>();           
 }
 Product
 
@@ -606,10 +591,9 @@ public class Product {
 
     private String name;
 
-    @ManyToMany(mappedBy = "products")
+    @ManyToMany(mappedBy = "products")   
     private List<Member> members = new ArrayList<>();
     ...
-
 }
 위와 같이 코드를 작성하고
 다대다 양방향 연관관계는 다음처럼 설정하면 된다.
@@ -625,9 +609,9 @@ product.getMembers().add(member);
 연관관계 편의 메서드
 
 public void addProduct (Product product) {
-...
-products.add(product);
-prodcut.getMembers().add(this);
+    ...
+    products.add(product);
+    prodcut.getMembers().add(this);
 }
 이를 활용하면, member.addProduct(product);를 통해 간단히 설정할 수 있다.
 
@@ -640,7 +624,6 @@ public void findInverse() {
     for (Member member : members) {
         System.out.println("member = " + member.getUsername());
     }
-
 }
 양방향 연관관계로 만들었으므로
 product.getMembers();를 사용해서 역방향으로 객체 그래프를 탐색할 수 있다.
@@ -655,7 +638,7 @@ product.getMembers();를 사용해서 역방향으로 객체 그래프를 탐색
 MemberProduct
 
 @Enitity
-@IdClass(MemberProductId.class)  
+@IdClass(MemberProductId.class)   
 public class MemberProduct {
 
     @Id
@@ -670,7 +653,6 @@ public class MemberProduct {
 
     // 추가될 컬럼
     private int orderAmount;
-
 }
 이렇게 연결 엔티티를 만들면,
 기존에 있던 엔티티들은 @ManyToMany를 사용할 수 없다.
@@ -687,10 +669,9 @@ public class Member {
     private String username;
 
     @OneToMany(mappedBy = "member")
-    private List<MemberProduct> memberProducts = new ArrayList<>();
+    private List<MemberProduct> memberProducts = new ArrayList<>();           
 
     ...
-
 }
 Product
 
@@ -703,7 +684,6 @@ public class Product {
     private String name;
 
     ...
-
 }
 Member엔티티는 양방향 관계로 사용될 가능성이 높기에 양방향으로 설정했고
 Product엔티티는 단방향만으로 충분할 것 같기에 참조를 추가하지 않았다.
@@ -726,7 +706,6 @@ public class MemberProductId implements Serializable {
 
     @Override
     public int hashCode() {...}
-
 }
 MemberProduct 연결 엔티티를 보면,
 기본키를 매핑하는 @Id와
@@ -783,7 +762,6 @@ public void save() {
     memberProduct.setOrderAmount(2);
 
     em.persist(memberProduct);
-
 }
 회원상품 엔티티를 만들면서 연관된 회원 엔티티와 상품 엔티티를 설정했다.
 회원상품 엔티티는 데이터베이스에 저장될 때,
@@ -798,7 +776,7 @@ public void find() {
     memberProductId.setMember("member1");
     memberProductId.setProduct("productA");
 
-    // memberProductId 가 id값이 되어 연결 테이블을 찾을 수 있다.
+    // memberProductId 가 id값이 되어 연결 테이블을 찾을 수 있다.  
     MemberProduct memberProduct = em.find(MemberProduct.class, memberProductId);
 
     Member member = memberProduct.getMember();
@@ -807,7 +785,6 @@ public void find() {
     System.out.println("member = " + member.getUsername());
     System.out.println("product = " + product.getName());
     System.out.println("orderAmount = " + memberProduct.getOrderAmount());
-
 }
 지금까지와 달리, 복합키를 위한 클래스를 만들었으므로
 복합키 클래스의 객체를 만들어서 em.find()를 통해 엔티티를 조회해야한다.
@@ -849,7 +826,6 @@ public class Order {
 
     // 추가될 컬럼
     private int orderAmount;
-
 }
 ORDER_ID라는 새로운 기본키를 하나 만들고
 MEMBER_ID, PRODUCT_ID컬럼을 외래키로만 사용한다.
@@ -865,10 +841,9 @@ public class Member {
     private String username;
 
     @OneToMany(mappedBy = "member")
-    private List<Order> orders = new ArrayList<>();
+    private List<Order> orders = new ArrayList<>();           
 
     ...
-
 }
 Product
 
@@ -881,7 +856,6 @@ public class Product {
     private String name;
 
     ...
-
 }
 저장 코드
 
@@ -905,7 +879,6 @@ public void save() {
     order.setProduct(productA);    // 연관관계 설정
     order.setOrderAmount(2);
     em.persist(order);
-
 }
 조회하는 코드
 
@@ -916,7 +889,6 @@ public void find() {
 
     Member member = order.getMember();
     Product product = order.getProduct();
-
 }
 식별자 클래스를 사용하지 않아서 코드가 한결 단순해진다.
 이처럼 새로운 기본키를 사용해서 다대다 관계를 풀어내는 것도 좋은 방법이다.
