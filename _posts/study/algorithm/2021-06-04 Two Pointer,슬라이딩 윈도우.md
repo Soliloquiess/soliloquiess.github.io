@@ -1,11 +1,11 @@
 ---
-title: "[Spring] 객체지향 설계와 스프링"
+title: "[Algorithm] 문자열"
 layout: post
-subtitle: Spring
-date: "2021-06-06-04:58:53 +0900"
+subtitle: Algorithm
+date: '2021-06-04 01:45:51 +0900'
 
 categories: study
-tags: Spring
+tags: Algorithm
 # layout: post
 # title:  WebFrontEnd
 # subtitle:   "시작하기"
