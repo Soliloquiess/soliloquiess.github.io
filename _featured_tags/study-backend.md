@@ -1,9 +1,8 @@
 ---
 layout: tag-blog
-title: Python
-slug: Python
+title: backend
+slug: backend
 category: study
 menu: false
 order: 7
-
 ---
