@@ -369,5 +369,232 @@ path : 설정한 문자열은 id와 name 속성으로 지정되며 model의 값�
 <form:options> : select 태그의 option들을 생성합니다.
 items : option 태그들을 생성할 때 필요한 데이터가 담긴 list나 배열
 
+#### <form:checkbox>, <form:checkboxs>
+
+- <form:checkbox> : checkbox 하나를 생성합니다.
+- <form:checkboxs> : checkbox 들을 생성합니다.
+- items : checkbox들을 생성하기 위해 필요한 정보가 담겨있는 list나 배열
+
+
+#### <form:radiobutton>, <form:radiobuttons>
+
+- <form:radiobutton> : radiobutton 하나를 생성합니다.
+- <form:radiobuttons> : radiobutton 들을 생성합니다.
+- items : radiobutton들을 생성하기 위해 필요한 정보가 담겨있는 list나 배열
+
 
 -----------
+
+
+### 코드의 흐름
+
+
+- 웹 애플리케이션은 브라우저가 서버에 요청을 하면 요청 정보를 분석하고 응답 결과를 생성하여 브라우저로 전달하는 과정을 거칩니다.
+- 여기에서 서버의 동작은 어떤 분야를 가지고 개발을 하느냐에 따라 달라지게 됩니다.
+- Spring MVC는 요청이 발생되면 요청 주소를 분석하여 그와 매핑되어 있는 메서드를 호출하고 메서드가 반환하는 정보를 토대로 응답결과를 생성하여 클라이언트에게 전달합니다.
+
+
+### 메서드의 리턴
+
+- Controller를 통해 요청 주소와 매핑되어 있는 메서드는 반드시 무언가를 반환해야 합니다.
+우리는 지금까지 문자열, Model, ModelAndView 를 반환해 보았습니다.
+- 이들은 모두 브라우저에게 전달할 응답결과를 생성하기 위한 JSP를 지정하는 부분입니다.
+- 이 밖에도 다양한 정보를 반환할 수 있으며 이를 토대로 동작을 제어할 수 있습니다.
+
+### Redirect
+
+- Redirect는 서버가 클라이언트에게 요청할 주소를 응답결과로 전달하는 것을 의미합니다.
+- 클라이언트는 응답결과로 받은 요청주소를 직접 요청하게 됩니다.
+- 브라우저가 요청하는 것이므로 주소창의 주소는 변경됩니다.
+- Redirect는 새로운 요청이 발생하는 것이므로 HttpServletRequest 객체는 소멸 후 새롭게 생성되며 HttpSession 객체는 그대로 유지됩니다.
+
+### forward
+
+
+- 코드의 흐름을 서버상에서만 이동하는 것을 의미합니다.
+- 브라우저는 다른 곳으로 흐름이 이동되었다는 것을 알 수 없기 때문에 주소창의 주소는 변경되지 않습니다.
+- HttpServletRequest, HttpSession 모두 유지됩니다.
+
+
+##### Redirect : 클라이언트에게 새로운 페이지 요청을 응답결과로 전달합니다.
+##### Forward : 서버상에서 코드의 흐름이 이동됩니다.
+
+
+-----
+
+### Request
+
+- 브라우저에 의해 새로운 요청이 발생하면 브라우저는 서버에 요청에 관련된 정보를 전송하게 됩니다.
+- 이를 받은 서버는 브라우저가 보낸 요청 정보들을 보관하기 위해 HttpServletRequest 객체를 생성해 요청 정보들을 담아 두게 됩니다.
+- 요청 정보가 담겨 있는 HttpServletRequest 객체는 응답결과가 브라우저로 전송될 때까지 유지되며 사용이 가능합니다
+
+### RequestScope
+
+
+- 새로운 요청이 발생해 응답결과가 브라우저로 전달 될 때 까지 요청 정보가 담겨 있는 Request 객체를 사용할 수 있습니다.
+- 이러한 사용 범위를 RequestScope라고 부릅니다.
+- HttpServletRequest 객체에는 서버 개발자가 필요에 의해 데이터나 객체를 저장할 수 있고 RequestScope 내에서 사용이 가능합니다.
+
+##### Request 영역에 데이터를 저장하게 되면 RequestScope 내에서 사용이 가능합니다
+
+----
+
+### 빈 주입
+
+
+
+- @Autowired 를 활용하여 Bean을 자동으로 주입 받을 수 있었습니다.
+- 스프링 코어에서 prototype과 singleton이 있었습니다.
+- Spring MVC에서는 추가로 request, session, application을 제공하고 있습니다.
+
+----
+
+### Request scope
+
+- Bean을 정의할 때 request scope로 정의하면 요청이 발생할 때 마다 Bean 객체가 생성되어 자동으로 주입됩니다.
+- 주입된 Bean은 요청 발생시 주입만 이루어지는 것이므로 request 영역에 저장되지는 않습니다.
+- Xml로 bean을 설정하고 byName으로 주입 받았을 경우에만 request 영역에 자동 저장됩니다.
+
+
+
+- Java 방식은 @RequestScope 를 사용합니다.
+- XML 방식은 bean을 정의할 때 scope=“request”로 설정합니다.
+
+Bean을 정의할 때 scope를 request로 설정하면 요청이 발생할 때 마다 새로운 bean이 주입됩니다.
+
+------
+
+
+### Session
+
+- 브라우저가 최초로 서버에 요청을 하게 되면 브라우저당 하나씩 메모리 공간을 서버에서 할당하게 됩니다.
+- 이 메모리 영역은 브라우저당 하나씩 지정되며 요청이 새롭게 발생하더라도 같은 메모리 공간을 사용하게 됩니다.
+이러한 공간을 session 이라고 부릅니다.
+- 이 영역은 브라우저를 종료할 때 까지 서버에서 사용할 수 있습니다.
+
+- 브라우저가 최초의 요청을 발생 시키고 브라우저를 닫을 때 까지를 SessionScope라고 부릅니다.
+- SessionScope 에서는 session 영역에 저장되어 있는 데이터나 객체를 자유롭게 사용할 수 있습니다.
+
+
+---------
+
+
+### Session scope
+
+- Bean을 정의할 때 session scope로 정의하면 브라우저가 서버에 최초의 요청을 보낼 때 Bean 객체가 주입됩니다.
+- 주입된 Bean은 주입만 이루어지는 것이므로 session 영역에 저장되지는 않습니다.
+
+
+
+- Java 방식은 @SessionScope 를 사용합니다.
+- XML 방식은 bean을 정의할 때 scope=“session”으로 설정합니다.
+
+##### Bean을 정의할 때 scope를 session으로 설정하면 최초의 요청이 발생할 때 새로운 bean이 주입됩니다.
+
+-----
+
+
+### Application Scope
+
+
+- 서버가 가동될 때부터 서버가 종료되는 시점까지의 범위를 Application Scope라고 부릅니다.
+- Application Scope 동안 사용할 수 있는 메모리 영역이 만들어지며 ServletContext라는 클래스 타입의 객체로 관리됩니다.
+- ServletContext에 저장된 데이터나 객체는 서버가 종료되기 전까지 서버는 웹브라우저에 관계없이 동일한 메모리 공간을 사용하게 됩니다.
+
+
+###  ServletContext
+
+- HttpServletRequest 객체로 부터 추출이 가능합니다.
+- Controller에서 주입 받을 수 있습니다.
+
+
+
+##### ServletContext 객체에 데이터나 객체를 담으면 서버가 종료될 때 까지 사용할 수 있습니다.
+
+-----
+
+### Application scope
+
+
+Bean을 정의할 때 application scope로 정의하면 서버가 가동될 때 자동으로 주입됩니다.
+주입된 Bean은 주입만 이루어지는 것이므로 application 영역에 저장되지는 않습니다.
+서버가 가동될 때 자동 주입 되는 것이므로 @Lazy를 설정하지 않아도 됩니다
+
+
+Java 방식은 @ApplicationScope 를 사용합니다.
+XML 방식은 bean을 정의할 때 scope=“application”으로 설정합니다.
+
+-------
+
+### Cookie
+
+
+- 사용자 웹 브라우저에 저장되는 데이터입니다.
+- 요청이 발생했을 때 웹 브라우저는 쿠키에 저장된 정보를 서버에 전달하게 됩니다.
+- 만약 응답 결과로 쿠키 정보가 전달되면 웹 브라우저가 쿠키에 저장하게 됩니다.
+- 쿠키는 사용자 브라우저에 저장되는 것이므로 브라우저가 전달 해 줄 때만 쿠키 정보를 사용할 수 있습니다.
+
+#### Cookie 저장
+
+- 서버측 코드로 쿠키에 데이터를 저장할 수 있는 방법은 없습니다.
+브라우저로 보낼 응답 결과에 저장할 쿠키 정보를 담아 보내면 브라우저에 의해 쿠키가 저장됩니다.
+Spring MVC에서 쿠키 저장은 Servlet/JSP에서 사용하는 방법으로 처리합니다.
+
+-----
+
+### Properties
+
+- 애플리케이션을 개발할 때 프로그램 실행 중 절대 변하지 않는 값들이 있을 수 있습니다.
+- Spring MVC에서는 이러한 값들을 properties 파일에 작성하고 이를 가져다 사용할 수 있도록 제공되고 있습니다.
+
+
+### @PropertySource, @PropertySources
+
+
+
+- 사용할 properties 파일을 지정합니다.
+- 하나 혹은 다수의 파일을 지정할 수 있습니다.
+
+```
+@PropertySources({
+	@PropertySource("/WEB-INF/properties/data1.properties"),
+	@PropertySource("/WEB-INF/properties/data2.properties")
+})
+
+```
+
+#### @Value
+
+
+- properties 파일에 작성한 값을 주입 받을 수 있습니다.
+
+```
+@Value("${aaa.a1}")
+private int a1;
+
+@Value("${aaa.a2}")
+private String a2;
+```
+
+#### Propery Editor
+
+- Properties 파일에 한글을 작성하면 유니코드 형식의 문자열로 변경됩니다.
+- 이는 Property Editor 설치로 해결할 수 있습니다.
+- http://propedit.sourceforge.jp/eclipse/updates
+
+------------
+
+### Properties
+
+- 이전 시간에 살펴본 Properties를 활용하면 다양한 값들을 미리 정의 해놓고 이를 가져다 사용할 수 있었습니다.
+- Properties에 작성한 값을 JSP에서 사용하고자 한다면 몇 가지 설정이 필요합니다.
+
+### Message
+
+- Properties 파일을 Message로 등록하면 이 데이터는 JSP에서도 사용할 수 있습니다.
+- Properties 파일을 Message로 등록하면 다국어 처리가 가능해집니다.
+
+#### MessageSource
+
+- MessageSource 객체를 이용해 properties 파일을 등록해주면 Message로 등록할 수 있습니다.
+- 여기에서는 일정 시간마다 한번씩 갱신되는 ReloadableResourceBundleMessageSource를 사용합니다.
