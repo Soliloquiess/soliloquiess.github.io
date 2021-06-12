@@ -598,3 +598,8 @@ private String a2;
 
 - MessageSource 객체를 이용해 properties 파일을 등록해주면 Message로 등록할 수 있습니다.
 - 여기에서는 일정 시간마다 한번씩 갱신되는 ReloadableResourceBundleMessageSource를 사용합니다.
+
+
+----
+
+### test
