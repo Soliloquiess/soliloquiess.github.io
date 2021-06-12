@@ -600,6 +600,125 @@ private String a2;
 - 여기에서는 일정 시간마다 한번씩 갱신되는 ReloadableResourceBundleMessageSource를 사용합니다.
 
 
-----
+#### Java에서 사용하기
+
+- Message로 등록된 데이터를 Java 코드에서 사용하고자 한다면 MessageSource를 주입 받아 사용하면 됩니다.
+- 이 때, Locale을 지정하면 다국어 처리가 가능합니다.
+
+
+```
+@Autowired
+ReloadableResourceBundleMessageSource res;
+
+
+```
+
+
+#### JSP에서 사용하기
+
+- Message로 등록된 데이터를 JSP에서 사용하고자 한다면 message 커스텀 태그를 사용합니다.
+
+
+#### Java에서 사용하기
+
+- Message로 등록된 데이터를 Java 코드에서 사용하고자 한다면 MessageSource를 주입 받아 사용하면 됩니다.
+- 이 때, Locale을 지정하면 다국어 처리가 가능합니다.
+
+
+------
+
+
+###  유효성 검사
+
+
+- 웹 애플리케이션에서 사용자 입력에 대해 유효성을 검사해야 하는 경우가 있습니다.
+- JavaScript로 처리할 수도 있지만 Spring MVC를 이용하여 처리할 수도 있습니다
+
+### JSR-303
+
+- Spring MVC는 JSR-303 규격의 유효성 검사 라이브러리를 사용할 수 있습니다.
+Bean에 데이터가 입력될 때 어떤 검사를 할 것인지 어노테이션으로 지정하고 지정된 어노테이션의 조건에 맞지 않으면 개발자에게 입력값에 오류가 있다는 정보를 전달합니다.
+개발자는 이를 통해 유효성 검사를 진행할 수 있습니다.
+
+
+- @AssertTrue : true가 아닌 값이 들어오면 오류
+- @AssertFalse : false가 아닌 값이 들어오면 오류
+- @Max(값) : 값보다 큰 값이 들어오면 오류
+- @Min(값) : 값보다 작은 값이 들어오면 오류
+
+
+
+
+- @DecimalMax(value=값, inclusive=true/false) : 값보다 작거나 같은 값이 들어와야 합니다. Inclusive가 false면 값은 포함하지 않기 때문에 작은 값이 들어와야 합니다. 생략하면 true
+- @DecimalMin(value=값, inclusive=true/false) : 값보다 크거나 같은 값이 들어와야 합니다. Inclusive가 false면 값은 포함하지 않기 때문에 큰 값이 들어와야 합니다. 생략하면 true
+
+
+- @Null : 값이 들어오면 오류가 발생.
+- @NotNull : 값이 들어오지 않으면 오류가 발생.
+- @Digits(integer=자릿수,fraction=자릿수) : 지정된 자릿수의 숫자가 아닐 경우 오류가 발생. Integer – 정수 자릿수, fraction – 실수 자릿수
+- @Size(min=글자수,max=글자수) : 지정된 글자수 보다 짧거나 길면 오류가 발생
+
+- @Pattern(regexp=정규식) : 주어진 정규식에 위배되면 오류 발생
+
+
+#### JSR-380
+
+- @NotEmpty : 주입된 값의 길이가 0이면 오류 발생. 공백도 글자로 인식합니다.
+- @NotBlank : 주입된 값이 공백을 제거하고 길이가 0이면 오류 발생.
+- @Positive : 양수가 아니라면 오류 발생
+- @PositiveOrZero : 0 또는 양수가 아니라면 오류 발생
+- @Negative : 음수가 아니라면 오류 발생.
+
+- @NegativeOrZero : 0 또는 음수가 아니라면 오류 발생.
+- @Email : 이메일 형식이 아니라면 오류 발생. 중간에 @가 있는지 정도만 확인한다.
+
+
+------
+
+
+#### Interceptor
+
+
+- Spring Framework 강좌에서 배웠던 AOP를 적용한 Spring MVC의 요소입니다.
+- Interceptor는 요청 주소에 대해 관심을 갖고 요청이 발생하게 되면 요청 주소를 확인하여 Controller의 메서드를 호출 하기 전이나 후에 다른 메서드를 호출 할 수 있도록 가로 채 가는 개념입니다
+
+![20210613_033945](/assets/20210613_033945.png)
+
+
+- 요청 발생 시 호출되는 메서드의 코드가 중복 되는 부분이 있을 때 Interceptor를 통해 처리하게 됩니다.
+- 로그인 여부 확인, 등급별 서비스 사용 권한 확인 등의 작업을 처리할 때 많이 사용합니다.
+- Interceptor는 Java 프로젝트와 XML 프로젝트의 셋팅 방법이 각각 다릅니다.
+
+
+- Interceptor는 HandlerInterceptor 인터페이스를 구현하거나 HandlerInterceptorAdapter를 상속받은 클래스를 만들고 다음 메서드를 구현합니다.
+- preHandle : Controller의 메서드가 호출되기 전 호출됩니다. 이 메서드가 false를 반환하면 코드의 흐름이 중단됩니다.
+- postHandle : Controller의 메서드의 수행이 완료되고 view 처리를 수행하기 전에 호출됩니다.
+- afterCompletion : view 처리까지 완료되고 응답결과가 브라우저로 전달되기 전에 호출됩니다.
+
+### pattern
+
+* : 이름 하나를 의미하며 글자수, 글자 등 제한이 없습니다.
+? : 글자하나를 의미합니다.
+** : 하위 이름까지 포함하여 글자수, 글자 등 제한이 없습니다.
+
+ addPathPatterns, <mapping> : Interceptor가 가로채 갈 주소를 등록합니다.
+excludePathPatterns, <exclude-mapping> : Interceptor가 가로채 가지 않을 주소를 등록합니다.
+
+
+
+- Interceptor는 AOP 개념을 적용하여 요청 주소를 감시하는 개념입니다.
+- 등록된 주소 패턴에 맞는 Interceptor가 요청 흐름을 가로채 가서 원하는 처리를 할 수 있습니다.
+
+
+--------
+
+
+### @ExceptionHandler
+
+
+
+
+
+
 
 ### test
