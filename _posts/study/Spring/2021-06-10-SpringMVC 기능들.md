@@ -628,6 +628,8 @@ ReloadableResourceBundleMessageSource res;
 ------
 
 
+
+
 ###  유효성 검사
 
 
@@ -711,14 +713,3 @@ excludePathPatterns, <exclude-mapping> : Interceptor가 가로채 가지 않을 
 
 
 --------
-
-
-### @ExceptionHandler
-
-
-
-
-
-
-
-### test
