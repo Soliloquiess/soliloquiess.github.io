@@ -33,6 +33,103 @@ Board객체 하나만 가져오면 됨.
 
 보드 넘버 넘겨주면서 해당 글번호에 해당하는 게시글 정보를 조회해서 객체로 받아와서 보드를 받아와서 모델에 등록.
 
+
+BoardController
+```
+package aloha.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import aloha.domain.Board;
+import aloha.service.BoardService;
+
+@Controller
+@RequestMapping("/board")
+//경로
+public class BoardController {
+
+	@Autowired
+	//의존성 자동주입
+	private BoardService service;
+
+	//게시글 쓰기 - 화면,처리
+
+	@GetMapping("/register")
+//	@RequestMapping(vaule="/register",method = RequestMethod.GET)
+	public void registerForm(Model model, Board board) throws Exception{
+
+	}
+
+	@PostMapping("/register")
+	public String register(Model model, Board board) throws Exception{
+		//글쓰기 요청
+		service.register(board);	//DTO 넘김
+
+		model.addAttribute("msg", "등록완료");
+		return "board/success";	//이동
+
+	}
+
+	//게시글 목록
+	@GetMapping("/list")
+	public void list(Model model, Board board) throws Exception{
+
+		model.addAttribute("list",service.list());
+		//전달받은거 모델등록
+	}
+
+	//게시글 읽기
+
+	@GetMapping("/read")
+	public void read(Model model, Integer boardNo) throws Exception{
+
+		model.addAttribute("board",service.read(boardNo));
+
+	}
+
+	//게시글 수정화면
+
+	@GetMapping("/modify")
+	public void modifyForm(Model model, Integer boardNo) throws Exception{
+
+		model.addAttribute("board",service.read(boardNo));
+	}
+
+
+	//게시글 수정처리
+
+	@PostMapping("/modify")
+	public String modify(Model model, Board board) throws Exception{
+
+		service.modify(board);	//board객체 받아옴
+		model.addAttribute("msg","수정 완료되었습니다.");
+		return "board/success";
+
+	}
+
+	//게시글 삭제처리
+
+	@PostMapping("/remove")
+	public String remove(Model model, Integer boardNo) throws Exception{
+
+		service.remove(boardNo);
+		model.addAttribute("msg","삭제 완료되었습니다.");
+		return "board/success";
+
+	}
+
+
+	//성공
+}
+
+
+```
+
 보드에 경로에 해당하는 뷰페이지 정보를 화면에 출력.
 
 boardNo=2 이경로로 요청했을떄 리퀘스트 매핑 요청하고 글읽기 요청을 클라이언트로 요청시켜주면된다.
