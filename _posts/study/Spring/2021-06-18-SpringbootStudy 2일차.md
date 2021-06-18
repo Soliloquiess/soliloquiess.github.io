@@ -12,3 +12,5 @@ tags: Spring
 # tags: java
 comments: true
 ---
+
+디비에서 조회한 목록 보여줌
