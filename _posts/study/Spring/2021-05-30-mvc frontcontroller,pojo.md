@@ -197,3 +197,22 @@ Redirect의 경우 최초 요청을 받은 URL1에서 클라이언트에게 redi
 
 
 출처: https://mangkyu.tistory.com/51 [MangKyu's Diary]
+
+
+![20210531_211313](/assets/20210531_211313.png)
+
+여기서 앞에 redirect라는 글자가 있으면 redirect로 가고 없으면 forward로 간다.
+
+
+
+
+
+
+
+FrontController에 요청이 왔다 memberList.do라는 요청이 왔는데 Handler매핑은 키로 찾아보고 찾으면 그 밸류를 프론트 컨트롤러에 리턴하면 pojo에 일을 시킴.
+
+
+프론트 컨트롤러는 자기가 해야될 일이 정해져 있음
+
+스프링은 이미 프론트 컨트롤러가 만들어져 있다.
+DispatcherServlet이 이미 주어져서 여기서 프론트 컨트롤러에
