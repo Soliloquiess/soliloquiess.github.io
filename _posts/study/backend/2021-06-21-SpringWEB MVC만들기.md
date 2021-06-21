@@ -182,3 +182,5 @@ window=file=preferences=fileassociations 가서 설정editoreselection에서 spr
 @Autowired나 @Injection으로 자동 주입.
 
 스프링 컨테이너에 가서 memberDAO찾고 변수에 연결.
+
+ㅇㅅㅇ
