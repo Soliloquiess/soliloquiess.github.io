@@ -1,10 +1,10 @@
 ---
 title: "[Springboot] Springboot 스터디 2일차"
 layout: post
-subtitle: Spring
+subtitle: Springboot
 date: "2021-06-18-04:58:53 +0900"
 categories: study
-tags: Spring
+tags: Springboot
 # layout: post
 # title:  WebFrontEnd
 # subtitle:   "시작하기"
@@ -33,8 +33,8 @@ Board객체 하나만 가져오면 됨.
 
 보드 넘버 넘겨주면서 해당 글번호에 해당하는 게시글 정보를 조회해서 객체로 받아와서 보드를 받아와서 모델에 등록.
 
-
 BoardController
+
 ```
 package aloha.controller;
 

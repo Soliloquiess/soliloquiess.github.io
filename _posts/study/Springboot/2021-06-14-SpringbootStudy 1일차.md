@@ -1,10 +1,10 @@
 ---
 title: "[Springboot] Springboot 스터디 1일차"
 layout: post
-subtitle: Spring
+subtitle: Springboot
 date: "2021-06-14-04:58:53 +0900"
 categories: study
-tags: Spring
+tags: Springboot
 # layout: post
 # title:  WebFrontEnd
 # subtitle:   "시작하기"
