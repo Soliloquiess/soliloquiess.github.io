@@ -477,6 +477,10 @@ web.xml -> DispatchServlet(컴포넌트 스캐너)
 컴포넌트 스캐너가 자동으로 com.cos.blog 파일에 들어간다.
 
 
+
+![20210625_233154](/assets/20210625_233154.png)
+
+
 DispatchServlet이 읽는 컨트롤러가 몇 있는데
 @Controller는 컨트롤러 역할 할거라 알려주는 어노테이션이고
 @RestController도 메모리에 띄워놓고 관리해
@@ -485,3 +489,100 @@ DispatchServlet이 읽는 컨트롤러가 몇 있는데
 @Service도 다 메모리에 띄워라
 @Bean 은
 생략 특정 목정이 있으니까 메모리에 띄우라고 어노테이션 쓴다.
+
+@Hello 이런거도 만들 수는 있다.
+
+
+컨트롤러라는게 있네? 이걸 누가 정해뒀나 메모리가 정해뒀다.
+어떤 어노테이션으로 메모리에 띄울 수 있는지 알아놔야 한다.
+
+
+이거 말고 여기 진입하기 전에 하는일 있는데 contextLoaderListenr가 있다.
+요청한 사람에 따라 스레드를 20개 만들면 20개가 만들어진다. 첫번쨰 스레드가 만들어지고 새로운 스레드 만들어지고 충돌날 일이 없다.
+
+이렇게 띄우는 거보다 모든 요청하는게 공통적으로 쓸 수 있는게 있다.
+
+디비에 관련된 것. 혹은 모든 스레드가 공통으로 사용해도 되는건 contextloaderlistner를 통해 띄운다.
+
+root_ApplicationContext파일을 읽는데 xml파일로 커스터마이징 하거나 자바파일로 커스터마이징 가능하다.
+
+![20210625_235720](/assets/20210625_235720.png)
+
+중요한건 컨텍스트 로더 리스너가 루트어플리케이션 컨텍스트 파일을 읽는다 그럼 스레드마다 따로 관리해야되는 거 말고 공통적으로 관리해야 되는 걸 메모리에 띄운다.
+
+DB에선 디스패쳐서블릿이 띄운 애들한테 접근을 못한다.  반대로 디스패쳐서블릿으로 메모리 띄운건 DB에 접근이 가능하다.
+
+디비 접근은 루트 띄워서 가져와서 쓴다.
+
+
+![20210625_235832](/assets/20210625_235832.png)
+
+
+
+(6) DispatcherServlet
+FrontController 패턴을 직접짜거나 RequestDispatcher를 직접구현할 필요가 없다. 왜냐하면 스프링에는 DispatcherServlet이 있기 때문이다. DispatcherServlet은 FrontController 패턴 + RequestDispatcher이다.
+
+
+
+DispatcherServlet이 자동생성되어 질 때 수 많은 객체가 생성(IoC)된다. 보통 필터들이다. 해당 필터들은 내가 직접 등록할 수 도 있고 기본적으로 필요한 필터들은 자동 등록 되어진다.
+
+
+
+(7) 스프링 컨테이너
+DispatcherServlet에 의해 생성되어지는 수 많은 객체들은 ApplicationContext에서 관리된다. 이것을 IoC라고 한다.
+
+
+
+ApplicationContext
+
+IoC란 제어의 역전을 의미한다. 개발자가 직접 new를 통해 객체를 생성하게 된다면 해당 객체를 가르키는 레퍼런스 변수를 관리하기 어렵다. 그래서 스프링이 직접 해당 객체를 관리한다. 이때 우리는 주소를 몰라도 된다. 왜냐하면 필요할 때 DI하면 되기 때문이다.
+
+
+
+DI를 의존성 주입이라고 한다. 필요한 곳에서 ApplicationContext에 접근하여 필요한 객체를 가져올 수 있다. ApplicationContext는 싱글톤으로 관리되기 때문에 어디에서 접근하든 동일한 객체라는 것을 보장해준다.
+
+
+
+ApplicationContext의 종류에는 두가지가 있는데 (root-applicationContext와 servlet-applicationContext) 이다.
+
+
+
+a. servlet-applicationContext
+
+servlet-applicationContext는 ViewResolver, Interceptor, MultipartResolver 객체를 생성하고 웹과 관련된 어노테이션 Controller, RestController를 스캔 한다.
+
+============> 해당 파일은 DispatcherServlet에 의해 실행된다.
+
+
+
+b. root-applicationContext
+
+root-applicationContext는 해당 어노테이션을 제외한 어노테이션 Service, Repository등을 스캔하고 DB관련 객체를 생성한다. (스캔이란 : 메모리에 로딩한다는 뜻)
+
+============> 해당 파일은 ContextLoaderListener에 의해 실행된다. ContextLoaderListener를 실행해주는 녀석은 web.xml이기 때문에 root-applicationContext는 servlet-applicationContext보다 먼저 로드 된다.
+
+
+
+당연히 servlet-applicationContext에서는 root-applicationContext가 로드한 객체를 참조할 수 있지만 그 반대는 불가능하다. 생성 시점이 다르기 때문이다.
+
+
+![20210626_001130](/assets/20210626_001130.png)
+
+Bean Factory
+
+필요한 객체를 Bean Factory에 등록할 수 도 있다. 여기에 등록하면 초기에 메모리에 로드되지 않고 필요할 때 getBean()이라는 메소드를 통하여 호출하여 메모리에 로드할 수 있다. 이것 또한 IoC이다. 그리고 필요할 때 DI하여 사용할 수 있다. ApplicationContext와 다른 점은 Bean Factory에 로드되는 객체들은 미리 로드되지 않고 필요할 때 호출하여 로드하기 때문에 lazy-loading이 된다는 점이다.
+
+
+
+---------
+
+
+### 적절한 응답을 찾는 법
+
+HandlerMapping 이 적절한 함수를 찾음
+
+이 return이 response될때 hello 요청한 쪽으로 흐른다.
+
+##### web.xml이 자기가 할 일을 기억하고 DispatchServlet에 넘겨서 일감도 주고 디비 관련 작업을 한다. 일단 추상적인 개념을 잡아두자.
+
+-------
