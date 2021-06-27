@@ -202,3 +202,67 @@ jsoup 이런거 각각 사이트 다운받게되면 굉장히 불편하다.(각 
 우리는 pom.xml에 필요한 걸 넣어주면 되고 리눅스 같은곳에도 pom.xml을 배포만 해주면 된다.
 
 내 프로젝트 그대로 집어넣고 메이븐 설치하면 끝난다.
+
+
+---------
+
+```
+//@Getter
+//@Setter
+@Data //이러면 게터 세터 동시 생성
+//@AllArgsConstructor
+@RequiredArgsConstructor
+public class Member {
+
+	//디비에서 들고 온 값을 변경할 리가 없어서 final을 사용한다.
+	private final int id;
+	private final String username;
+	private final String password;
+	private final String email;
+
+}
+
+```
+
+
+
+만약 멤버를
+
+```
+		Member m = new Member("ssar","1234","email");
+
+```
+
+이렇게 만들고 보내면 오버라이딩 생성자 해서 또 만들어야 되지만
+```
+public Member(int id, String username, String password, String email) {
+
+	this.id = id;
+	this.username = username;
+	this.password = password;
+	this.email = email;
+}
+
+public Member(String username, String password, String email) {
+
+	this.username = username;
+	this.password = password;
+	this.email = email;
+}
+
+
+```
+
+builder 패턴을 쓰면
+
+```
+
+		Member m = Member.builder().username("ssar").password("1234").email("ssar@naver.com").build();
+```
+
+이렇게도 가능하다.
+원래는 빌더도 만들었어야하지만 이 경우 빌더가 값을 만들어준다.
+그리고 생성자 순서도 지켜야 됐지만 그런거 상관없이 빌더패턴으로 만들 수 있다.
+
+
+------
