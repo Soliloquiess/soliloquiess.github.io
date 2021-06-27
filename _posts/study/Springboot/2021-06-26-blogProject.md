@@ -100,3 +100,105 @@ http 통신은 패킷스위칭과 서킷 패킷스위칭으로 나뉜다.
 https://developer.mozilla.org/ko/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
 
 Mime 타입이 되게 많다.
+
+```
+
+//사용자가 요청-> 응답(HTML파일)
+//@Controller
+
+//사용자가 요청->응답(Data)
+
+@RestController
+public class HttpControllerTest {
+
+	//인터넷 브라우저 요청은 무조건 get요청 할 수 밖에 없다.
+	// http://localhost:8080/http/get(select)
+	@GetMapping("/http/get")
+	public String getTest() {
+		return "get요청";
+	}
+
+
+
+	// http://localhost:8080/http/post(insert)
+	@PostMapping("/http/post")
+	public String posttTest() {
+		return "post 요청";
+	}
+
+	// http://localhost:8080/http/put(update)
+	@PutMapping("/http/put")
+	public String puttTest() {
+		return "put요청";
+	}
+
+	// http://localhost:8080/http/delete(delete)
+	@DeleteMapping("/http/delete")
+	public String deleteTest() {
+		return "delete 요청";
+	}
+
+}
+
+```
+#### 인터넷 브라우저 요청은 무조건 get요청 할 수 밖에 없다.
+(바로 post, put,delete가 안되므로 직접 저 경로들을 주소창에 넣고 실행해보자.)
+
+
+raw데이터 보낸건 text/plain을 보낸거
+
+
+여기서 json형태로 보내는데 키값의 형태다. 그리고 키는 항상 String 형태로 보낸다.
+
+![20210626_225121](/assets/20210626_225121.png)
+
+오른쪽은 숫자든 문자든 제이슨 오브젝트든 이렇게 올 수가 있다.
+
+그럼 서버에선 사실
+
+![20210626_225750](/assets/20210626_225750.png)
+
+이렇게 받아서 출력한다.
+
+![20210626_230314](/assets/20210626_230314.png)
+
+그런데 이렇게 보냈는데 text형태로 보내면 제대로 응답하지 못한다.
+
+![20210626_230405](/assets/20210626_230405.png)
+
+왜냐면 내가 보낸 데이터가 text형태인데 문자열이라 제대로 매핑이 안된다. 그런데 json으로 보내면 자동으로 파싱해서 데이터 넣어준다 그리고 이 일을 MessageConverter는 스프링 부트가 하게된다.
+
+![20210626_230501](/assets/20210626_230501.png)
+
+위도 마찬가지.
+
+
+put으로 수정도 마찬가지다.
+Body데이터 받았으니까 @RequestBody사용
+
+결론은 스프링에서 body로 데이터 실어서 보내면 오브젝트로 매핑해서 받을 수 있는데 RequestBody사용해서 오브젝트로 매핑해서 받을 수 있다.
+
+-----------------
+
+
+### Maven이란
+
+프로젝트 하나 하려고 하면 jdbc가 필요하다.
+
+
+![20210626_232645](/assets/20210626_232645.png)
+
+jsoup 이런거 각각 사이트 다운받게되면 굉장히 불편하다.(각 디비마다 새로 받아야)
+
+그래서 중앙 저장소에 전부 넣고 우린 중앙저장소에 접근해서 받으면 된다.
+
+![20210626_232818](/assets/20210626_232818.png)
+
+파일을 하나 만드는데 pom.xml을 만들어 거기에 필요한 문서들을 기술한다.
+
+그리고 .m2폴더가 있는데(윈도우에서 .은 숨김폴더)
+그 내부에 다 다운받고 자동으로 빌드까지 해줌.
+
+우리는 pom.xml에 필요한 걸 넣어주면 되고 리눅스 같은곳에도 pom.xml을 배포만 해주면 된다.
+
+내 프로젝트 그대로 집어넣고 메이븐 설치하면 끝난다.
