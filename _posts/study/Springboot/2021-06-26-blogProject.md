@@ -312,13 +312,90 @@ board 오브젝트와 user오브젝트 오고 보드인데 보드를 셀렉트 �
 
 ![20210628_113353](/assets/20210628_113353.png)
 
-안녕하세요 저는 컴퓨터 공학 전공했고
-솔직히 그냥 앞 분들이랑 목표든 각오든 다 똑같습니다.
-간단하게 목표는 2학기 무사히 마치는 겁니다.
-일단 뭐가 됐든 열심히 하겠습니다. 감사합니다.
+
 
 ![20210628_114349](/assets/20210628_114349.png)
 
 ---
 
 Enum을 넣으면 데이터 넣을때 값을 강제 시킬 수 있다.
+
+
+--------
+
+자바는 파라미터로 함수를 못 넣는다(자바스크립트와 달리)
+
+save 안해도 업데이트가 된다.
+
+--------
+
+1. Get요청
+주소에 데이터를 담아 보낸다. 데이터 형태는 key=value
+
+
+
+2. Post, Put, Delete 요청
+Body에 데이터를 담아 보낸다. 데이터 형태는 json으로 통일하는 것이 좋다.
+
+
+
+3. 스프링 컨트롤러의 파싱 전략 1
+스프링 컨트롤러는 key=value 데이터를 자동으로 파싱하여 변수에 담아준다.
+
+가령 get요청은 key=value이고 post요청중에 x-www-form-urlencoded (form태그를 만들어서 데이터 전송) 시에도 key=value 이기 때문에 이러한 데이터는 아래와 같이 함수의 파라메터로 받을 수 있다.
+
+PostMapping("/home")
+public String home(String username, String email){
+
+    return "home";
+}
+4. 스프링 컨트롤러의 파싱 전략 2
+스프링은 key=value 형태의 데이터를 오브젝트로 파싱해서 받아주는 역할도 한다.
+
+** 이때 주의 할점은 setter가 없으면 key=value 데이터를 스프링이 파싱해서 넣어주지 못한다.
+
+class User {
+	private String username;
+    private String password;
+
+    public String getUsername(){
+    	return username;
+    }
+
+    public String getPassword(){
+    	return password;
+    }
+
+    public void setUsername(String username){
+    	this.username = username;
+    }
+
+    public void setPassword(String password){
+    	this.password = password;
+    }
+
+}
+PostMapping("/home")
+public String home(User user){
+
+    return "home";
+}
+5. key=value가 아닌 데이터는 어떻게 파싱할까?
+json 데이터나 일반 text데이터는 스프링 컨트롤러에서 받기 위해서는 @RequestBody 어노테이션이 필요하다.
+
+** 기본전략이 스프링 컨트롤러는 key=value 데이터를 파싱해서 받아주는 일을 하는데 다른 형태의 데이터 가령 json 같은 데이터는 아래와 같이 생겼다.
+
+{
+    "username":"ssar",
+    "password":"1234"
+}
+이런 데이터는 스프링이 파싱해서 오브젝트로 받지 못한다. 그래서 @RequestBody 어노테이션을 붙이면 MessageConverter 클래스를 구현한 Jackson 라이브러리가 발동하면서 json 데이터를 자바 오브젝트로 파싱하여 받아준다.
+
+PostMapping("/home")
+public String home(@RequestBody User user){
+
+    return "home";
+}
+
+
+--------
