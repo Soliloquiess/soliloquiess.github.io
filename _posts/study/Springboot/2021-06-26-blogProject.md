@@ -620,3 +620,73 @@ Oauth-Client로 쉽게 페이스북과 구글을 제공해준다.
 ![20210702_041910](/assets/20210702_041910.png)
 
 처음 시작 설정시에도 미리 제공해준다.
+
+-----------
+
+
+![20210702_174341](/assets/20210702_174341.png)
+
+
+내 개인적인 코드는 이와 같으며
+
+
+카카오 api키:
+
+클라이언트 키 :707fa25f64a631c417b6e7d590d8e58a(REST API키)
+
+
+카카오 로그인 요청 콜백주소: http://localhost:8000/auth/kakao/callback
+
+카카오 로그아웃 요청 콜백주소: http://localhost:8000/auth/kakao/logout
+
+
+User object: id(번호) , username, password, email
+카카오로부터 받을 정보: 프로필 정보 필수, 이메일(선택)
+
+
+로그인 요청 주소
+
+https://kauth.kakao.com/oauth/authorize?client_id=:707fa25f64a631c417b6e7d590d8e58a&redirect_uri=http://localhost:8000/auth/kakao/callback&response_type=code
+
+
+
+
+```
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
+<%@ include file="../layout/header.jsp"%>
+
+<div class="container">
+	<form action="/auth/loginProc" method="post">
+		<div class="form-group">
+			<label for="username">Username</label>
+			<input type="text" name="username" class="form-control" placeholder="Enter username" id="username">
+		</div>
+
+		<div class="form-group">
+			<label for="password">Password</label>
+			<input type="password" name="password" class="form-control" placeholder="Enter password" id="password">
+		</div>
+
+		<button id="btn-login" class="btn btn-primary">로그인</button>
+		<a href="https://kauth.kakao.com/oauth/authorize?client_id=707fa25f64a631c417b6e7d590d8e58a&redirect_uri=http://localhost:8000/auth/kakao/callback&response_type=code">
+		<img height="38px" src="/image/kakao_login_button.png" /></a>
+	</form>
+
+</div>
+
+<%@ include file="../layout/footer.jsp"%>
+
+
+
+
+```
+
+![20210702_184109](/assets/20210702_184109.png)
+
+loginForm 로 실행하면
+
+
+![20210702_184050](/assets/20210702_184050.png)
+
+이와 같이 나오고 코드가 넘겨받아진게 확인 가능하다.
