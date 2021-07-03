@@ -1,7 +1,6 @@
 ---
 title: "[Springboot] Springboot 스터디 6일차"
-layout: post
-subtitle: Springboot
+layout: postsubtitle: Springboot
 date: "2021-06-30-14:58:53 +0900"
 categories: study
 tags: Springboot
