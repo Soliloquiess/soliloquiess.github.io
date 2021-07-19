@@ -13,6 +13,63 @@ tags: Springboot
 comments: true
 ---
 
+```
+@Configuration // IoC 빈(bean)을 등록
+@EnableWebSecurity // 필터 체인 관리 시작 어노테이션
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true) // 특정 주소 접근시 권한 및 인증을 위한 어노테이션 활성화
+public class SecurityConfig extends WebSecurityConfigurerAdapter{
+
+
+
+```
+
+```
+@GetMapping("/info")
+public @ResponseBody String info() {
+  return "개인정보";
+}
+```
+
+![20210719_224653](/assets/20210719_224653.png)
+
+
+로 그냥 /info로 들어가면 아무나 들어가 졌지면
+위의 securedEnabled = true) // 특정 주소 접근시 권한 및 인증을 위한 어노테이션 활성화를 시키면 이제 아무나 못 들어 가게 막는다.
+
+
+![20210719_225529](/assets/20210719_225529.png)
+
+
+![20210719_230227](/assets/20210719_230227.png)
+
+이제 admin이여야만 들어가진다.
+
+
+
+@PreAuthorize
+도 있는데 이건 해당 어노테이션의 메서드가 실행 되기 전에 실행된다
+
+```
+//	@PreAuthorize("ROLE_USER")	//이렇게 하면 안먹는다.
+	@PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
+	//하나만 걸고싶으면 hasROle하나만 걸면된다(근데 하나 걸바엔 Secured)쓰는게
+//	,근데 여러개는 hasrole로 가능하다.
+	//이건 메서드가 실행 되기 전에 실행된다.
+	@GetMapping("/data")
+	public @ResponseBody String data() {
+		return "데이터 정보";
+	}
+
+
+```
+
+
+@PostAuthorize
+이것도 있는데 이건 반대로 메서드 종료 하고 나서 실행된다.
+
+
+
+특정 메서드에 간단하게 걸고 싶으면 이렇게 걸면 된다.
 
 ![20210715_184923](/assets/20210715_184923.png)
 
