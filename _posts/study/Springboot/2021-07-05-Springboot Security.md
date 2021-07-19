@@ -34,3 +34,6 @@ OAuth2User -> OAuth 로그인
 
 OAuth2User와 userDetails 타입 세션에 저장돼었는데 떙겨옴 근데 user를 찾을 수가 없음.
 그래서 PrincipalDetails 에 userDetails를 구현해서 user를 안에 넣는다.
+
+
+구글, 페이스북, 네이버 로그인
