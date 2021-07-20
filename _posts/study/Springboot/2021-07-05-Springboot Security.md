@@ -160,3 +160,129 @@ OAuth2User와 userDetails 타입 세션에 저장돼었는데 떙겨옴 근데 u
 우리가 사용하는 방식은 코드를 부여받음.(Authorization Code Grant Type방식)
 
 코드를 부여받고 이 코드로 액세스 토큰을 응답받고 요청한 데이터를 응답한다.
+
+
+```
+security:
+  oauth2:
+    client:
+      registration:
+        google: # /oauth2/authorization/google 이 주소를 동작하게 한다.
+          client-id: 391208636966-ep51cg8drdfra574ql9scga7qnctcs17.apps.googleusercontent.com
+          client-secret: S-NWrO4VpBTulsjStErAXFy3
+          scope:
+          - email
+          - profile
+
+        facebook:
+          client-id: 210771624270218
+          client-secret: 3658a4ba647970d620b9a0fed65f06f1
+          scope:
+          - email
+          - public_profile #https://developers.facebook.com/docs/facebook-login/web 여기서 제공해주는 스코프 이름을 정확하게 적어야 한다.
+
+        naver:
+          client-id:
+          client-secret:
+          scope:
+          - name
+          - email
+          client-name: Naver
+          authorization-grant-type: authorization_code
+          redirect-uri: http://localhost:8080/login/oauth2/code/naver #코드를 받는 콜백 주소. 근데 이거 안적어줘도 됨(그렇게 설정 되어있어서)
+          #근데 네이버는 프로바이더가 설정이 안되서 적어줘야한다.
+          #네이버는 주소가 고정이 안되어서 맘대로 만들기 가능
+          #그래도 이 규칙에 맞춰서 적어주는게 편하다.
+```
+
+어플리케이션 프로퍼티에 시큐리티 Oauth2 부분 보자
+
+네이버 개발자 센터에 가서 애플리케이션 등록에 간다음에
+
+![20210721_000416](/assets/20210721_000416.png)
+
+![20210721_000423](/assets/20210721_000423.png)
+
+아이디, 이름만 체크하고
+
+윗 부분은 8080포트 , 아래는 콜백 주소를 적어주고 등록한다.
+
+그럼 클라이언트와 시크릿이 나올건데
+
+![20210721_001358](/assets/20210721_001358.png)
+
+![20210721_001458](/assets/20210721_001458.png)
+
+이걸 id,secret부분에 넣어주자
+
+
+![20210721_001622](/assets/20210721_001622.png)
+
+그리고 provider가 아니라 저장하면 오류날 거
+EntityManager가 close 됐는데 authorizedClient에 네이버를 저장할 수 없음(provider가 아니라서)
+
+네이버라는 레지스트레이션이 없어서 이걸 등록해줘야한다.
+
+![20210721_005630](/assets/20210721_005630.png)
+
+이 주소로 요청하면 네이버 로그인이 되게 된다.
+
+![20210721_005709](/assets/20210721_005709.png)
+
+프로필 주소 또한 마찬가지
+
+네이버는 프로바이더를 등록해줘야한다가 중요한 점.
+
+![20210721_012734](/assets/20210721_012734.png)
+
+네이버 로그인이 생겼고
+
+![20210721_012801](/assets/20210721_012801.png)
+
+
+아직 컨트롤러 설정을 안해서 에러가 났지만 이 콘솔에 찍힌 정보들이 네이버 로그인 했을 때 response로 들어가서 받는 거다.
+
+
+![20210721_013012](/assets/20210721_013012.png)
+
+![20210721_013626](/assets/20210721_013626.png)
+
+컨트롤러에 추가하자
+
+![20210721_013012](/assets/20210721_013012.png)
+
+
+그리고 여기 response 부분을 받기 위 getAttribute안에 있는 response값을 넘겨주면 된다.
+
+getAttribute를 안이 맵이 되므로 Map으로 잡자.
+
+![20210721_015350](/assets/20210721_015350.png)
+
+
+네이버가 이렇게 리턴을 해준다.
+
+![20210721_015425](/assets/20210721_015425_vsxasydj3.png)
+
+리턴 된건 여기 들어가고.
+
+그 다음에 response안에 저 정보가 있는게 아닌 response안에 정보가 있으면
+
+![20210721_015638](/assets/20210721_015638.png)
+
+이렇게 적으면 되지만(뒤에 get("response"))가 필요 없음) 뒤에 붙이는 이유는
+
+response안에 response안에 있기 떄문(한번 더 들어가기 때문)
+
+
+![20210721_015620](/assets/20210721_015620.png)
+
+
+![20210721_015942](/assets/20210721_015942.png)
+
+이제 네이버 로그인이 잘 들어간 게 보인다.
+
+
+![20210721_021208](/assets/20210721_021208.png)
+이제 /user로 가면 콘솔에 로그인 한 경로가 보인다.
+
+구글 로그인도 마찬가지.
