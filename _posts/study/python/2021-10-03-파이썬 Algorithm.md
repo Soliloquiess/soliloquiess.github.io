@@ -726,9 +726,7 @@ return data
 
 ---
 
-##### 병합 정렬 (merge sort)
-
-### 1. 병합 정렬 (merge sort)
+#### 병합 정렬 (merge sort)
 
 - 재귀용법을 활용한 정렬 알고리즘
   1. 리스트를 절반으로 잘라 비슷한 크기의 두 부분 리스트로 나눈다.
@@ -742,3 +740,347 @@ return data
 출처: [위키피디아](https://ko.wikipedia.org/wiki/%ED%95%A9%EB%B3%91_%EC%A0%95%EB%A0%AC)
 
 ![20211004_043104](/assets/20211004_043104.png)
+
+
+##### 알고리즘 이해
+* 데이터가 네 개 일때 (데이터 갯수에 따라 복잡도가 떨어지는 것은 아니므로, 네 개로 바로 로직을 이해해보자.)
+  - 예: data_list = [1, 9, 3, 2]
+    - 먼저 [1, 9], [3, 2] 로 나누고
+    - 다시 앞 부분은 [1], [9] 로 나누고
+    - 다시 정렬해서 합친다. [1, 9]
+    - 다음 [3, 2] 는 [3], [2] 로 나누고
+    - 다시 정렬해서 합친다 [2, 3]
+    - 이제 [1, 9] 와 [2, 3]을 합친다.
+      - 1 < 2 이니 [1]
+      - 9 > 2 이니 [1, 2]
+      - 9 > 3 이니 [1, 2, 3]
+      - 9 밖에 없으니, [1, 2, 3, 9]
+
+
+##### 알고리즘 구현
+* mergesplit 함수 만들기
+  - 만약 리스트 갯수가 한개이면 해당 값 리턴
+  - 그렇지 않으면, 리스트를 앞뒤, 두 개로 나누기
+  - left = mergesplit(앞)
+  - right = mergesplit(뒤)
+  - merge(left, right)
+
+* merge 함수 만들기
+  - 리스트 변수 하나 만들기 (sorted)
+  - left_index, right_index = 0
+  - while left_index < len(left) or right_index < len(right):
+    - 만약 left_index 나 right_index 가 이미 left 또는 right 리스트를 다 순회했다면, 그 반대쪽 데이터를 그대로 넣고, 해당 인덱스 1 증가
+    - if left[left_index] < right[right_index]:
+      - sorted.append(left[left_index])
+      - left_index += 1
+    - else:
+      - sorted.append(right[right_index])
+      - right_index += 1
+
+
+
+  .
+```
+def merge(left, right):
+    merged = list()
+    left_point, right_point = 0, 0
+
+    # case1 - left/right 둘다 있을때
+    while len(left) > left_point and len(right) > right_point:
+        if left[left_point] > right[right_point]:
+            merged.append(right[right_point])
+            right_point += 1
+        else:
+            merged.append(left[left_point])
+            left_point += 1
+
+    # case2 - left 데이터가 없을 때
+    while len(left) > left_point:
+        merged.append(left[left_point])
+        left_point += 1
+
+    # case3 - right 데이터가 없을 때
+    while len(right) > right_point:
+        merged.append(right[right_point])
+        right_point += 1
+
+    return merged
+
+
+def mergesplit(data):
+    if len(data) <= 1:
+        return data
+    medium = int(len(data) / 2)
+    left = mergesplit(data[:medium])
+    right = mergesplit(data[medium:])
+    return merge(left, right)
+
+```
+
+
+
+##### 알고리즘 분석
+* 알고리즘 분석은 쉽지 않음, <font color='#BF360C'>이 부분은 참고로만 알아두자.</font>
+  - 다음을 보고 이해해보자
+    - 몇 단계 깊이까지 만들어지는지를 depth 라고 하고 i로 놓자. 맨 위 단계는 0으로 놓자.
+      - 다음 그림에서 n/$2^2$ 는 2단계 깊이라고 해보자.
+      - 각 단계에 있는 하나의 노드 안의 리스트 길이는 n/$2^2$ 가 된다.
+      - 각 단계에는 $2^i$ 개의 노드가 있다.
+    - 따라서, 각 단계는 항상 <font size=4em>$2^i * \frac { n }{ 2^i } = O(n)$</font>
+    - 단계는 항상 $log_2 n$ 개 만큼 만들어짐, 시간 복잡도는 결국 O(log n), 2는 역시 상수이므로 삭제
+    - 따라서, 단계별 시간 복잡도 O(n) * O(log n) = O(n log n)
+
+<img src="https://www.fun-coding.org/00_Images/mergesortcomplexity.png" />
+
+
+-----
+
+
+#### 이진 탐색 (Binary Search)
+
+##### 이진 탐색 (Binary Search) 이란?
+* 탐색할 자료를 둘로 나누어 해당 데이터가 있을만한 곳을 탐색하는 방법
+
+
+##### 예시 문제
+
+<img src="https://www.fun-coding.org/00_Images/binarysearch.png" />
+
+##### 이진 탐색의 이해 (순차 탐색과 비교하며 이해하기)
+
+<img src="https://www.mathwarehouse.com/programming/images/binary-vs-linear-search/binary-and-linear-search-animations.gif">
+
+* [저작자] by penjee.com [이미지 출처](https://blog.penjee.com/binary-vs-linear-search-animated-gifs)
+
+
+##### 분할 정복 알고리즘과 이진 탐색
+###### 무한도전때 티켓 찾는거라 생각하면 된다 . 100-> 50->25-> 37->43  (솨십솨)
+
+- 분할 정복 알고리즘 (Divide and Conquer)
+  - Divide: 문제를 하나 또는 둘 이상으로 나눈다.
+  - Conquer: 나눠진 문제가 충분히 작고, 해결이 가능하다면 해결하고, 그렇지 않다면 다시 나눈다.
+- 이진 탐색
+  - Divide: 리스트를 두 개의 서브 리스트로 나눈다.
+  - Comquer
+    - 검색할 숫자 (search) > 중간값 이면, 뒷 부분의 서브 리스트에서 검색할 숫자를 찾는다.
+    - 검색할 숫자 (search) < 중간값 이면, 앞 부분의 서브 리스트에서 검색할 숫자를 찾는다.  
+
+
+
+
+##### 어떻게 코드로 만들까?
+
+* 이진 탐색은 데이터가 정렬되있는 상태에서 진행
+* 데이터가 [2, 3, 8, 12, 20] 일 때,
+  - binary_search(data_list, find_data) 함수를 만들고
+    - find_data는 찾는 숫자
+    - data_list는 데이터 리스트
+    - data_list의 중간값을 find_data와 비교해서
+      - find_data < data_list의 중간값 이라면
+        - 맨 앞부터 data_list의 중간까지 에서 다시 find_data 찾기
+      - data_list의 중간값 < find_data 이라면
+        - data_list의 중간부터 맨 끝까지에서 다시 find_data 찾기
+      - 그렇지 않다면, data_list의 중간값은 find_data 인 경우로, return data_list 중간위치
+
+
+```
+def binary_search(data, search):
+    print (data)
+    if len(data) == 1 and search == data[0]:
+        return True #1인 경우 데이터 리턶나는게 아니라 만약 서치하는게 마나 확인
+    #만약 데이터가 1개 밖에 없다면 그게 내가 검색한 거인지 보고 아니면 검색하려는게 존재하지 않는 것이다.
+    if len(data) == 1 and search != data[0]:
+        return False
+    if len(data) == 0:
+        return False
+
+    medium = len(data) // 2 #분할정복진행
+    if search == data[medium]:#만약 서치로 데이터 찾으면
+        return True
+    else:
+        if search > data[medium]: #서치가 데이터 찾는거보다 크면(오른쪽 탐색)
+            return binary_search(data[medium+1:], search)
+        else:#반대로 왼쪽 탐색 서치가 찾는 데이터보다 작으면
+            return binary_search(data[:medium], search)
+```
+
+
+##### 알고리즘 분석
+
+* n개의 리스트를 매번 2로 나누어 1이 될 때까지 비교연산을 k회 진행
+
+  - <font size=4em>n X $\frac { 1 }{ 2 }$ X $\frac { 1 }{ 2 }$ X $\frac { 1 }{ 2 }$ ... = 1</font>
+  - <font size=4em>n X $\frac { 1 }{ 2 }^k$ = 1</font>
+  - <font size=4em>n = $2^k$ = $log_2 n$ = $log_2 2^k$</font>
+  - <font size=4em>$log_2 n$ = k</font>
+  - 빅 오 표기법으로는 k + 1 이 결국 최종 시간 복잡도임 (1이 되었을 때도, 비교연산을 한번 수행)
+    - 결국 O($log_2 n$ + 1) 이고, 2와 1, 상수는 삭제 되므로, O($log n$)
+
+
+----
+
+
+#### 순차 탐색 (Sequential Search)
+
+
+##### 순차 탐색 (Sequential Search) 이란?
+* 탐색은 여러 데이터 중에서 원하는 데이터를 찾아내는 것을 의미
+* 데이터가 담겨있는 리스트를 앞에서부터 하나씩 비교해서 원하는 데이터를 찾는 방법
+
+- 그냥 가장 기본적인 알고리즘이다.
+
+```
+from random import *
+
+rand_data_list = list()
+for num in range(10):
+    rand_data_list.append(randint(1, 100))
+rand_data_list
+```
+
+
+```
+def sequencial(data_list, search_data):
+    for index in range(len(data_list)):
+        if data_list[index] == search_data:
+            return index
+    return -1
+sequencial(rand_data_list, 4)
+```
+
+
+#####  알고리즘 분석
+* 최악의 경우 리스트 길이가 n일 때, n번 비교해야 함
+  - O(n)
+
+
+-----
+
+
+#### 그래프 이해
+
+##### 그래프 (Graph) 란?
+* 그래프는 실제 세계의 현상이나 사물을 정점(Vertex) 또는 노드(Node) 와 간선(Edge)로 표현하기 위해 사용
+##### 예제 집에서 회사로 가는 경로를 그래프로 표현한 예
+<img src="https://www.fun-coding.org/00_Images/graph.png" width=400>
+
+
+##### 그래프 (Graph) 관련 용어
+- 노드 (Node): 위치를 말함, 정점(Vertex)라고도 함
+- 간선 (Edge): 위치 간의 관계를 표시한 선으로 노드를 연결한 선이라고 보면 됨 (link 또는 branch 라고도 함)
+- 인접 정점 (Adjacent Vertex) : 간선으로 직접 연결된 정점(또는 노드)
+
+
+![20211004_135709](/assets/20211004_135709.png)
+
+여기서 집의 간선은 2개이다.
+여기서 지하철에 들어오는 간선(진입차선) 은 1개
+지하철에서 나가는 간선도 1개.
+경로길이는 집에서 회사 가는데 경로길이는 간선길이로 2개의 간선이 사용되었으며 경로길이는 2이다.
+
+집에서 회사 가는건 단순 경로지만(중복된 정점이 없음)
+집에서 집 오는건 사이클이 될 수 있다.
+출발지와 목적지에 따라 단순경로, 사이클이 될 수 있다.
+
+###### 근데 집->집 처럼 처음과 끝이 중복은 허용한다(단순 경로로 본다.)
+###### 집->집 오는 건 단순경로로 볼수도 있고 싸이클로 볼 수도 있다.(단순경로도 맞고 출발지==목적지라 사이클로 불러도 맞는 말이다.)
+
+- 참고 용어
+  - 정점의 차수 (Degree): 무방향 그래프에서 하나의 정점에 인접한 정점의 수
+  - 진입 차수 (In-Degree): 방향 그래프에서 외부에서 오는 간선의 수
+  - 진출 차수 (Out-Degree): 방향 그래프에서 외부로 향하는 간선의 수
+  - 경로 길이 (Path Length): 경로를 구성하기 위해 사용된 간선의 수
+  - 단순 경로 (Simple Path): 처음 정점과 끝 정점을 제외하고 중복된 정점이 없는 경로
+  - 사이클 (Cycle): 단순 경로의 시작 정점과 종료 정점이 동일한 경우
+
+> 단순 경로 (A - B - C)
+<img src="https://www.fun-coding.org/00_Images/simplepath.png" width=200>
+
+
+
+#### 그래프 (Graph) 종류
+##### 무방향 그래프 (Undirected Graph)
+- 방향이 없는 그래프
+- 간선을 통해, 노드는 양방향으로 갈 수 있음
+- 보통 노드 A, B가 연결되어 있을 경우, (A, B) 또는 (B, A) 로 표기
+<img src="https://www.fun-coding.org/00_Images/undirectedgraph.png" width=300>
+
+
+##### 방향 그래프 (Directed Graph)
+- 간선에 방향이 있는 그래프
+- 보통 노드 A, B가 A -> B 로 가는 간선으로 연결되어 있을 경우, <A, B> 로 표기 (<B, A> 는 B -> A 로 가는 간선이 있는 경우이므로 <A, B> 와 다름)
+<img src="https://www.fun-coding.org/00_Images/directedgraph.png" width=300>
+
+
+##### 가중치 그래프 (Weighted Graph) 또는 네트워크 (Network)
+- 간선에 비용 또는 가중치가 할당된 그래프
+
+<img src="https://www.fun-coding.org/00_Images/weightedgraph.png" width=300>
+
+
+##### 연결 그래프 (Connected Graph) 와 비연결 그래프 (Disconnected Graph)
+- 연결 그래프 (Connected Graph)
+  - 무방향 그래프에 있는 모든 노드에 대해 항상 경로가 존재하는 경우
+- 비연결 그래프 (Disconnected Graph)
+  - 무방향 그래프에서 특정 노드에 대해 경로가 존재하지 않는 경우
+
+> 비연결 그래프 예
+<img src="https://www.fun-coding.org/00_Images/disconnectedgraph.png" width=300>
+
+##### 사이클 (Cycle) 과 비순환 그래프 (Acyclic Graph)
+- 사이클 (Cycle)
+  - 단순 경로의 시작 노드와 종료 노드가 동일한 경우
+- 비순환 그래프 (Acyclic Graph)
+  - 사이클이 없는 그래프
+
+> 비순환 그래프 예
+<img src="https://www.fun-coding.org/00_Images/acyclicgraph.png" width=300>
+
+
+##### 완전 그래프 (Complete Graph)
+- 그래프의 모든 노드가 서로 연결되어 있는 그래프
+
+> 완전 그래프 예
+<img src="https://www.fun-coding.org/00_Images/completegraph.png" width=300>
+
+
+##### 그래프와 트리의 차이
+
+
+
+- 트리는 그래프 중에 속한 특별한 종류라고 볼 수 있음
+
+<div style="text-align:left">
+<table>
+  <tr>
+    <th></th>
+    <th style="text-align:center">그래프</th>
+    <th style="text-align:center">트리</th>
+  </tr>
+  <tr>
+    <td style="text-align:center">정의</td>
+    <td style="text-align:left">노드와 노드를 연결하는 간선으로 표현되는 자료 구조</td>
+    <td style="text-align:left">그래프의 한 종류, 방향성이 있는 비순환 그래프</td>
+  </tr>
+  <tr>
+    <td style="text-align:center">방향성</td>
+    <td style="text-align:left">방향 그래프, 무방향 그래프 둘다 존재함</td>
+    <td style="text-align:left">방향 그래프만 존재함</td>
+  </tr>
+  <tr>
+    <td style="text-align:center">사이클</td>
+    <td style="text-align:left">사이클 가능함, 순환 및 비순환 그래프 모두 존재함</td>
+    <td style="text-align:left">비순환 그래프로 사이클이 존재하지 않음</td>
+  </tr>
+  <tr>
+    <td style="text-align:center">루트 노드</td>
+    <td style="text-align:left">루트 노드 존재하지 않음</td>
+    <td style="text-align:left">루트 노드 존재함</td>
+  </tr>
+  <tr>
+    <td style="text-align:center">부모/자식 관계</td>
+    <td style="text-align:left">부모 자식 개념이 존재하지 않음</td>
+    <td style="text-align:left">부모 자식 관계가 존재함</td>
+  </tr>
+</table>
+</div>
