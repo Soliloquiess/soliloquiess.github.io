@@ -152,8 +152,8 @@ def factorial(n):
 2.  swap = 0 (교환이 되었는지를 확인하는 변수를 두자)
 3.  반복문 안에서, for index in range(len(data_list) - num - 1) n - 1번 반복해야 하므로
 4.  반복문안의 반복문 안에서, if data_list[index] > data_list[index + 1] 이면
-5.                                    data_list[index], data_list[index + 1] = data_list[index + 1], data_list[index]
-6.                                    swap += 1
+5.                                                                              data_list[index], data_list[index + 1] = data_list[index + 1], data_list[index]
+6.                                                                              swap += 1
 7.  반복문 안에서, if swap == 0 이면, break 끝
 
 ```
@@ -741,9 +741,9 @@ return data
 
 ![20211004_043104](/assets/20211004_043104.png)
 
-
 ##### 알고리즘 이해
-* 데이터가 네 개 일때 (데이터 갯수에 따라 복잡도가 떨어지는 것은 아니므로, 네 개로 바로 로직을 이해해보자.)
+
+- 데이터가 네 개 일때 (데이터 갯수에 따라 복잡도가 떨어지는 것은 아니므로, 네 개로 바로 로직을 이해해보자.)
   - 예: data_list = [1, 9, 3, 2]
     - 먼저 [1, 9], [3, 2] 로 나누고
     - 다시 앞 부분은 [1], [9] 로 나누고
@@ -756,16 +756,18 @@ return data
       - 9 > 3 이니 [1, 2, 3]
       - 9 밖에 없으니, [1, 2, 3, 9]
 
-
 ##### 알고리즘 구현
-* mergesplit 함수 만들기
+
+- mergesplit 함수 만들기
+
   - 만약 리스트 갯수가 한개이면 해당 값 리턴
   - 그렇지 않으면, 리스트를 앞뒤, 두 개로 나누기
   - left = mergesplit(앞)
   - right = mergesplit(뒤)
   - merge(left, right)
 
-* merge 함수 만들기
+- merge 함수 만들기
+
   - 리스트 변수 하나 만들기 (sorted)
   - left_index, right_index = 0
   - while left_index < len(left) or right_index < len(right):
@@ -777,9 +779,8 @@ return data
       - sorted.append(right[right_index])
       - right_index += 1
 
-
-
   .
+
 ```
 def merge(left, right):
     merged = list()
@@ -817,10 +818,9 @@ def mergesplit(data):
 
 ```
 
-
-
 ##### 알고리즘 분석
-* 알고리즘 분석은 쉽지 않음, <font color='#BF360C'>이 부분은 참고로만 알아두자.</font>
+
+- 알고리즘 분석은 쉽지 않음, <font color='#BF360C'>이 부분은 참고로만 알아두자.</font>
   - 다음을 보고 이해해보자
     - 몇 단계 깊이까지 만들어지는지를 depth 라고 하고 i로 놓자. 맨 위 단계는 0으로 놓자.
       - 다음 그림에서 n/$2^2$ 는 2단계 깊이라고 해보자.
@@ -828,19 +828,17 @@ def mergesplit(data):
       - 각 단계에는 $2^i$ 개의 노드가 있다.
     - 따라서, 각 단계는 항상 <font size=4em>$2^i * \frac { n }{ 2^i } = O(n)$</font>
     - 단계는 항상 $log_2 n$ 개 만큼 만들어짐, 시간 복잡도는 결국 O(log n), 2는 역시 상수이므로 삭제
-    - 따라서, 단계별 시간 복잡도 O(n) * O(log n) = O(n log n)
+    - 따라서, 단계별 시간 복잡도 O(n) \* O(log n) = O(n log n)
 
 <img src="https://www.fun-coding.org/00_Images/mergesortcomplexity.png" />
 
-
------
-
+---
 
 #### 이진 탐색 (Binary Search)
 
 ##### 이진 탐색 (Binary Search) 이란?
-* 탐색할 자료를 둘로 나누어 해당 데이터가 있을만한 곳을 탐색하는 방법
 
+- 탐색할 자료를 둘로 나누어 해당 데이터가 있을만한 곳을 탐색하는 방법
 
 ##### 예시 문제
 
@@ -850,11 +848,11 @@ def mergesplit(data):
 
 <img src="https://www.mathwarehouse.com/programming/images/binary-vs-linear-search/binary-and-linear-search-animations.gif">
 
-* [저작자] by penjee.com [이미지 출처](https://blog.penjee.com/binary-vs-linear-search-animated-gifs)
-
+- [저작자] by penjee.com [이미지 출처](https://blog.penjee.com/binary-vs-linear-search-animated-gifs)
 
 ##### 분할 정복 알고리즘과 이진 탐색
-###### 무한도전때 티켓 찾는거라 생각하면 된다 . 100-> 50->25-> 37->43  (솨십솨)
+
+###### 무한도전때 티켓 찾는거라 생각하면 된다 . 100-> 50->25-> 37->43 (솨십솨)
 
 - 분할 정복 알고리즘 (Divide and Conquer)
   - Divide: 문제를 하나 또는 둘 이상으로 나눈다.
@@ -863,15 +861,12 @@ def mergesplit(data):
   - Divide: 리스트를 두 개의 서브 리스트로 나눈다.
   - Comquer
     - 검색할 숫자 (search) > 중간값 이면, 뒷 부분의 서브 리스트에서 검색할 숫자를 찾는다.
-    - 검색할 숫자 (search) < 중간값 이면, 앞 부분의 서브 리스트에서 검색할 숫자를 찾는다.  
-
-
-
+    - 검색할 숫자 (search) < 중간값 이면, 앞 부분의 서브 리스트에서 검색할 숫자를 찾는다.
 
 ##### 어떻게 코드로 만들까?
 
-* 이진 탐색은 데이터가 정렬되있는 상태에서 진행
-* 데이터가 [2, 3, 8, 12, 20] 일 때,
+- 이진 탐색은 데이터가 정렬되있는 상태에서 진행
+- 데이터가 [2, 3, 8, 12, 20] 일 때,
   - binary_search(data_list, find_data) 함수를 만들고
     - find_data는 찾는 숫자
     - data_list는 데이터 리스트
@@ -881,7 +876,6 @@ def mergesplit(data):
       - data_list의 중간값 < find_data 이라면
         - data_list의 중간부터 맨 끝까지에서 다시 find_data 찾기
       - 그렇지 않다면, data_list의 중간값은 find_data 인 경우로, return data_list 중간위치
-
 
 ```
 def binary_search(data, search):
@@ -904,10 +898,9 @@ def binary_search(data, search):
             return binary_search(data[:medium], search)
 ```
 
-
 ##### 알고리즘 분석
 
-* n개의 리스트를 매번 2로 나누어 1이 될 때까지 비교연산을 k회 진행
+- n개의 리스트를 매번 2로 나누어 1이 될 때까지 비교연산을 k회 진행
 
   - <font size=4em>n X $\frac { 1 }{ 2 }$ X $\frac { 1 }{ 2 }$ X $\frac { 1 }{ 2 }$ ... = 1</font>
   - <font size=4em>n X $\frac { 1 }{ 2 }^k$ = 1</font>
@@ -916,18 +909,16 @@ def binary_search(data, search):
   - 빅 오 표기법으로는 k + 1 이 결국 최종 시간 복잡도임 (1이 되었을 때도, 비교연산을 한번 수행)
     - 결국 O($log_2 n$ + 1) 이고, 2와 1, 상수는 삭제 되므로, O($log n$)
 
-
-----
-
+---
 
 #### 순차 탐색 (Sequential Search)
 
-
 ##### 순차 탐색 (Sequential Search) 이란?
-* 탐색은 여러 데이터 중에서 원하는 데이터를 찾아내는 것을 의미
-* 데이터가 담겨있는 리스트를 앞에서부터 하나씩 비교해서 원하는 데이터를 찾는 방법
 
-- 그냥 가장 기본적인 알고리즘이다.
+- 탐색은 여러 데이터 중에서 원하는 데이터를 찾아내는 것을 의미
+- 데이터가 담겨있는 리스트를 앞에서부터 하나씩 비교해서 원하는 데이터를 찾는 방법
+
+* 그냥 가장 기본적인 알고리즘이다.
 
 ```
 from random import *
@@ -938,7 +929,6 @@ for num in range(10):
 rand_data_list
 ```
 
-
 ```
 def sequencial(data_list, search_data):
     for index in range(len(data_list)):
@@ -948,28 +938,28 @@ def sequencial(data_list, search_data):
 sequencial(rand_data_list, 4)
 ```
 
+##### 알고리즘 분석
 
-#####  알고리즘 분석
-* 최악의 경우 리스트 길이가 n일 때, n번 비교해야 함
+- 최악의 경우 리스트 길이가 n일 때, n번 비교해야 함
   - O(n)
 
-
------
-
+---
 
 #### 그래프 이해
 
 ##### 그래프 (Graph) 란?
-* 그래프는 실제 세계의 현상이나 사물을 정점(Vertex) 또는 노드(Node) 와 간선(Edge)로 표현하기 위해 사용
+
+- 그래프는 실제 세계의 현상이나 사물을 정점(Vertex) 또는 노드(Node) 와 간선(Edge)로 표현하기 위해 사용
+
 ##### 예제 집에서 회사로 가는 경로를 그래프로 표현한 예
+
 <img src="https://www.fun-coding.org/00_Images/graph.png" width=400>
 
-
 ##### 그래프 (Graph) 관련 용어
+
 - 노드 (Node): 위치를 말함, 정점(Vertex)라고도 함
 - 간선 (Edge): 위치 간의 관계를 표시한 선으로 노드를 연결한 선이라고 보면 됨 (link 또는 branch 라고도 함)
 - 인접 정점 (Adjacent Vertex) : 간선으로 직접 연결된 정점(또는 노드)
-
 
 ![20211004_135709](/assets/20211004_135709.png)
 
@@ -983,6 +973,7 @@ sequencial(rand_data_list, 4)
 출발지와 목적지에 따라 단순경로, 사이클이 될 수 있다.
 
 ###### 근데 집->집 처럼 처음과 끝이 중복은 허용한다(단순 경로로 본다.)
+
 ###### 집->집 오는 건 단순경로로 볼수도 있고 싸이클로 볼 수도 있다.(단순경로도 맞고 출발지==목적지라 사이클로 불러도 맞는 말이다.)
 
 - 참고 용어
@@ -994,59 +985,57 @@ sequencial(rand_data_list, 4)
   - 사이클 (Cycle): 단순 경로의 시작 정점과 종료 정점이 동일한 경우
 
 > 단순 경로 (A - B - C)
-<img src="https://www.fun-coding.org/00_Images/simplepath.png" width=200>
-
-
+> <img src="https://www.fun-coding.org/00_Images/simplepath.png" width=200>
 
 #### 그래프 (Graph) 종류
+
 ##### 무방향 그래프 (Undirected Graph)
+
 - 방향이 없는 그래프
 - 간선을 통해, 노드는 양방향으로 갈 수 있음
 - 보통 노드 A, B가 연결되어 있을 경우, (A, B) 또는 (B, A) 로 표기
-<img src="https://www.fun-coding.org/00_Images/undirectedgraph.png" width=300>
-
+  <img src="https://www.fun-coding.org/00_Images/undirectedgraph.png" width=300>
 
 ##### 방향 그래프 (Directed Graph)
+
 - 간선에 방향이 있는 그래프
 - 보통 노드 A, B가 A -> B 로 가는 간선으로 연결되어 있을 경우, <A, B> 로 표기 (<B, A> 는 B -> A 로 가는 간선이 있는 경우이므로 <A, B> 와 다름)
-<img src="https://www.fun-coding.org/00_Images/directedgraph.png" width=300>
-
+  <img src="https://www.fun-coding.org/00_Images/directedgraph.png" width=300>
 
 ##### 가중치 그래프 (Weighted Graph) 또는 네트워크 (Network)
+
 - 간선에 비용 또는 가중치가 할당된 그래프
 
 <img src="https://www.fun-coding.org/00_Images/weightedgraph.png" width=300>
 
-
 ##### 연결 그래프 (Connected Graph) 와 비연결 그래프 (Disconnected Graph)
+
 - 연결 그래프 (Connected Graph)
   - 무방향 그래프에 있는 모든 노드에 대해 항상 경로가 존재하는 경우
 - 비연결 그래프 (Disconnected Graph)
   - 무방향 그래프에서 특정 노드에 대해 경로가 존재하지 않는 경우
 
 > 비연결 그래프 예
-<img src="https://www.fun-coding.org/00_Images/disconnectedgraph.png" width=300>
+> <img src="https://www.fun-coding.org/00_Images/disconnectedgraph.png" width=300>
 
 ##### 사이클 (Cycle) 과 비순환 그래프 (Acyclic Graph)
+
 - 사이클 (Cycle)
   - 단순 경로의 시작 노드와 종료 노드가 동일한 경우
 - 비순환 그래프 (Acyclic Graph)
   - 사이클이 없는 그래프
 
 > 비순환 그래프 예
-<img src="https://www.fun-coding.org/00_Images/acyclicgraph.png" width=300>
-
+> <img src="https://www.fun-coding.org/00_Images/acyclicgraph.png" width=300>
 
 ##### 완전 그래프 (Complete Graph)
+
 - 그래프의 모든 노드가 서로 연결되어 있는 그래프
 
 > 완전 그래프 예
-<img src="https://www.fun-coding.org/00_Images/completegraph.png" width=300>
-
+> <img src="https://www.fun-coding.org/00_Images/completegraph.png" width=300>
 
 ##### 그래프와 트리의 차이
-
-
 
 - 트리는 그래프 중에 속한 특별한 종류라고 볼 수 있음
 
@@ -1084,3 +1073,254 @@ sequencial(rand_data_list, 4)
   </tr>
 </table>
 </div>
+
+---
+
+#### 깊이 우선 탐색 (Depth-First Search)
+
+##### BFS 와 DFS 란?
+
+- 대표적인 그래프 **탐색** 알고리즘
+  - 너비 우선 탐색 (Breadth First Search): 정점들과 같은 레벨에 있는 노드들 (형제 노드들)을 먼저 탐색하는 방식
+  - 깊이 우선 탐색 (Depth First Search): 정점의 자식들을 먼저 탐색하는 방식
+
+#### BFS/DFS 방식 이해를 위한 예제
+
+- BFS 방식: A - B - C - D - G - H - I - E - F - J
+  - 한 단계씩 내려가면서, 해당 노드와 같은 레벨에 있는 노드들 (형제 노드들)을 먼저 순회함
+- DFS 방식: A - B - D - E - F - C - G - H - I - J
+  - 한 노드의 자식을 타고 끝까지 순회한 후, 다시 돌아와서 다른 형제들의 자식을 타고 내려가며 순화함
+
+<img src="https://www.fun-coding.org/00_Images/BFSDFS.png" width=700>
+
+##### 파이썬으로 그래프를 표현하는 방법
+
+- 파이썬에서 제공하는 딕셔너리와 리스트 자료 구조를 활용해서 그래프를 표현할 수 있음
+
+```
+graph = dict()
+
+graph['A'] = ['B', 'C']
+graph['B'] = ['A', 'D']
+graph['C'] = ['A', 'G', 'H', 'I']
+graph['D'] = ['B', 'E', 'F']
+graph['E'] = ['D']
+graph['F'] = ['D']
+graph['G'] = ['C']
+graph['H'] = ['C']
+graph['I'] = ['C', 'J']
+graph['J'] = ['I']
+```
+
+##### 그래프 예와 파이썬 표현
+
+<img src="https://www.fun-coding.org/00_Images/dfsgraph.png" width=700>
+
+##### DFS 알고리즘 구현
+
+- 자료구조 스택과 큐를 활용함
+  - need_visit 스택과 visited 큐, 두 개의 자료 구조를 생성
+
+> BFS 자료구조는 두 개의 큐를 활용하는데 반해, DFS 는 스택과 큐를 활용한다는 차이가 있음을 인지해야 함
+
+- 큐와 스택 구현은 별도 라이브러리를 활용할 수도 있지만, 간단히 파이썬 리스트를 활용할 수도 있음
+
+```
+def dfs(graph, start_node):
+    visited, need_visit = list(), list()
+    need_visit.append(start_node)
+
+    while need_visit:
+        node = need_visit.pop()
+        if node not in visited:
+            visited.append(node)
+            need_visit.extend(graph[node])
+
+    return visited
+
+```
+
+### 4. 시간 복잡도
+
+- 일반적인 DFS 시간 복잡도
+  - 노드 수: V
+  - 간선 수: E
+    - 위 코드에서 while need_visit 은 V + E 번 만큼 수행함
+  - 시간 복잡도: O(V + E)
+
+---
+
+#### 너비 우선 탐색 (Breadth-First Search)
+
+##### BFS 와 DFS 란?
+
+- 대표적인 그래프 **탐색** 알고리즘
+  - 너비 우선 탐색 (Breadth First Search): 정점들과 같은 레벨에 있는 노드들 (형제 노드들)을 먼저 탐색하는 방식
+  - 깊이 우선 탐색 (Depth First Search): 정점의 자식들을 먼저 탐색하는 방식
+
+#### BFS/DFS 방식 이해를 위한 예제
+
+- BFS 방식: A - B - C - D - G - H - I - E - F - J
+  - 한 단계씩 내려가면서, 해당 노드와 같은 레벨에 있는 노드들 (형제 노드들)을 먼저 순회함
+- DFS 방식: A - B - D - E - F - C - G - H - I - J
+  - 한 노드의 자식을 타고 끝까지 순회한 후, 다시 돌아와서 다른 형제들의 자식을 타고 내려가며 순화함
+
+<img src="https://www.fun-coding.org/00_Images/BFSDFS.png" width=700>
+
+##### 파이썬으로 그래프를 표현하는 방법
+
+- 파이썬에서 제공하는 딕셔너리와 리스트 자료 구조를 활용해서 그래프를 표현할 수 있음
+
+##### 그래프 예와 파이썬 표현
+
+<img src="https://www.fun-coding.org/00_Images/bfsgraph.png" width=700>
+
+```
+graph = dict()
+
+graph['A'] = ['B', 'C']
+graph['B'] = ['A', 'D']
+graph['C'] = ['A', 'G', 'H', 'I']
+graph['D'] = ['B', 'E', 'F']
+graph['E'] = ['D']
+graph['F'] = ['D']
+graph['G'] = ['C']
+graph['H'] = ['C']
+graph['I'] = ['C', 'J']
+graph['J'] = ['I']
+```
+
+##### BFS 알고리즘 구현
+
+- 자료구조 큐를 활용함
+  - need_visit 큐와 visited 큐, 두 개의 큐를 생성
+
+<img src="https://www.fun-coding.org/00_Images/bfsqueue.png" width=700>
+
+- 큐의 구현은 간단히 파이썬 리스트를 활용
+
+```
+def bfs(graph, start_node):
+    visited = list()
+    need_visit = list()
+
+    need_visit.append(start_node)
+
+    while need_visit:
+        node = need_visit.pop(0)
+        if node not in visited:
+            visited.append(node)
+            need_visit.extend(graph[node])
+
+    return visited
+```
+
+<img src="https://www.fun-coding.org/00_Images/bfsgraph.png" width=700>
+
+### 4. 시간 복잡도
+
+- 일반적인 BFS 시간 복잡도
+  - 노드 수: V
+  - 간선 수: E
+    - 위 코드에서 while need_visit 은 V + E 번 만큼 수행함
+  - 시간 복잡도: O(V + E)
+
+```
+def bfs(graph, start_node):
+    visited = list()
+    need_visit = list()
+
+    need_visit.append(start_node)
+    count = 0
+    while need_visit:
+        count += 1
+        node = need_visit.pop(0)
+        if node not in visited:
+            visited.append(node)
+            need_visit.extend(graph[node])
+    print (count)
+    return visited
+```
+
+---
+
+#### 백 트래킹 기법의 이해
+
+##### 백 트래킹 (backtracking)
+
+- 백트래킹 (backtracking) 또는 퇴각 검색 (backtrack)으로 부름
+- 제약 조건 만족 문제 (Constraint Satisfaction Problem) 에서 해를 찾기 위한 전략
+  - 해를 찾기 위해, 후보군에 제약 조건을 점진적으로 체크하다가, 해당 후보군이 제약 조건을 만족할 수 없다고 판단되는 즉시 backtrack (다시는 이 후보군을 체크하지 않을 것을 표기)하고, 바로 다른 후보군으로 넘어가며, 결국 최적의 해를 찾는 방법
+- 실제 구현시, 고려할 수 있는 모든 경우의 수 (후보군)를 상태공간트리(State Space Tree)를 통해 표현
+  - 각 후보군을 DFS 방식으로 확인
+  - 상태 공간 트리를 탐색하면서, 제약이 맞지 않으면 해의 후보가 될만한 곳으로 바로 넘어가서 탐색
+    - Promising: 해당 루트가 조건에 맞는지를 검사하는 기법
+    - Pruning (가지치기): 조건에 맞지 않으면 포기하고 다른 루트로 바로 돌아서서, 탐색의 시간을 절약하는 기법
+
+> 즉, 백트래킹은 트리 구조를 기반으로 DFS로 깊이 탐색을 진행하면서 각 루트에 대해 조건에 부합하는지 체크(Promising), 만약 해당 트리(나무)에서 조건에 맞지않는 노드는 더 이상 DFS로 깊이 탐색을 진행하지 않고, 가지를 쳐버림 (Pruning)
+
+##### 상태 공간 트리 (State Space Tree)
+
+- 문제 해결 과정의 중간 상태를 각각의 노드로 나타낸 트리
+  <img src="https://www.fun-coding.org/00_Images/statespacetree.png" width=300>
+
+###### 트리 형태를 만들어서 접근하는 거지 코드에서 트리를 직접 만들거나 하진 않는다.
+
+##### N Queen 문제 이해
+
+- 대표적인 백트래킹 문제
+- NxN 크기의 체스판에 N개의 퀸을 서로 공격할 수 없도록 배치하는 문제
+- 퀸은 다음과 같이 이동할 수 있으므로, 배치된 퀸 간에 공격할 수 없는 위치로 배치해야 함
+  <img src="https://www.fun-coding.org/00_Images/queen_move.png">
+
+##### Pruning (가지치기) for N Queen 문제
+
+- 한 행에는 하나의 퀸 밖에 위치할 수 없음 (퀸은 수평 이동이 가능하므로)
+- 맨 위에 있는 행부터 퀸을 배치하고, 다음 행에 해당 퀸이 이동할 수 없는 위치를 찾아 퀸을 배치
+- 만약 앞선 행에 배치한 퀸으로 인해, 다음 행에 해당 퀸들이 이동할 수 없는 위치가 없을 경우에는, 더 이상 퀸을 배치하지 않고, 이전 행의 퀸의 배치를 바꿈
+  - 즉, 맨 위의 행부터 전체 행까지 퀸의 배치가 가능한 경우의 수를 상태 공간 트리 형태로 만든 후, 각 경우를 맨 위의 행부터 DFS 방식으로 접근, 해당 경우가 진행이 어려울 경우, 더 이상 진행하지 않고, 다른 경우를 체크하는 방식
+    <img src="https://www.fun-coding.org/00_Images/backtracking.png">
+
+##### Promising for N Queen 문제
+
+- 해당 루트가 조건에 맞는지를 검사하는 기법을 활용하여,
+- 현재까지 앞선 행에서 배치한 퀸이 이동할 수 없는 위치가 있는지를 다음과 같은 조건으로 확인
+  - 한 행에 어차피 하나의 퀸만 배치 가능하므로 수평 체크는 별도로 필요하지 않음
+    <img src="https://www.fun-coding.org/00_Images/nqueen.png">
+
+#### N Queen 문제 파이썬 코드 작성
+
+```
+def is_available(candidate, current_col):
+    current_row = len(candidate)#candidate 길이와 동일
+    for queen_row in range(current_row):  #행이 0부터 시작
+        if candidate[queen_row] == current_col or abs(candidate[queen_row] - current_col) == current_row - queen_row:
+            #만약 여기서 둘중 하나라도 만족하게 되면
+            #queen row = 퀸의 컬럼 번호 current_col과 같은지(인자로 넘어온) 또는
+            #candidate의 queen의 row(z컬럼과)-current_row것의 조건이 맞다면 다음에 위치할 수 있는 경우는 안된다.
+            return False
+    return True#위 그림의 조건을 만족하지 않으면 그 자리에 퀸을 놓을 수 있으므로 true를 리턴하게 된다.
+
+
+def DFS(N, current_row, current_candidate, final_result):
+    if current_row == N:
+        final_result.append(current_candidate[:])#얇은 복사(복사본 넘겨줌)
+        return
+
+    for candidate_col in range(N):#N개의 열이있고 0번부터 체크
+        if is_available(current_candidate, candidate_col):#리스트가 맨앞부터 들어감.
+            current_candidate.append(candidate_col)
+            DFS(N, current_row + 1, current_candidate, final_result)#그 다음행에 지금까지 배치된 걸 넘겨준다.
+            #만약 이걸하면 다시 넘어올텐데 마지막 행까지 가지도 않았고 다음 행에 4가지의 열이 하나도 조건 만족하지 않으면 아무 조건없이 리턴
+            #리턴 된다는 건 (아무거도 없이) 지금까지의 배치 조합으로는 그 다음행에 퀸 놓을 자리가 없다(백트랙)
+
+            current_candidate.pop()#가장 최근에 append된게 없어진다.
+
+
+def solve_n_queens(N):
+    final_result = []
+    DFS(N, 0, [], final_result)
+    return final_result
+
+
+```
