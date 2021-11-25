@@ -1,7 +1,7 @@
 ---
 layout: tag-blog
-title: git
-slug: git
+title: Git
+slug: Git
 category: study
 menu: false
 order: 10
