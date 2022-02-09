@@ -127,3 +127,45 @@ Dependecy 컨테이너라 해도 되지만 IOC 컨테이너라 한다.
 
 
 --------
+
+### Spring DI활용하기 - 이론
+
+1. 빈(Beans)
+
+
+![20220209_000017](/assets/20220209_000017_7gcfn6nxs.png)
+JavaBeans - 재사용 가능한 컴포넌트 , 상태
+Servlet & JSP beans - MVC의 모델, EL, scope, JSP 컨테이너가 관리
+
+EJB enterprise Java Beans - 복잡한 규칙, EJB 컨테이너가 관리
+Spring Bean - POJO (Plain old java object). 단순 독립적 Spring container가 관리
+
+2. BeanFactory 와 ApplicationContext
+
+![20220209_011255](/assets/20220209_011255.png)
+
+
+Bean -  SpringContainer가 관리하는 객체
+
+Spring container- Bean 저장소, Bean을 저장(생성,소멸, 연결)
+- 1.BeanFactory  : 빈을 생성, 연결등의 기본 기능을 정의
+- 2.ApplicationContext : 빈 팩토리를 확장해서 여러 기능을 정의
+
+3. ApplicationContext 의 종류
+![20220209_011529](/assets/20220209_011529.png)
+
+4. Root Ac와 Servlet AC
+
+![20220209_012030](/assets/20220209_012030.png)
+
+![20220209_014236](/assets/20220209_014236.png)
+
+톰캣 서버 구조
+톰캣 엔진 안에 호스트 별로 영역이 있고 그 안에 모듈별로 컨텍스트가 있다.
+
+
+![20220209_014302](/assets/20220209_014302.png)
+
+![20220209_015922](/assets/20220209_015922.png)
+
+Context를 감싸고 있는게 ApplicationContext라 생각하면 된다.
