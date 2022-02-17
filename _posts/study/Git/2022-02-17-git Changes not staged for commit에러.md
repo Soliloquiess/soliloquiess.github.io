@@ -1,5 +1,5 @@
 ---
-title: "[Git]] Git Changes not staged for commit에러"
+title: "[Git] Git Changes not staged for commit에러"
 layout: post
 subtitle: Git
 date: "2022-02-17-05:58:53 +0900"
