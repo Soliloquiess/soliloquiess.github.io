@@ -1,5 +1,5 @@
 ---
-title: "[js] Javascript&Jquery"
+title: "[js] Javascript&Jquery part2"
 layout: post
 subtitle: JS
 date: "2021-08-16-23:45:51 +0900"
@@ -3806,7 +3806,7 @@ new fullpage() 이 함수만 쓰면 되는데
 
 
 
-기타 유용한 라이브러리 : 
+기타 유용한 라이브러리 :
 
 Font Awesome (500종 이상의 무료 vector 웹 아이콘)
 
