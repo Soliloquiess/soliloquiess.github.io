@@ -3368,3 +3368,1491 @@ function 함수(...rest :[string, boolean, ...(number|string)[] ]){
 함수('a', true, 6, 3, '1', 4)
 ```
 이렇게 하면 잘 되는군요
+
+
+-------
+
+
+
+(숙제4) 다음과 같은 문자/숫자 분류기 함수를 만들어보십시오.
+
+파라미터 중 문자만 모아서 [] 에 담아주고, 숫자만 모아서 [] 에 담아주는 함수가 필요합니다.
+
+문자 숫자 외의 자료는 입력불가능하고 파라미터 갯수 제한은 일단 없습니다.
+
+함수 만들어보시고 함수의 파라미터/return 타입지정도 확실하게 해봅시다.
+
+
+
+(동작예시)
+
+함수('b', 5, 6, 8, 'a') 이렇게 사용할 경우 이 자리에 [ ['b', 'a'], [5, 6, 8] ] 이 return 되어야합니다.
+
+return타입은 tuple 타입으로 써보는게 어떨까요
+
+
+function 함수(...rest :(string|number)[]){
+
+  let result :[string[], number[]] = [[],[]];
+
+  rest.forEach((a)=>{
+    if (typeof a === 'string') {
+      result[0].push(a)
+    } else {
+      result[1].push(a)
+    }
+  })
+
+  return result;  
+}
+1. 함수 만들었습니다. 파라미터는 몇개가 들어올지 몰라서 rest parameter 썼고
+
+파라미터 타입은 (string|number)[] 이게 좋겠군요.
+
+2. 결과를 저장할 result라는 변수를 만들었습니다. 기본값은 [[], []] 이렇게 만들었고 그거 타입지정은 tuple type을 활용해봤습니다.
+
+3. rest 파라미터에 반복문 돌렸습니다. 타입이 string이면 result[0]에 추가해주고 number면 result[1]에 추가해줍니다.
+
+4. return 해줌 근데 타입은 알아서 지정 잘 되어있어있군요
+
+--------------
+
+
+### 외부 파일 이용시 declare & 이상한 특징인 ambient module
+
+님들이 코드를 짜다보면 외부 자바스크립트 파일을 이용하는 경우가 있을 겁니다.
+
+import 문법으로 가져다가 쓰면 되는데
+
+근데 안타깝게도 그 파일이 Typescript로 작성된게 아니라 JavaScript 로 작성된 파일이면
+
+무수한 에러가 여러분들을 기다리고 있습니다.
+
+당연히 타입지정이 안되어있으니까요.
+
+
+
+예를 들어서 data.js 라는 파일이 있다고 칩시다.
+
+그리고 index.ts 파일에서 저기 있던 a라는 변수를 쓰고싶으면 어떻게 합니까.
+
+(data.js)
+```
+var a = 10;
+var b = {name :'kim'};
+(index.ts)
+
+console.log(a + 1);
+```
+
+
+
+간단한 html css js 개발시엔 index.html에 저 파일 두개를 첨부하면 됩니다.
+
+(index.html)
+```
+<script src="data.js"></script>
+<script src="index.js"></script>  //index.ts에서 변환된 js 파일
+```
+이게 원래 프론트엔드에서 import하는 방법입니다.
+
+아무튼 콘솔창에 11 잘 나옵니다.
+
+근데 타입스크립트 파일에선 a가 정의가 안되었다고 에러가 나는군요.
+
+
+
+
+
+왜냐면 저거 script 태그로 자바스크립트 파일 2개를 연결해서 쓰는건 html 입장이고
+
+ts 입장에서는 a라는 변수를 import 해온 적이 없기 때문에 에러가 나는 것입니다.
+
+컴파일러가 징징대는걸 제압해봅시다.
+
+
+
+
+-------
+
+
+declare 키워드로 재정의하기
+
+
+
+declare 쓰면 이미 정의된 변수나 함수를 재정의할 수 있습니다.
+
+물론 타입도 포함해서 재정의가 가능합니다.
+
+
+
+
+
+(data.js)
+
+```
+var a = 10;
+var b = {name :'kim'};
+(index.ts)
+
+declare let a :number;
+console.log(a + 1);
+```
+declare 우측에 let a 같은 변수 정의 집어넣으면 됩니다.
+
+"a 라는 변수를 이 파일에서 잠깐 정의해주세요" 라는 뜻입니다.
+
+"a 라는 변수는 분명 어딘가에 있긴 하니까 그만 징징대세요" 라는 뜻이 더 맞습니다.
+
+그래서 js파일 변수를 가져다 쓰는데 '타입에러나 변수없다는 에러'를 방지하고 싶으면
+
+징징대는걸 막을 수 있는 공갈젖꼭지 declare 키워드를 씁시다.
+
+
+
+(특징) declare 이게 붙은 코드들은 js로 변환되지 않습니다.
+
+그냥 컴파일러에게 힌트를 주는 역할의 코드라서 그렇습니다.
+
+
+
+
+
+
+
+
+
+그래서 자바스크립트로만 작성된 외부 라이브러리들을 쓸 때도 나름 유용합니다.
+
+타입스크립트 버전이 없다면 직접 declare로 타입작성하면 됩니다.
+
+ts 파일들은 변수만들 때 타입까먹어도 자동으로 타입지정이 되어있으니 굳이 쓸 이유는 없습니다
+
+
+
+근데 여러분이 tsconfig.json 안에 allowJs 옵션을 true로 켜두면
+
+js파일도 타입지정이 알아서 implicit 하게 됩니다.
+
+리액트 같은 프로젝트에서 유용
+
+
+
+
+
+
+
+
+
+Q. 그럼 .ts 파일에 있던 변수를 .ts 파일에서 쓰고 싶어도 declare 필요함?
+
+A. ts 파일은 그냥 import export 문법을 쓰면 되는 것이지 뭐하러 고민하고 계십니까
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+###### TS의 이상한 특징 : Ambient Module
+
+
+
+타입스크립트가 제공하는 이상한 기능이 있습니다.
+
+바로 import export 없이도 타입들을 다른 파일에서 가져다쓸 수 있다는 점인데
+
+그니까 a.ts 에 있던 변수나 타입정의를 b.ts 에서도 아무런 설정없이 그냥 가져다쓸 수 있습니다.
+
+
+
+(data.ts)
+```
+type Age = number;
+let 나이 :Age = 20;
+(index.ts)
+
+console.log(나이 + 1) //가능
+let 철수 :Age = 30; //가능
+```
+지금 같은 폴더에 아무데나 data.ts 만들고 타입, 변수 이런거 넣어보십시오.
+
+그럼 index.ts에서도 data.ts에 있던 변수와 타입을 자유롭게 사용가능합니다.
+
+import export 그런거 안해도 같은 폴더에 있는 ts 파일은 그냥 사용가능합니다.
+
+왜냐면 그냥 ts 파일에 대충 입력한 변수와 타입들은 전부 global 변수 취급을 받습니다.
+
+전역으로 쓸 수 있는 파일을 전문용어로 ambient module 이라고 칭합니다.
+
+(타입스크립트에서 let name 이라는 이름의 변수생성이 안되는 이유를 여기서 찾을 수 있습니다. 어디선가 기본으로 let name 이미 쓰고있음)
+
+
+
+
+
+
+
+반면에 import 혹은 export 키워드가 들어간 ts 파일은 다릅니다.
+
+import / export 키워드가 적어도 하나 있으면 그 파일은 로컬 모듈이 되고
+
+거기 있는 모든 변수는 export를 해줘야 다른 파일에서 사용가능합니다.
+
+그래서 타입스크립트 파일이 다른 파일에 영향끼치는걸 막고싶으면 export 키워드를 강제로 추가하면 됩니다.
+
+
+
+(data.ts)
+```
+export {};
+type Age = number;
+let 나이 :Age = 20;
+(index.ts)
+
+console.log(나이 + 1) //불가능
+let 철수 :Age = 30; //불가능
+```
+이러면 data.ts에 있던 파일은 더 이상 글로벌 모듈 (ambient module)이 되지 않으며
+
+다른 파일에서 함부로 가져다쓸 수 없습니다. import export 써야함
+
+
+
+대체 왜 이딴식인가 생각을 해보면 옛날 js 파일과의 호환성 때문에 그런 것 같은데 약간 불편할 때가 많습니다.
+
+타입스크립트 불편한 점 개선한 타입스크립투 나와야함
+
+
+
+
+
+
+
+
+
+
+
+
+
+###### declare global
+
+
+
+ts 파일에 import export 문법이 없으면 글로벌 모듈이 됩니다.
+
+ts 파일에 import export 문법이 있으면 로컬 모듈입니다.
+
+근데 로컬 모듈에서 갑자기 전역으로 변수를 만들고 싶을 때가 있습니다.
+
+실은 별로 없는데 아무튼 있다고 가정합시다.
+
+따로 설정 없어도 프로젝트 내의 모든 파일에서 이용가능한 타입을 만들고 싶으면 이걸 붙여서 만드시면 됩니다.
+
+
+
+
+```
+declare global {
+  type Dog = string;
+}
+```
+이런 코드를 로컬 파일에 적어두시면 모든 파일에서 Dog 타입을 이용가능합니다.
+
+이것도 일종의 namespace 문법인데 여기다 적은건 global 이라는 이름의 namespace에 추가된다고 보시면 됩니다.
+
+그리고 global namespace는 모든 파일에서 기본적으로 이용이 가능하고요.
+
+아무튼 로컬 모듈에서 전역변수 만들고 싶을 때 씁시다.
+
+ --------
+
+ ### d.ts 파일 이용하기
+
+
+ declare 키워드를 배웠으면 이제 d.ts 파일도 이해가 갑니다.
+
+ 코드짜다보면 어디선가 d.ts 파일이 등장합니다.
+
+ 이 파일은 타입만 저장할 수 있는 파일형식입니다. (그래서 definition의 약자인 d가 들어감)
+
+ 그리고 자바스크립트로 컴파일되지 않습니다.
+
+
+
+ 어디다 쓰냐면
+
+ 1. 타입정의만 따로 저장해놓고 import 해서 쓰려고
+
+ 2. 프로젝트에서 사용하는 타입을 쭉 정리해놓을 레퍼런스용으로 사용
+
+ 그렇습니다.
+
+
+
+
+
+
+
+
+
+ 타입만 따로 d.ts에 모아놓으려면
+
+
+
+ 1. 어쩌구.d.ts 라고 작성하신 파일은 타입 정의만 넣을 수 있습니다.
+
+ type 키워드, interface 이런걸로요.
+
+ 함수의 경우 함수에 { } 중괄호 붙이기는 불가능합니다. 파라미터 & return 타입만 지정가능합니다.
+
+
+ ```
+ export type Age = number;
+ export type multiply = (x :number ,y :number) => number
+ export interface Person { name : string }
+ ```
+ 그래서 대충 이렇게 생겼습니다.
+
+
+
+
+
+ 2. 정의해둔 타입은 export 해서 써야합니다.
+
+ d.ts 파일은 ts 파일이 아니기 때문에 그냥 써도 ambient module이 되지 않습니다.
+
+ 그래서 export를 추가해줘야 다른 ts 파일에서 가져다쓸 수 있습니다.
+
+ 3. 한 번에 많은 타입을 export 하고 싶은 경우 namespace에 담든가
+
+ 아니면 자바스크립트 배운 사람처럼 import * as 어쩌구 문법을 쓰십시오.
+
+
+
+
+
+
+ d.ts 파일을 레퍼런스용으로 쓰려면
+
+
+
+ts파일마다 d.ts 파일을 자동생성하시면 됩니다.
+
+
+
+(tsconfig.json)
+```
+{
+    "compilerOptions": {
+        "target": "es5",
+        "module": "es6",
+        "declaration": true,
+    }
+}
+```
+tsconfig에다가 declaration 옵션을 true로 바꿔주면 됩니다.
+
+그럼 저장시 자동으로 ts파일마다 d.ts 파일이 옆에 생성됩니다.
+
+열어보시면 타입정의만 쭉 정리되어서 담겨있음  
+
+
+
+
+
+
+
+(index.ts)
+```
+let 이름 :string = 'kim';
+let 나이 = 20;
+interface Person { name : string }
+let 사람 :Person = { name : 'park' }
+```
+이렇게 작성하면
+
+
+
+
+
+
+
+(index.d.ts)
+```
+declare let 이름: string;
+declare let 나이: number;
+interface Person {
+    name: string;
+}
+declare let 사람: Person;
+```
+이런 파일이 생성됩니다. (안생기면 import 문법 다 지워보셈)
+
+
+
+어쩌구.d.ts 라는 파일엔 어쩌구.ts 파일에 있는 모든 변수와 함수 타입정의가 들어있습니다.
+
+자동생성의 경우 따로 수정하거나 그럴 순 없어서 (수정해도 어쩌구.ts 저장시 자동생성이라 의미없음)
+
+그냥 레퍼런스용으로 사용하거나 하시면 됩니다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+export 없이 d.ts 파일을 글로벌 모듈 만들기
+
+
+
+원래 d.ts 파일은 import export 없어도 로컬모듈입니다.
+
+그래서 다른 ts파일에서 import를 해서 쓸 수 밖에 없는데
+
+이게 귀찮으면 d.ts를 글로벌 모듈로 만들어보십시오.  
+
+파일이 많아지면 섞이기 때문에 굳이 왜 하나 싶지만
+
+
+
+프로젝트 내에 types/common 이런 폴더 두개를 만드시고
+
+tsconfig.json 파일에 "typeRoots": ["./types"] 이런 옵션을 추가해주면 됩니다.
+
+이러면 ts 파일 작성할 때 타입없으면 자동으로 여기서 타입 찾아서 적용해줌
+
+
+
+- 다만 이걸 쓸 경우 파일명.d.ts 자동생성 기능은 끄는게 좋을 듯 합니다.
+
+- d.ts 파일명은 기존 ts 파일명과 안겹치게 작성하는게 좋습니다.
+
+- 하지만 이런거 쓰다가 로컬 타입과 저런 글로벌 타입이 겹치면 어쩌쥬 역시 import export가 안전합니다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+유명한 JS 라이브러리들은 d.ts 파일을 제공
+
+
+
+님들이 jQuery 혹은 Bootstrap 애니메이션 라이브러리를 가져다 쓴다고 합시다.
+
+근데 이건 당연히 .js 로 끝나는 자바스크립트 파일이겠죠?
+
+그럼 당연히 ts 파일에서 쓰려면 에러가 나겠죠?
+
+
+
+그럼 여러분들이 직접 jquery.d.ts 파일을 만들어서 타입정의를 하시거나 그러면 되는데
+
+근데 유명한 라이브러리들은 전부 d.ts 파일을 누군가 만들어 놨기 때문에
+
+그거 찾아서 다운받거나 하시면 됩니다
+
+Definitely Typed 여기가 주로 쓰는 라이브러리 모아놓은 github repository인데
+
+아마 대부분 라이브러리의 타입정의 파일을 찾을 수 있을 겁니다.
+
+
+
+
+
+근데 요즘은 npm으로 라이브러리 설치시 타입스크립트 타입정의된 버전을 따로 찾아서 설치하실 수 있습니다.
+
+TypeSearch 여기 들어가면 타입정의된 npm 패키지 찾아볼 수 있음
+
+타입이 정의된 라이브러리를 npm으로 설치하면
+
+node_modules/@types 이런 경로에 타입이 설치됩니다.
+
+그리고 타입스크립트 컴파일러는 자동으로 여기 있는 타입 파일을 참고해서 타입을 가져오게 되어있습니다.
+
+(참고) "typeRoots" 옵션이 있을 경우 node_modules/@types 폴더를 추가해야합니다. 아니면 그냥 "typeRoots" 옵션을 제거해보셈
+
+
+
+혹은 따로 타입부분만 설치할 수도 있습니다.
+
+예를 들어 타입파일이 제공되지 않는 jQuery 같은 경우
+
+npm install --save @types/jquery
+
+이렇게 강제로 설치하시면 이제 jQuery 문법 사용할 때 타입정의 안하셔도 됩니다.
+
+--------------
+
+
+
+### implements 키워드
+
+
+
+
+interface는 object 타입지정할 때 쓴다고 배워봤습니다.
+
+하지만 용도가 하나 더 있는데 class 타입을 확인하고 싶을 때도 interface 문법을 사용할 수 있습니다.
+
+근데 implements 키워드도 필요함
+
+
+
+
+
+
+
+implements 키워드
+
+
+
+class를 하나 만들어봅시다.
+```
+class Car {
+  model : string;
+  price : number = 1000;
+  constructor(a :string){
+    this.model = a
+  }
+}
+let 붕붕이 = new Car('morning');
+ ```
+
+class Car 로부터 생산되는 object들은 model과 price 속성을 가지게 됩니다.
+
+근데 class가 model, price 속성을 가지고 있는지 타입으로 확인하고 싶으면 어떻게합니까.
+
+그럴 경우 interface + implements 키워드로 확인하면 됩니다.
+
+
+
+
+
+
+```
+interface CarType {
+  model : string,
+  price : number
+}
+
+class Car implements CarType {
+  model : string;
+  price : number = 1000;
+  constructor(a :string){
+    this.model = a
+  }
+}
+let 붕붕이 = new Car('morning');
+```
+class 이름 우측에 implements를 쓰고 interface 이름을 쓰면
+
+"이 class가 이 interface에 있는 속성을 다 들고있냐"
+
+라고 확인이 가능합니다.
+
+그래서 다 갖고 있으면 별말 안해주고
+
+혹여나 빠진 속성이 있으면 에러로 알려줍니다.
+
+
+
+
+
+
+
+
+
+
+
+implements는 타입지정문법이 아닙니다
+
+
+
+implements라는건 interface에 들어있는 속성을 가지고 있는지 확인만하라는 뜻입니다.
+
+class에다가 타입을 할당하고 변형시키는 키워드는 아닙니다.
+
+
+```
+interface CarType {
+  model : string,
+  tax : (price :number) => number;
+}
+
+class Car implements CarType {
+  model;   ///any 타입됨
+  tax (a){   ///a 파라미터는 any 타입됨
+    return a * 0.1
+  }
+}
+```
+
+지금 CarType을 implements 했냐고 써봤습니다.
+
+근데 CarType에 있던 model : string 이런게 반영되는건 아닙니다. class 안에서의 model은 any 타입임
+
+class 함수도 마찬가지로 함수에 있던 number 타입이 전혀 반영되지 않습니다.
+
+결론은 implements는 class의 타입을 체크하는 용도지 할당하는게 아님을 명심합시다.
+
+-----------
+
+
+### object index signatures
+
+
+object 자료에 타입을 미리 만들어주고 싶은데
+
+1. object 자료에 어떤 속성들이 들어올 수 있는지 아직 모르는 경우
+
+2. 타입지정할 속성이 너무 많은 경우
+
+index signatures 를 사용하면 편리합니다.
+
+
+
+
+
+
+
+index signatures
+
+
+
+object 용 타입을 하나 만들고 싶습니다. 근데 아직 어떤 속성이 들어올지 모르는 겁니다.
+
+그럴 땐 이렇게 작성해봅시다.
+
+
+```
+interface StringOnly {
+  [key: string]: string
+}
+
+let obj :StringOnly = {
+  name : 'kim',
+  age : '20',
+  location : 'seoul'
+}
+```
+StringOnly 라는 interface를 하나 만들었습니다.
+
+근데 안에 타입을 적을 때 [어쩌구 : string] : string 이렇게 적으면
+
+모든 string으로 들어오는 key값에 할당되는 value는 string 이어야합니다~ 라는 타입이 됩니다.
+
+쉽게 말하면 { 모든속성 : string } 이라는 뜻과 동일합니다.
+
+이제 이 object에 들어오는 모든 속성은 우측에 string을 가져야합니다.
+
+딱 코드 한 줄로 모든 속성 타입지정이 가능해서 편리할 수 있습니다.
+
+
+
+
+
+
+
+
+
+
+```
+interface StringOnly {
+  age : number,   ///에러남 ㅅㄱ
+  [key: string]: string,
+}
+
+interface StringOnly {
+  age : string,   ///가능  
+  [key: string]: string,
+}
+```
+[ ] 이 문법은 다른 속성과 함께 사용할 수 있지만
+
+{ 모든 속성 : string, age : number } 이건 뭔가 논리적으로 말이 되지 않아 금지시킵니다.
+
+
+
+
+
+
+
+
+
+
+```
+interface StringOnly {
+  age : number,   ///가능
+  [key: string]: string | number,
+}
+```
+이건 가능합니다.
+
+{ 모든속성 : string | number, age : number } 이렇게 해주면 논리적으로 말이 됩니다.
+
+
+
+
+
+
+
+
+
+
+
+array 형태도 가능
+
+
+
+님들 자바스크립트에서 array와 object는 실은 별 다를게 없는 같은 자료형입니다.
+```
+let obj = {
+  0 : 'kim'
+  1 : '20',
+  2 : 'seoul'
+}
+console.log(obj[2]) //이러면 'seoul' 출력됨  
+```
+위 코드를 보면 array랑 똑같이 사용가능하죠?
+
+아무튼 object로도 array 처럼 사용가능  
+
+(object 자료도 대괄호쳐서 안에 있는 데이터 뽑을 수 있습니다)
+
+
+
+
+```
+interface StringOnly {
+  [key: number]: string,
+}
+
+let obj :StringOnly = {
+  0 : 'kim'
+  1 : '20',
+  2 : 'seoul'
+}
+```
+[ ] 여기 안에 key값의 타입을 number 로 지정할 수도 있습니다. (대괄호 안엔 string 또는 number만 가능)
+
+그럼 이제 object의 키값이 숫자로 들어오는 경우 value로 string을 가져야한다는 타입입니다.
+
+쉽게 말하면 { 모든숫자속성 : string } 이라는 뜻과 동일합니다.
+
+그래서 array처럼 쓰고싶은 object가 있으면 저렇게 타입지정도 가능하다는 소리입니다.
+
+숫자 key만 넣을거면 그냥 array + tuple 타입 쓰는게 더 직관적일 수 있습니다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+Recursive Index Signatures
+
+
+
+여러분 이런거 타입지정할 생각 해본 적 있습니까
+
+```
+let obj = {
+  'font-size' : {
+    'font-size' : {
+      'font-size' : 14
+    }
+  }
+}
+```
+object 안에 object 안에 object가 들어있습니다.
+
+실제로는 별로 쓸모가 없어보이지만 아무튼 중첩된 object들을 한 번에 타입지정하려면 어떻게 해야할까요.
+
+직접 interface 안에 {} 이걸 3번 중첩되게 만드셔도 되긴 하지만
+
+
+```
+interface MyType {
+  'font-size' : {
+    'font-size' : {
+      'font-size' : number
+    }
+  }
+}
+```
+귀찮을 경우 이런 테크닉을 사용할 수 있습니다.
+
+
+
+
+
+
+
+
+```
+interface MyType {
+  'font-size': MyType | number
+}
+
+
+let obj :MyType = {
+  'font-size' : {
+    'font-size' : {
+      'font-size' : 14
+    }
+  }
+}
+```
+MyType을 만들었는데
+
+'font-size' 속성은 MyType 이거랑 똑같이 생겼다고 타입을 만들었습니다.
+
+그럼 이제 타입 귀찮게 길게 중첩해서 안써도 됩니다.
+
+그리고 object자료가 4중첩 5중첩 X중첩되어도 대응가능
+
+실은 숙제내려고 쓸데없이 가르쳐드린 내용임
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+(숙제1) 다음 자료의 타입을 지정해보십시오.
+
+
+```
+let obj = {
+  model : 'k5',
+  brand : 'kia',
+  price : 6000,
+  year : 2030,
+  date : '6월',
+  percent : '5%',
+  dealer : '김차장',
+}
+```
+
+
+귀찮으니까 한번에 지정하기 위해 index signature 이걸 써봅시다.
+
+-----------
+
+이러면 버그가 줄어드나
+
+
+
+```
+type Car = {
+  [key :string] : number | string
+}
+
+let obj :Car = {
+  model : 'k5',
+  brand : 'kia',
+  price : 6000,
+  year : 2030,
+  date : '6월',
+  percent : '5%',
+  dealer : '김차장',
+}
+```
+유연한 타입지정이 가능하지만 엄격하지 않아서
+
+버그를 잡아준다는 장점은 없어질 수 있습니다.
+
+
+
+
+
+
+
+
+
+(숙제2) 다음 object 자료의 타입을 interface 써서 만들어보십시오.
+
+
+```
+let obj = {
+  'font-size' : 10,
+  'secondary' : {
+    'font-size' : 12,
+    'third' : {
+      'font-size' : 14
+    }
+  }
+}
+```
+object 안에 object 안에 object가 들어있습니다.
+
+타입지정 해보도록 합시다. 물론 비슷한 object들이 더 중첩되어도 가능하게 recursive한 타입을 써보는건 어떨까요.
+
+-------
+
+
+
+직접해보고 실험해봐야지 이걸 누르면 어떻게 합니까
+
+
+
+```
+interface MyType {
+  'font-size' : number,
+  [key :string] : number | MyType,
+}
+
+let obj = {
+  'font-size' : 10,
+  'secondary' : {
+    'font-size' : 12,
+    'third' : {
+      'font-size' : 14
+    }
+  }
+}
+```
+1. MyType을 만들었는데 여기 안엔 'font-size' 속성, 그리고 모든 문자 속성이 들어갈 수 있습니다.
+
+2. 모든 문자 속성이 들어오면 number | MyType을 가져야한다고 타입지정해놨습니다.
+
+그럼 이제 여러분들이 object 안에 object를 집어넣어도 MyType 타입과 비슷하게 생기면 통과시켜줍니다.
+
+--------
+
+
+### object 타입 변환기 만들기
+
+
+가끔 object를 다른 타입으로 변환하고 싶을 때가 있습니다.
+
+모든 속성들에 문자가 들어오는 타입을 갑자기 숫자가 들어오도록 바꾸고 싶을 때요.
+
+그럴 땐 처음부터 타입을 다시 작성하는 것이 아니라 mapping을 이용하면 됩니다.
+
+
+
+
+
+
+
+
+
+keyof 연산자
+
+
+
+그 전에 간단히 keyof 연산자를 짚고 넘어가야합니다.
+
+keyof는 object 타입에 사용하면 object 타입이 가지고 있는 모든 key값을 union type으로 합쳐서 내보내줍니다.
+
+object의 key를 뽑아서 새로운 타입을 만들고 싶을 때 사용하는 연산자입니다.
+
+
+```
+interface Person {
+  age: number;
+  name: string;
+}
+type PersonKeys = keyof Person;   //"age" | "name" 타입됩니다
+let a :PersonKeys = 'age'; //가능
+let b :PersonKeys = 'ageeee'; //불가능
+```
+Person 타입은 age, name 이라는 key를 가지고 있었기 때문에  
+
+이제 PersonKeys는 정말 'age' | 'name' 타입이 됩니다.
+
+literal type이네요
+
+
+
+
+```
+interface Person {
+  [key :string]: number;
+}
+type PersonKeys = keyof Person;   //string | number 타입됩니다
+let a :PersonKeys = 'age'; //가능
+let b :PersonKeys = 'ageeee'; //가능
+```
+Person 타입은 모든 문자 key를 가질 수 있기 때문에
+
+keyof Person 이렇게 하면 string 타입이 됩니다.
+
+실은 string | number 타입이 됩니다. object key값에 숫자 넣어도 문자로 치환되어서 그렇습니다.
+
+[key :number] 이렇게 숫자만 들어올 수 있다고 해놓으면 keyof Person 이렇게 하면 number 타입이 됩니다.
+
+
+
+(참고) 쌩자바스크립트는 .keys() 이런거 붙이면 key값을 array자료로 담아줍니다.
+
+
+
+
+
+
+
+
+
+
+
+Mapped Types
+
+
+
+가끔 object안에 있는 속성들을 다른 타입으로 한번에 싸그리 변환하고 싶을 때가 있습니다.
+
+그럴 때 유용한 타입변환기를 만들어봅시다.
+
+
+```
+type Car = {
+  color: boolean,
+  model : boolean,
+  price : boolean | number,
+};
+```
+팀원이 만든 쓰레기같은 Car 타입이 있다고 합시다.
+
+여기 있는 모든 속성을 string 타입으로 바꾸고 싶어진 것입니다.
+
+속성이 3개면 직접 다시 만들어도 되겠지만 100개면 어쩌죠? 매우 귀찮습니다.
+
+
+```
+type Car = {
+  color: boolean,
+  model : boolean,
+  price : boolean | number,
+};
+
+type TypeChanger <MyType> = {
+  [key in keyof MyType]: string;
+};
+```
+그럴 땐 TypeChanger 처럼 생긴 타입을 만들어봅시다.
+
+그냥 쓰는 법이 정해져있는데
+
+[ 자유작명 in keyof 타입파라미터 ] : 원하는 타입
+
+이렇게 입력하시면 object 타입을 입력했을 때 속성명은 그대로지만 다른 타입으로 변환해주는 변환기를 만들 수 있습니다.
+
+
+
+in 키워드는 왼쪽이 오른쪽에 들어있냐라는 뜻이고
+
+keyof는 오브젝트 타입에서 key값만 union type으로 뽑아주는 역할이라 머리쓰면 이해는 될듯요
+
+
+
+
+
+
+```
+type Car = {
+  color: boolean,
+  model : boolean,
+  price : boolean | number,
+};
+
+type TypeChanger <MyType> = {
+  [key in keyof MyType]: string;
+};
+
+type 새로운타입 = TypeChanger<Car>;
+
+let obj :새로운타입 = {
+  color: 'red',
+  model : 'kia',
+  price : '300',
+}
+```
+이렇게 하면 이제 새로운타입은 color, model, price 속성을 가지고 있으며 전부 string 타입이 됩니다.
+
+key 값이 100개 있는 object 타입을 변경할 일이 있으면 쓰도록 합시다.
+
+
+
+
+
+
+
+
+
+
+
+(숙제1) 다음 타입을 변환기를 돌려보십시오.
+```
+type Bus = {
+  color : string,
+  model : boolean,
+  price : number
+}
+```
+동료가 잘못 만든 타입입니다.
+
+color, model, price 속성은 전부 string 또는 number 타입이어야합니다.
+
+1. 변환기 하나 만드시고
+
+2. 기존 Bus 타입을 변환기 돌려서 위 조건을 충족하는 새로운 타입을 하나 만들어보십시오.
+
+귀찮아도 해봐야
+
+```
+type Bus = {
+  color : string,
+  model : boolean,
+  price : number
+}
+
+type TypeChanger <MyType> = {
+  [key in keyof MyType]: string|number;
+};
+
+type NewBus = TypeChanger<Bus>
+```
+이제 NewBus는 이제 color, model, price를 가지고 있으며
+
+모든 속성은 string 타입입니다.
+
+
+
+(숙제2) 이런 변환기는 어떻게 만들어야할까요?
+
+object안에 들어있는 모든 속성을
+
+string, number 이렇게 고정된 타입으로 변환해주는게 아니라
+
+내가 원하는 타입을 입력하면 그걸로 변환해주는 범용성 좋은 변환기를 만들어보십시오.
+
+
+
+이렇게 하면 되겠군요
+
+```
+type Bus = {
+  color : string,
+  model : boolean,
+  price : number
+}
+
+type TypeChanger <MyType, T> = {
+  [key in keyof MyType]: T;
+};
+
+type NewBus = TypeChanger<Bus, boolean>;
+type NewBus2 = TypeChanger<Bus, string[]>
+```
+이러면 TypeChanger 쓸 때마다 타입파라미터를 T 자리에 하나 더 입력할 수 있게 됩니다.
+
+그러면 이제 오브젝트 모든 속성은 T로 바뀜
+
+
+
+NewBus 살펴보시면 모든 속성이 boolean으로 바뀌어있습니다.
+
+NewBus2 살펴보시면 모든 속성이 string[] 으로 바뀌어있습니다.
+
+-----------
+
+
+### 조건문으로 타입만들기 & infer
+
+
+타입만들 때 초보처럼 type Age = string 이렇게 하드코딩하는 법만 배워봤습니다.
+
+근데 if 조건문처럼 "조건에 따라서 이럴 경우 string, 저럴 경우 number"이런 식으로 타입지정도 가능합니다.
+
+하지만 자주 쓰는 내용은 아니기 때문에 어짜피 다음날 까먹습니다.
+
+이런게 있다고 기억해두고 나중에 필요하면 찾아서 쓰는게 좋은 방법입니다.
+
+
+
+
+
+
+
+삼항연산자
+
+
+
+자바스크립트 기본 문법 중에 삼항연산자라는게 있습니다.
+
+if문 대용품인데 평소에 if가 들어갈 수 없는 곳들에 간략하게 if문을 넣을 수 있는 방법입니다.
+
+
+
+조건문 ? 참일때실행할코드 : 거짓일때실행할코드
+3 > 1 ? console.log('맞아요') : console.log('아님')
+이렇게 if문처럼 사용합니다.
+
+기본 문법 잠깐 짚어봤습니다.
+
+
+
+
+조건부로 타입만들기
+
+
+
+예를 들면 이런 코드가 있다고 칩시다.
+
+
+```
+type Age<T> = T;
+```
+이러면 이제 Age<number> 이렇게 쓰면 그 자리에 number가 남습니다.
+
+(타입변수에도 타입파라미터 넣기 가능)
+
+
+
+
+
+근데 이걸 이렇게 바꿔봅시다.
+
+"타입파라미터 자리에 string 타입을 집어넣으면 string 부여해주시고 그게 아니면 전부 unknown 부여해주셈"
+
+if문을 쓰자는 겁니다. 만약 T가 string이면 string, 그게 아니면 unknown 를 남기도록요
+
+
+
+
+
+타입 조건식은 주로 extends 키워드와 삼항연산자를 이용합니다.
+
+"extends는 왼쪽이 오른쪽의 성질을 가지고 있냐" 라는 뜻으로 사용할 수 있기 때문에
+
+나름 조건식 용도로 사용가능합니다. 비유하자면 수학에서 쓰는 ⊂ 이런 기호 역할이겠군요
+
+
+
+
+```
+type Age<T> = T extends string ? string : unknown;
+let age : Age<string> //age는 string 타입
+let age2 : Age<number> //age는 unknown 타입
+```
+그래서 이렇게 썼습니다.
+
+"T라는 파라미터가 string 성질 가지고 있냐? 그러면 string 남기고 아니면 unknown 남겨라"
+
+그랬더니 정말 string 집어넣으면 string, number 이렇게 집어넣으면 unknown을 남겨줍니다.
+
+이게 if문 쓰는 방법입니다.
+
+아직 타입이 확실하지 않은 <타입파라미터> 다룰 때 많이 사용하겠죠?
+
+
+
+
+
+
+
+Q. 그럼 파라미터로 array 자료를 입력하면 array의 첫 자료의 타입을 그대로 남겨주고,
+
+array 자료가 아니라 다른걸 입력하면 any 타입을 남겨주는 타입은 어떻게 만들면 될까요?
+
+
+```
+let age1 :FirstItem<string[]>;
+let age2 :FirstItem<number>;
+```
+이러면 age1의 타입은 string, age2의 타입은 any가 되어야합니다.
+
+FirstItem이라는 타입을 알아서 만들어봅시다.
+
+클릭금지 extends와 삼항연산자 알아서 쓰셈
+
+```
+type FirstItem<T> = T extends any[] ? T[0] : any
+
+let age1 :FirstItem<string[]>;
+let age2 :FirstItem<number>;
+```
+이러면 정말 age1의 타입은 string, age2의 타입은 any가 됩니다.
+
+
+
+
+infer 키워드
+
+
+
+조건문에 사용할 수 있는 특별한 infer 키워드가 있습니다.
+
+infer 키워드는 지금 입력한 타입을 변수로 만들어주는 키워드입니다.
+
+평상시에 굳이 쓸 이유는 없는데 나오면 읽을 줄은 알아야하니 간단히 알아보도록 합시다.
+
+
+```
+type Person<T> = T extends infer R ? R : unknown;
+type 새타입 = Person<string> // 새타입은 string 타입입니다
+```
+1. infer 키워드는 조건문 안에서만 사용가능합니다.
+
+2. infer 우측에 자유롭게 작명해주면 타입을 T에서 유추해서 R이라는 변수에 집어넣어라~ 라는 뜻입니다.
+
+그래서 위의 예제에서 <string> 이렇게 타입파라미터자리에 string 집어넣으면 R은 string이 됩니다.
+
+3. R을 조건식 안에서 맘대로 사용가능합니다.
+
+이런 식으로 타입파라미터에서 타입을 추출해서 쓰고싶을 때 쓰는 키워드라고 보시면 됩니다.
+
+
+
+
+
+
+
+근데 무슨 용도로 쓰는지 알아야 나중에 코드짤 때 활용이 가능하기 때문에 어디다 쓰냐면
+
+1. array 안에 있던 타입이 어떤 타입인지 뽑아서 변수로 만들어줄 수 있습니다.
+
+
+```
+type 타입추출<T> = T extends (infer R)[] ? R : unknown;
+type NewType = 타입추출< boolean[] > // NewType 은 boolean 타입입니다
+```
+이런 식으로도 사용할 수 있는데
+
+(infer R)[] 이렇게 하면 array가 가지고 있던 타입부분만 쏙 뽑아서 R 변수에 할당할 수 있습니다.
+
+
+
+
+
+
+
+2. 함수의 return 타입이 어떤 타입인지 뽑아서 변수로 만들어줄 수 있습니다.
+
+
+```
+type 타입추출<T> = T extends ( ()=> infer R ) ? R : unknown;
+type NewType = 타입추출< () => number > // NewType은 number 타입입니다
+```
+이런 식으로도 사용할 수 있는데
+
+타입파라미터에 <함수>를 집어넣었습니다. 그 타입파라미터에 있는 return 타입을 쏙 뽑아서 R이라는 변수에 담는 코드입니다.
+
+일정한 규칙이 있다기 보다 그냥 타입을 추출하는 식으로 이해하면 되겠습니다.
+
+
+
+실은 이런 것도 직접 만들어쓸 필요는 없고
+
+ReturnType<> 이런 예약 타입이 있는데 여기에 함수타입 집어넣으면 return 타입만 뽑아서 알려줌
+
+
+
+
+
+
+
+
+
+
+
+(숙제1) 타입 파라미터로
+
+1. array 타입을 입력하면
+
+2. array의 첫 자료가 string이면 string 타입을 그대로 남겨주고
+
+3. array의 첫 자료가 string이 아니면 unknown 을 남겨주려면 어떻게 타입을 만들어놔야할까요?
+
+
+
+(동작예시)
+```
+let age1 :Age<[string, number]>;
+let age2 :Age<[boolean, number]>;
+```
+이러면 age1의 타입은 string, age2의 타입은 unknown이 되어야합니다. (array나 tuple이나 그게 그거임)
+
+이걸 만족하는 type Age를 만들어봅시다.
+
+저는 어떻게 했냐면
+
+```
+type Age<T> = T extends [string, ...any] ? T[0] : unknown;
+let age1 :Age<[string, number]>;
+let age2 :Age<[boolean, number]>;
+```
+이러면 정말 age1은 string, age2는 unknown이 됩니다.
+
+
+
+
+
+(숙제2) 함수의 파라미터의 타입을 뽑아주는 기계를 만들어보십시오.
+
+
+```
+타입뽑기<(x :number) => void> //이러면 number가 이 자리에 남음
+타입뽑기<(x :string) => void> //이러면 string이 이 자리에 남음
+```
+아무튼 함수의 파라미터타입이 남아야합니다.
+
+제목
+
+```
+type 타입뽑기<T> = T extends (x: infer R) => any ? R : any;
+type a = 타입뽑기<(x :number) => void>
+```
+이러면 a라는 타입이 number로 잘 남습니다.
+
+참고로 함수만 들어올 수 있게 제한을 두고 싶으면
+
+언제나 T 라는 함수 파라미터 만들 때 extends로 제한을 두면 됩니다.
