@@ -165,6 +165,21 @@ view의 경로는 옮길면 바꿔줘야(리턴값) = 당연
 웹은 현재 작업중인 페이지에서 다른 페이지로 이동하기 위해 2가지 페이지 전환 기능을 제공합니다. 오늘은 2가지의 페이지 전환 방법의 차이와 사용법에 대해 알아보도록 하겠습니다.
 
 
+```
+if(nextPage!=null) {
+			if(nextPage.indexOf("redirect:")!=-1) {
+				//            redirect:/MVC04/memberList.do
+				response.sendRedirect(nextPage.split(":")[1]); // redirect
+			}else {
+				RequestDispatcher rd=request.getRequestDispatcher(ViewResolver.makeView(nextPage)); // forward
+				rd.forward(request, response);
+			}
+		}		
+```
+
+
+FrontController 에서
+여기서 Redierct 글자가 있으면 리다이렉트로  넘기고 없으면  Forward로 넘기게 설정
 
 1. Forward 방식
 [ Forward 방식 ]
