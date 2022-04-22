@@ -58,3 +58,20 @@ sudo systemctl start mongod
 
 sudo systemctl status mongod
 로 mongodb를 실행해준다
+
+
+---------
+
+
+cat config/copy1.conf
+
+mkdir data1
+
+
+
+dbPath: /home/vagrant/data1
+
+
+sudo mongod -f config/copy1.conf
+
+sudo mongod -f etc/mongod.conf
