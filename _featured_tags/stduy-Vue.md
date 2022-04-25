@@ -1,7 +1,7 @@
 ---
 layout: tag-blog
-title: Vue
-slug: Vue
+title: React&Vue
+slug: React&Vue
 category: study
 menu: false
 order: 6
