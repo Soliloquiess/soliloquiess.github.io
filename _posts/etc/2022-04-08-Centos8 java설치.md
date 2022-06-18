@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  VirtualBox Centos8 설치"
+title:  "VirtualBox Centos8 설치"
 subtitle:  "세팅"
 
 date: "2022-4-08-02:26:51 +0900"
