@@ -1,7 +1,7 @@
 ---
 layout: tag-blog
-title: Docker
-slug: Docker
+title: AWS&Docker
+slug: AWS&Docker
 category: study
 menu: false
 order: 11
