@@ -1522,3 +1522,1865 @@ ________________________________________________________________________________
 -------
 
 <br>
+
+----
+
+### 머스테치로 화면 구성하기
+
+
+####  서버 템플릿 엔진과 머스테치
+
+템플릿 엔진 : 지정된 템플릿 양식과 데이터가 합쳐져 HTML문서를 출력하는 소프트웨어
+과거에는 JSP와 같이 HTML과 JAVA가 합쳐져 HTML에 데이터를 넣어서 동적으로 활용할 수 있는 것
+최근에는 REACT, VUE 같은 것들이 등장했다.
+
+과거 현재 모두 지정된 템플릿과 데이터를 이용하여 HTML을 생성하는 템플릿 엔진이지만
+전자는(과거는) 서버 템플릿 엔진이라 불리며,
+후자는(현재는) 클라이언트 템플릿 엔진이라 불린다.
+
+
+```
+<script type="text/javascript">
+
+$(document).ready(function(){
+    if( a == "1"){
+      <%
+        System.out.println("test");   
+      %>    
+    }
+})  
+```
+
+위 코드의 문제점은 바로 if문과 상관없이 System.out.println("test");이 실행된다는 점이다.
+이유는 javascript 와 jsp가 작동하는 영역이 다르기 때문이다.
+
+
+javascript는 프론트 영역에서 jsp는 서버 영역에서 구동된다.
+
+jsp와 같은 서버 템플릿 엔진을 이용한 화면 생성은 서버에서 java 코드로 문자열을 만든뒤
+이 문자열을 HTML로 변환하여 브라우저로 전달한다.
+
+그렇기에 위 코드는 HTML로 만드는 과정에서 System.out.println("test"); 명령어를 실행할 뿐이고
+이때 자바스크립트는 실행되지 않는 단순한 문자열일 뿐이다.
+
+자바스크립트는 기본적으로 브라우저 위에서 작동한다.
+즉, 서버가 아닌 브라우저에서 작동되므로 서버 템플릿 엔진의 손을 벗어나게 되어 서버에서 제어를 할 수가 없다.
+
+React, Vue 에서 서버는 json 혹은 xml형식의 데이터만 전달하고 클라이언트에서 조립한다.
+
+
+------
+
+
+#### 머스테치
+
+머스테치는 현존하는 대부분의 언어를 지원하는 가장 심플한 템플릿 엔진이다.(JSP,REACT 같은)
+자바에서 사용할 때는 서버 템플릿 엔진으로,
+자바스크립트에서 사용될 때는 클라이언트 템플릿 엔진으로 모두 사용할 수 있다.
+
+###### 장점
+
+- 문법이 다른 템플릿 엔진보다 심플하다.
+
+- 로직 코드를 사용할 수 없어 View의 역할과 서버의 역할을 명확하게 분리한다.
+
+- Mustache.js 와 Mustache.java 2가지가 다 있어, 하나의 문법으로 클라이언트/서버 템플릿을 모두 사용가능
+
+
+개인적으로 템플릿 엔진은 '화면' 역할에만 충실해야 한다고 생각이든다.  
+
+너무 많은 기능을 제공하면 API와 템플릿 엔진, 자바스크립트가 서로 로직을 나눠 갖게 되어 유지보수하기가 굉장히 어렵다.  
+
+----
+
+#### 기본 페이지 만들기
+
+######  index.mustahce 및 IndexController 작성
+
+머스테치는 스프링 부트에서 공식 지원하는 템플릿 엔진이다.
+
+그러므로 우선 스프링 부트 프로젝트에서 머스테치를 편하게 사용할 수 있도록
+머스테치 스타터 의존성을 build.gradle에 등록하자
+
+
+-----
+<br>
+
+###### index.mustahce 및 IndexController 작성
+
+머스테치는 스프링 부트에서 공식 지원하는 템플릿 엔진이다.
+그러므로 우선 스프링 부트 프로젝트에서 머스테치를 편하게 사용할 수 있도록
+머스테치 스타터 의존성을 build.gradle에 등록하자
+
+build.gradle
+```
+dependency{    
+     ...
+     compile('org.springframework.boot::spring-boot-starter-mustache')    
+}
+
+```
+위처럼 mustache 의존성 설정을 넣어주면 이제 뒤에 .mustache가 기본으로 붙게 된다.
+
+
+머스테치 파일의 기본 위치는 src/main/resources/templates이다.
+
+이 위치에 머스테치 파일을 두면 스프링 부트에서 자동으로 로딩한다.
+
+첫 페이지를 담당할 index.mustache를 src/main/resources/templates에 생성하자
+
+
+<br>
+----
+<br>
+
+
+index.mustache
+```
+<!doctype html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>스프링 부트 웹 서버</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/app/bgimg.css">
+</head>
+<body>
+    <h1>스프링 부트로 시작하는 웹 서비스 ver.2</h1>
+</body>
+</html>    
+```
+이제 이 머스테치에 접근할 Controller를 작성하고 URL 매핑을 진행해주자.
+
+indexController
+```
+package com.yacho.SpringbootAWS;
+
+import com.yacho.SpringbootAWS.config.auth.LoginUser;
+import com.yacho.SpringbootAWS.config.auth.dto.SessionUser;
+import com.yacho.SpringbootAWS.service.posts.PostsService;
+import com.yacho.SpringbootAWS.web.dto.PostsResponseDto;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
+@RequiredArgsConstructor
+@Controller
+public class IndexController {
+
+    @GetMapping("/")
+    public String index(){
+        return "index";
+    }
+}
+```
+
+
+머스테치 스타터 덕분에 컨트롤러에서 문자열을 반환할 때 앞의 경로와 뒤의 파일 확장자는 자동으로 지정된다.(View Resolver)
+
+ 앞에는 src/main/resources/templates 뒤에는 .mustache가 붙는 것이다.
+
+ ----
+
+
+##### IndexController 테스트
+테스트 코드를 작성하여 검증을 진행하도록 하자
+
+
+```
+IndexControllerTest
+
+package com.jojoldu.book.springboot.web;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.test.context.junit4.SpringRunner;
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
+import static org.assertj.core.api.Assertions.assertThat;
+
+@RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment = RANDOM_PORT)
+public class IndexControllerTest {
+
+    @Autowired
+    private TestRestTemplate restTemplate;
+
+    @Test
+    public void 메인페이지_로딩(){
+        // when
+        String body = this.restTemplate.getForObject("/",String.class);
+
+        // then
+        assertThat(body).contains("스프링 부트로 시작하는 웹 서비스");
+        // 포함된 내용이 없으 False 리턴
+    }
+}
+
+```
+
+테스트 메소들를 실행하여 결과를 확인하고
+테스트만으로는 아쉬우니 직접 브라우저에 접속해서 확인해보자
+
+Application 클래스의 main 메소드를 실행
+http://localhost:8080 접속
+매핑 url 이 /이므로 index.mustache 가 출력 될 것이다.
+
+<br>
+
+--------
+
+<br>
+
+
+
+#### 게시글 등록 화면 만들기
+##### 레이아웃 만들기
+이번 머스테치를 작성할 때는 부트스트랩을 이용해서 개발할 것이다.
+부트스트랩 사용방법은 크게 2가지이다.
+
+1. 외부 CDN을 이용
+2. 직접 라이브러리를 받아서 사용하는 것
+
+-------
+
+
+실제 서비스가 아니므로 머스테치 파일에 코드 한줄만 작성하는 CDN 방식을 사용할 것인데
+우리는 각각에 파일에 한줄씩 넣는것보다 레이아웃 방식으로 추가해서 사용하는 방법으로 할 것이다.
+레이아웃 방식이란 공통 영역을 별도의 파일로 분리하여 필요한 곳에서 가져다 쓰는 방식을 말한다.
+이렇게 사용하는 이유는 반복되는 코드 작성 시간을 줄이고 변경시 유지보수에 편하기 때문이다.
+
+1. src/main/resources/templates에 layout폴더 생성
+2. src/main/resources/templates/layout에 header.mustache 생성
+3. src/main/resources/templates/layout에 footer.mustache 생성
+
+
+header.mustache
+
+```
+<!doctype html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>스프링 부트 웹 서버</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/app/bgimg.css">
+</head>
+```
+
+----
+
+footer.mustache
+
+
+```
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+</body>
+</html>
+```
+
+
+-----
+
+
+코드를 보면 css와 js의 위치가 서로 다른데 이는 페이지 로딩속도를 높이기 위해서이다.
+html 에서는 head가 다 실행되고서야 body가 실행된다.
+
+js를 head에 둘 경우 로딩하는 시간이 길어지므로 클라이언트 입장에서는 로딩되는 것으로 보인다.
+그렇기에 html 과 css 를 우선으로 로딩하여 로딩이 빠르게 되는 것처럼 보여주게 하는 것이 좋다.
+
+추가로 bootstrap은 제이쿼리에 의존적이기에 꼭 제이쿼리도 같이 사용해주어야 한다.
+
+###### index.mustache 수정하기
+레이아웃으로 파일을 분리햇으니 index.mustache에 글 등록 버튼을 하나 추가하자
+
+index.mustache
+
+```
+{{>layout/header}}
+    <h1>스프링 부트로 시작하는 웹 서비스 ver.2</h1>
+    <div class="col-md-12">
+        <!-- 로그인 기능 영역 -->
+        <div class="row">
+            <div class="col-md-6">
+                <a href="/posts/save" role="button" class="btn btn-primary">글 등록</a>
+            </div>
+        </div>
+    </div>
+
+{{>layout/footer}}
+```
+위 코드에서 작성된 주소 /posts/save를 처리해주는 Controller를 작성해주자
+
+-----
+
+
+IndexController
+
+```
+
+package com.jojoldu.book.springboot.web;
+
+import com.jojoldu.book.springboot.config.auth.LoginUser;
+import com.jojoldu.book.springboot.config.auth.dto.SessionUser;
+import com.jojoldu.book.springboot.service.posts.PostsService;
+import com.jojoldu.book.springboot.web.dto.PostsResponseDto;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
+@RequiredArgsConstructor
+@Controller
+public class IndexController {
+
+    @GetMapping("/")
+    public String index(){
+        return "index";
+    }
+
+    @GetMapping("/posts/save")
+    public String postsSave(){
+        return "posts-save";
+    }
+}
+
+```
+
+----
+
+/posts/save를 호출하면 posts-save.mustache를 호출하는 메소드를 추가해줬다.
+컨트롤러 코드가 생성되었다면 호출될 posts-save.mustache 파일도 생성해주자
+
+posts-save.mustache
+
+```
+
+{{>layout/header}}
+
+<h1>게시글 등록</h1>
+<div class="col-md-12">
+    <div class="col-md-4">
+        <form>
+            <div class="form-group">
+                <label for="title">제목</label>
+                <input type="text" class="form-control" id="title" placeholder="제목을 입력하세요">
+            </div>
+            <div class="form-group">
+                <label for="author"> 작성자</label>
+                <input type="text" class="form-control" id="author" placeholder="작성자를 입력하세요">
+            </div>
+            <div class="form-group">
+                <label for="content"> 내용</label>
+                <textarea class="form-control" id="content" placeholder="내용을 입력하세요"></textarea>
+            </div>
+        </form>
+        <a href="/" role="button" class="btn btn-secondary">취소</a>
+        <button type="button" class="btn btn-primary" id="btn-save">등록</button>
+    </div>
+</div>
+{{>layout/footer}}
+```
+
+##### Index.js 생성하기
+
+UI를 작성했지만 아직 게시글 등록 화면에 등록 버튼에 대한 기능을 정의해주지 않았다.
+
+그렇기에 src/main/resources에 static/js/app디렉토리를 생성해주고 js 코드를 작성해주자
+
+index.js
+```
+var main = {
+    init : function () {
+        var _this = this;
+        $('#btn-save').on('click', function(){
+            _this.save();
+        })
+    },
+    save : function () {
+        var data = {
+            title: $('#title').val(),
+            author: $('#author').val(),
+            content: $('#content').val()
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: '/api/v1/posts',
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(data)
+        }).done(function(){
+            alert('글이 등록되었습니다.');
+            window.location.href = "/";
+        }).fail(function(error){
+            alert(JSON.stringify(error));
+        });
+    },
+};
+```
+
+main.init()
+여기서 한가지 팁이 있는데 var index = { 함수이름 : function(){}}이런식으로 만들었을까?
+이유는 간단하다 우선 아래 코드를 살펴보자
+
+a.js
+```
+var init = function(){
+
+}
+
+var save = function(){
+
+}
+```
+단순히 이러한 코드만 보면 문제가 없어보인다.
+하지만 a.js와 같은 식별자를 사용하는 코드가 존재한다면 어떻게 될까?
+
+b.js
+```
+var init = function(){
+
+}
+
+var save = function(){
+
+}
+```
+이름이 같기 때문에 먼저 적용된 코드는 묻히고 뒤에 작성된 코드가 사용될 것이다.
+
+var a = {
+     init : function(){}
+     save : function(){}
+}
+
+var b = {
+     init : function(){}
+     save : function(){}
+}
+
+
+그렇기에 이를 막고자 JavaScript의 객체의 특성을 이용하여 위와 같이 코드를 작성했으며
+a.init() / a.save()와 b.init() / b.save() 이렇게 겹치지 않게 사용할 수 있게해준다.
+이를 네임스페이스 기법이라고 부르기도 한다.
+
+이제 작성된 index.js를 적용시키기 위해 footer.mustache에 추가해주자
+
+footer.mustache
+```
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+<!-- index.js 추가 -->
+<script src="/js/app/index.js"></script>
+</body>
+</html>
+```
+
+
+등록 기능까지 끝냈으므로 실제로 한번 구동시켜서 테스트 해보자
+
+
+<br>
+--------
+<br>
+
+
+#### 전체 조회 화면 만들기
+
+조회 UI를 위해 index.mustache를 조금 수정해보자
+
+index.mustache
+
+```
+{{>layout/header}}
+    <h1>스프링 부트로 시작하는 웹 서비스 ver.2</h1>
+    <div class="col-md-12">
+        <!-- 로그인 기능 영역 -->
+        <div class="row">
+            <div class="col-md-6">
+                <a href="/posts/save" role="button" class="btn btn-primary">글 등록</a>
+            </div>
+        </div>
+    </div>
+    <br>
+    <!-- 목록 출력 영역 -->
+    <table class="table table-horizontal table-bordered">
+        <thead class="thead-string">
+            <tr>
+                <th>게시글번호</th>
+                <th>제목</th>
+                <th>작성자</th>
+                <th>최종수정일</th>
+            </tr>
+        </thead>
+        <tbody id="tbody">
+            {{#posts}}
+                <tr>
+                    <td>{{id}}</td>
+                    <td>{{title}}</td>
+                    <td>{{author}}</td>
+                    <td>{{modifiedDate}}</td>
+                </tr>
+            {{/posts}}
+        </tbody>
+    </table>
+{{>layout/footer}}
+```
+
+-----
+
+
+
+
+
+{{#posts}}
+
+     * posts라는 List를 순회한다.  
+     * Java의 for문과 동일하게 생각하면 된다.  
+_____________________________________________________________________________
+{{#id}}등의 {{변수명}}
+
+     * List에서 뽑아낸 객체의 필드를 사용한다.   
+이제 조회를 위해서 기존에 있던 Controller, Service, Repository 에 코드를 추가해주자
+
+PostsRepository
+
+```
+
+package com.jojoldu.book.springboot.domain.posts;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import java.util.List;
+
+public interface PostsRepository extends JpaRepository<Posts,Long> {
+
+    @Query("SELECT p FROM Posts p ORDER BY p.id DESC")
+    List<Posts> findAllDesc();
+}
+```
+springDataJpa에서 제공해주는 CRUD 외에도 추가로 쿼리를 작성을 해도 된다.
+그럴때는 @ Query로 사용해주면 된다.
+
+PostsService
+```
+package com.jojoldu.book.springboot.service.posts;
+
+import com.jojoldu.book.springboot.domain.posts.Posts;
+import com.jojoldu.book.springboot.domain.posts.PostsRepository;
+import com.jojoldu.book.springboot.web.dto.PostsListResponseDto;
+import com.jojoldu.book.springboot.web.dto.PostsResponseDto;
+import com.jojoldu.book.springboot.web.dto.PostsSaveRequestDto;
+import com.jojoldu.book.springboot.web.dto.PostsUpdateRequestDto;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+
+@RequiredArgsConstructor
+@Service
+public class PostsService {
+    private final PostsRepository postsRepository;
+
+    @Transactional
+    public Long save(PostsSaveRequestDto requestDto){
+        return postsRepository.save(requestDto.toEntity()).getId();
+    }
+
+    @Transactional
+    public Long update(Long id, PostsUpdateRequestDto requestDto){
+        Posts posts = postsRepository.findById(id).orElseThrow(() -> new
+                IllegalArgumentException("해당 게시글이 없습니다. id="+ id));
+        posts.update(requestDto.getTitle(), requestDto.getContent());
+
+        return id;
+    }
+
+    @Transactional
+    public PostsResponseDto findById(Long id){
+        Posts entity = postsRepository.findById(id).orElseThrow(() -> new
+                IllegalArgumentException("헤당 게시글이 없습니다. id="+id));
+        return new PostsResponseDto(entity);
+    }
+
+    @Transactional(readOnly = true)
+    public List<PostsListResponseDto> findAllDesc(){
+        return postsRepository.findAllDesc().stream()
+                .map(PostsListResponseDto::new)
+                .collect(Collectors.toList());
+    }
+
+}
+```
+
+findAllDesc 메소드의 트랜잭션 어노테이션 @ Transactional에 옵션이 하나 추가되었다.
+
+
+바로 (readOnly=true)인데 이 옵션을 추가해주면 트랜잭션 범위는 유지하되, 조회 기능만 남겨두어 조회 속도가 개선되기 때문에 등록, 수정, 삭제 기능이 없는 서비스 메소드에 사용하는 것이 좋다.
+
+위 코드에서는 람다식이 사용되었는데 모르는 사람들을 위해 해석을 진행해보면 이렇다.
+```
+findAllDesc() -> List<Posts>로 반환
+.stream() -> List에 저장된 각각의 원소들에 대하여 stream 진행 -> 전체가 아니라 Posts 하나씩 로직 처리하게 함  
+.map(PostsListResponseDto::new) -> PostsListResponseDto 생성자 호출
+                                -> 사실 .map(posts -> new PostsListResponseDto(posts)) 와 같은 의미  
+                                -> 이는 stream으로 인해 하나씩 분리된 posts를 인자로 넘겨 PostsListResponseDto 생성자의 매개변수로 넣는다.
+                                -> 아직 PostsListResponseDto는 만들지 않았지만 만들면 생성자의 매개변수로 Posts 변수로 만들어야 한다
+
+```
+
+
+즉, PostsRepository 결과로 넘어온 List에 저장된 각각의 Posts 를 PostsListResponseDto 만들고 다시 리스트에 넣는다.
+그리고 PostsListResponseDto 를 아직 생성하지 않았으니 이 클래스 역시 패키지/web/dto에 생성해주자
+
+PostsListResponseDto
+
+```
+package com.jojoldu.book.springboot.web.dto;
+
+import com.jojoldu.book.springboot.domain.posts.Posts;
+import lombok.Getter;
+
+import java.time.LocalDateTime;
+
+@Getter
+public class PostsListResponseDto {
+    private Long id;
+    private String title;
+    private String author;
+    private LocalDateTime modifiedDate;
+
+    public PostsListResponseDto(Posts entity){
+        this.id = entity.getId();
+        this.title = entity.getTitle();
+        this.author = entity.getAuthor();
+        this.modifiedDate = entity.getModifiedDate();
+    }
+}
+```
+
+위에서 언급했듯이 .map(PostsListResponseDto::new) 를 수행하기 위해서 생성자 매개변수 타입은 Posts 이다.
+
+이제 마지막으로 Controller를 수정한다
+
+IndexController
+
+```
+package com.jojoldu.book.springboot.web;
+
+import com.jojoldu.book.springboot.config.auth.LoginUser;
+import com.jojoldu.book.springboot.config.auth.dto.SessionUser;
+import com.jojoldu.book.springboot.service.posts.PostsService;
+import com.jojoldu.book.springboot.web.dto.PostsResponseDto;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
+@RequiredArgsConstructor
+@Controller
+public class IndexController {
+
+    private final PostsService postsService;
+
+    @GetMapping("/")
+    public String index(Model model){
+        model.addAttribute("posts", postsService.findAllDesc());
+        return "index";
+    }
+
+    @GetMapping("/posts/save")
+    public String postsSave(){
+        return "posts-save";
+    }
+}
+```
+-----
+
+
+
+###### Model model  
+
+     * 서버 탬플릿 엔진에서 사용할 수 있는 객체를 저장할 수 있다.  
+     * 여기서 postsService.findAllDesc()로 가져온 결과를 posts로 index.mustache에 전달한다.  
+Controller 까지 모두 완성되었으니 데이터를 등록해보고 조회 목록에 나오는지 확인하면 된다.
+
+
+-----
+
+##### 게시글 수정, 삭제 화면 만들기
+
+마지막으로 게시글 수정, 삭제 화면을 만들어보자
+게시글 수정 API는 이미 만들어 두었으니 삭제 API를 만들어주고 수정 삭제 화면을 만들면 된다.
+
+###### 게시글 수정
+
+게시글 수정 화면 머스테치 파일을 생성한다.
+
+
+-----
+
+posts-update.mustache
+
+
+```
+{{>layout/header}}
+
+<h1>게시글 수정</h1>
+<div class="col-md-12">
+    <div class="col-md-4">
+        <form>
+            <div class="form-group">
+                <label for="title">글 번</label>
+                <input type="text" class="form-control" id="id" value="{{post.id}}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="title">제목</label>
+                <input type="text" class="form-control" id="title" value="{{post.title}}">
+            </div>
+            <div class="form-group">
+                <label for="author"> 작성자</label>
+                <input type="text" class="form-control" id="author" value="{{post.author}}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="content"> 내용</label>
+                <textarea class="form-control" id="content">{{post.content}}</textarea>
+            </div>
+        </form>
+        <a href="/" role="button" class="btn btn-secondary">취소</a>
+        <button type="button" class="btn btn-primary" id="btn-update">수정 완료</button>
+    </div>
+</div>
+{{>layout/footer}}
+```
+
+{{post.id}}
+
+     * 머스테치는 객체의 필드 접근시 점으로 구분한다.     
+     * 즉, Post 클래스의 id에 대한 접근은 post.id로 사용할 수 있다.  
+___________________________________________________________________
+<input ... readonly>
+
+     * Input 태그에 읽기 가능만 허용하는 속성이다.  
+     * id와 author는 수정할 수 없도록 읽기만 허용하도록 추가한다
+
+
+----
+
+
+그리고 btn-update 버튼을 클릭하면 update 기능을 호출할 수 있게
+index.js 파일에도 update function을 하나 추가하자
+
+index.js
+```
+var main = {
+    init : function () {
+        var _this = this;
+        $('#btn-save').on('click', function(){
+            _this.save();
+        })
+        $('#btn-update').on('click', function(){
+            _this.update();
+        })
+    },
+    save : function () {
+        var data = {
+            title: $('#title').val(),
+            author: $('#author').val(),
+            content: $('#content').val()
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: '/api/v1/posts',
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(data)
+        }).done(function(){
+            alert('글이 등록되었습니다.');
+            window.location.href = "/";
+        }).fail(function(error){
+            alert(JSON.stringify(error));
+        });
+    },
+    update : function () {
+        var data = {
+            title: $('#title').val(),
+            content: $('#content').val()
+        };
+        var id = $('#id').val();
+
+        $.ajax({
+            type: 'PUT',
+            url: '/api/v1/posts/' + id,
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(data)
+        }).done(function(){
+            alert('글이 수정되었습니다.');
+            window.location.href = "/";
+        }).fail(function(error){
+            alert(JSON.stringify(error));
+        });
+    },
+};
+main.init()
+```
+
+-----
+
+
+$('#btn-update').on('click')
+
+     * btn-update 란 id를 가진 HTML 엘리먼트에 click 이벤트가 발생할 때 update function을 실행하도록 이벤트를 등록한다.
+___________________________________________________________________________________________________________________
+update : function(){}
+
+     * 신규로 추가될 update function 입니다.   
+___________________________________________________________________________________________________________________
+type : 'PUT'
+
+     * 여러 HTTP Method 중 PUT 메소드를 선택합니다.  
+     * PostsApiController에 있는 API에서 이미 @PutMapping으로 선언했기 때문에 PUT을 사용해야 한다.  
+     참고로 이는 REST 규약에 맞게 설정된 것이다.  
+     * REST에서 CRUD는 다음과 같이 HTTP Method에 매핑된다.  
+          생성(create) - POST
+          읽기(read) - GET
+          수정(update) - PUT
+          삭제(delete) - DELETE
+___________________________________________________________________________________________________________________
+url: '/api/v1/posts/'+id
+
+     * 어느 게시글을 수정할지 URL Path로 구분하기 위해 Path에 id를 추가한다.  
+마지막으로 전체 목록에서 수정 페이지로 이동할 수 있게 index.mustache 에 페이지 이동 기능을 추가해주자
+
+----
+
+마지막으로 전체 목록에서 수정 페이지로 이동할 수 있게 index.mustache 에 페이지 이동 기능을 추가해주자
+
+index.mustache
+```
+{{>layout/header}}
+    <h1>스프링 부트로 시작하는 웹 서비스 ver.2</h1>
+    <div class="col-md-12">
+        <!-- 로그인 기능 영역 -->
+        <div class="row">
+            <div class="col-md-6">
+                <a href="/posts/save" role="button" class="btn btn-primary">글 등록</a>
+            </div>
+        </div>
+    </div>
+    <br>
+    <!-- 목록 출력 영역 -->
+    <table class="table table-horizontal table-bordered">
+        <thead class="thead-string">
+            <tr>
+                <th>게시글번호</th>
+                <th>제목</th>
+                <th>작성자</th>
+                <th>최종수정일</th>
+            </tr>
+        </thead>
+        <tbody id="tbody">
+            {{#posts}}
+                <tr>
+                    <td>{{id}}</td>
+                    <td><a href="/posts/update/{{id}}">{{title}}</a></td>
+                    <td>{{author}}</td>
+                    <td>{{modifiedDate}}</td>
+                </tr>
+            {{/posts}}
+        </tbody>
+    </table>
+{{>layout/footer}}
+```
+
+-----
+
+```
+<a href="/posts/update/{{id}}"></a>
+```
+     * 타이틀에 a tag 를 추가한다.
+     * 타이틀을 클릭하면 해당 게시글의 수정 화면으로 이동한다.  
+화면 작업이 끝났으므로 Controller 코드를 수정해주자
+
+<br>
+----
+
+<br>
+
+
+##### 게시글 삭제
+삭제 버튼은 본문을 확인하고 진행해야 하므로 수정 화면에 추가해주자
+
+posts-update.mustache
+```
+{{>layout/header}}
+
+<h1>게시글 수정</h1>
+<div class="col-md-12">
+    <div class="col-md-4">
+        <form>
+            <div class="form-group">
+                <label for="title">글 번</label>
+                <input type="text" class="form-control" id="id" value="{{post.id}}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="title">제목</label>
+                <input type="text" class="form-control" id="title" value="{{post.title}}">
+            </div>
+            <div class="form-group">
+                <label for="author"> 작성자</label>
+                <input type="text" class="form-control" id="author" value="{{post.author}}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="content"> 내용</label>
+                <textarea class="form-control" id="content">{{post.content}}</textarea>
+            </div>
+        </form>
+        <a href="/" role="button" class="btn btn-secondary">취소</a>
+        <button type="button" class="btn btn-primary" id="btn-update">수정 완료</button>
+        <button type="button" class="btn btn-danger" id="btn-delete">삭제</button>
+    </div>
+</div>
+{{>layout/footer}}
+```
+------
+```
+<button type="button" class="btn btn-danger" id="btn-delete">삭제</button>
+```
+     * 삭제 버튼을 수정 완료 버튼 옆에 추가합니다.  
+     * 해당 버튼 클릭시 JS에서 이벤트를 수신할 예정입니다.
+삭제 이벤트를 진행할 JS 코드도 추가한다.
+
+index.js
+```
+var main = {
+    init : function () {
+        var _this = this;
+        $('#btn-save').on('click', function(){
+            _this.save();
+        })
+        $('#btn-update').on('click', function(){
+            _this.update();
+        })
+        $('#btn-delete').on('click', function(){
+            _this.delete();
+        })
+    },
+    save : function () {
+        var data = {
+            title: $('#title').val(),
+            author: $('#author').val(),
+            content: $('#content').val()
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: '/api/v1/posts',
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(data)
+        }).done(function(){
+            alert('글이 등록되었습니다.');
+            window.location.href = "/";
+        }).fail(function(error){
+            alert(JSON.stringify(error));
+        });
+    },
+    update : function () {
+        var data = {
+            title: $('#title').val(),
+            content: $('#content').val()
+        };
+        var id = $('#id').val();
+
+        $.ajax({
+            type: 'PUT',
+            url: '/api/v1/posts/' + id,
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(data)
+        }).done(function(){
+            alert('글이 수정되었습니다.');
+            window.location.href = "/";
+        }).fail(function(error){
+            alert(JSON.stringify(error));
+        });
+    },
+    delete : function () {
+
+        var id = $('#id').val();
+
+        $.ajax({
+            type: 'DELETE',
+            url: '/api/v1/posts/' + id,
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+        }).done(function(){
+            alert('글이 삭제되었습니다.');
+            window.location.href = "/";
+        }).fail(function(error){
+            alert(JSON.stringify(error));
+        });
+    }
+};
+
+main.init()
+```
+type은 DELETE를 제외하고는 update function과 크게 차이 나진 않습니다.
+
+
+###### 삭제 API
+
+
+PostsService
+```
+package com.jojoldu.book.springboot.service.posts;
+
+import com.jojoldu.book.springboot.domain.posts.Posts;
+import com.jojoldu.book.springboot.domain.posts.PostsRepository;
+import com.jojoldu.book.springboot.web.dto.PostsListResponseDto;
+import com.jojoldu.book.springboot.web.dto.PostsResponseDto;
+import com.jojoldu.book.springboot.web.dto.PostsSaveRequestDto;
+import com.jojoldu.book.springboot.web.dto.PostsUpdateRequestDto;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+
+@RequiredArgsConstructor
+@Service
+public class PostsService {
+    private final PostsRepository postsRepository;
+
+    @Transactional
+    public Long save(PostsSaveRequestDto requestDto){
+        return postsRepository.save(requestDto.toEntity()).getId();
+    }
+
+    @Transactional
+    public Long update(Long id, PostsUpdateRequestDto requestDto){
+        Posts posts = postsRepository.findById(id).orElseThrow(() -> new
+                IllegalArgumentException("해당 게시글이 없습니다. id="+ id));
+        posts.update(requestDto.getTitle(), requestDto.getContent());
+
+        return id;
+    }
+
+    @Transactional
+    public PostsResponseDto findById(Long id){
+        Posts entity = postsRepository.findById(id).orElseThrow(() -> new
+                IllegalArgumentException("헤당 게시글이 없습니다. id="+id));
+        return new PostsResponseDto(entity);
+    }
+
+    @Transactional(readOnly = true)
+    public List<PostsListResponseDto> findAllDesc(){
+        return postsRepository.findAllDesc().stream()
+                .map(PostsListResponseDto::new)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void delete (Long id){
+        Posts posts = postsRepository.findById(id).orElseThrow(()->new
+                IllegalArgumentException("해당 게시글이 없습니다. id="+ id));
+        postsRepository.delete(posts);
+    }
+
+}
+```
+
+postsRepository.delete(posts)
+
+     * JpaRepository에서 이미 delete 메소드를 지원하고 있으니 이를 활용합니다
+     * 엔티티를 파라미터로 삭제할 수도 있고, deleteById 메소드를 이용하면 id로 삭제할 수 있다.  
+     * 존재하는 Posts인지 확인을 위해 엔티티 조회 후 그대로 삭제한다.  
+서비스에서 만든 delete 메소드를 컨트롤러가 사용하도록 코드를 추가한다.
+
+PostsApiController
+```
+package com.jojoldu.book.springboot.web;
+
+import com.jojoldu.book.springboot.service.posts.PostsService;
+import com.jojoldu.book.springboot.web.dto.PostsResponseDto;
+import com.jojoldu.book.springboot.web.dto.PostsSaveRequestDto;
+import com.jojoldu.book.springboot.web.dto.PostsUpdateRequestDto;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
+
+@RequiredArgsConstructor
+@RestController
+public class
+{
+    private final PostsService postsService; // 생성자로 주입
+
+    @PostMapping("/api/v1/posts")
+    public Long save(@RequestBody PostsSaveRequestDto requestDto){
+        return postsService.save(requestDto);
+    }
+
+    @PutMapping("/api/v1/posts/{id}")
+    public Long update(@PathVariable Long id, @RequestBody PostsUpdateRequestDto requestDto){
+        return postsService.update(id, requestDto);
+    }
+
+    @GetMapping("/api/v1/posts/{id}")
+    public PostsResponseDto findById (@PathVariable Long id) {
+        return postsService.findById(id);
+    }
+
+    @DeleteMapping("/api/v1/posts/{id}")
+    public Long delete(@PathVariable Long id){
+        postsService.delete(id);
+        return id;
+    }
+
+}
+```
+
+컨트롤러 다 만들었고 실행하면 된다.
+
+-----------
+
+### 스프링 시큐리티와 OAuth2.0으로 로그인
+
+
+#### 스프링 시큐리티와 스프링 시큐리티 Oauth2 클라이언트
+
+왜 많은 서비스에서 소셜 로그인을 사용할까? 이동욱 저자님의 생각으로는 배보다 배꼽이 커지는 경우라 하셨다.
+
+직접 구현한다면 다음을 전부 구현해야한다.
+
+```
+로그인 시 보안
+비밀번호 찾기
+비밀번호 변경
+회원정보 변경
+회원가입시 이메일 혹은 전화번호 인증
+```
+그렇기에 OAuth2 로그인 구현을하면 앞선 목록을 소셜 기업에 맡기고 서비스에만 집중할 수 있다.
+
+
+-----
+
+
+
+##### 스프링부트 1.5 vs 스프링 부트 2.0
+<br>
+스프링 부트 1.5에서의 OAuth2 연동 방법이 2.0에서는 크게 변경되었다.
+하지만 spring-security-oauth2-autoconfigure 라이브러리 덕분에 설정 방법의 큰 차이를 없게 할 수 있다
+
+spring-security-oauth2-autoconfigure
+해당 라이브러리를 사용할 경우 스프링 부트2에서도 기존 설정을 그대로 사용할 수 있다.
+아무래도 새로운 방식보다는 기존에 안전하게 작동하는 방법이 확실하므로 많은 개발자가 해당 방식을 이용했다.
+
+하지만
+우리는 스프링 부트2 방식인 Spring Security Oauth2 Client 라이브러리를 사용할 것이고
+이유는 아래와 같다.
+
+- 스프링 팀에서 기존 1.5에서 사용되던 spring-security-oauth 프로젝트는 유지 상태로 경정했으며 더는 신규 기능은 추가하지 않고 버그 수정 정도의 기능만 추가될 예정이다.
+즉, 신규 기능은 oauth2 라이브러리에서만 지원하겠다고 선언한 것이다.
+
+<br>
+
+- 스프링 부트용 라이브러리(starter)가 출시 되었다.
+
+
+<br>
+
+
+- 기존에 사용되던 방식은 확장 포인트가 적절하게 오픈되어 있지 않아 직접 상속하거나 오버라이딩 해야 하고 신규 라이브러리의 경우 확장 포인트를 고려해서 설계된 상태이다.
+
+
+그렇기에 이제 새롭게 배우는 학생 입장에서는 스프링 부트2 방식으로 배우는 것이 좀 더 나을 것이다.
+
+-----
+
+
+##### 추가 이야깃거리
+
+<br>
+
+
+스프링 부트2 방식의 자료를 찾고 싶은 경우 인터넷 자료들 사이에서 다음 2가지만 확인하면 된다.
+
+1. spring-security-oauth2-autoconfigure 라이브러리를 사용했는지
+2. application.properties 혹은 application.yml 정보가 다음 사진과 같이 차이가 있는지
+
+-----
+
+
+스프링 부트 1.5 방식에서는 url 주소를 모두 명시해야 하지만,
+스프링 부트 2.0 방식에서는 client 인증 정보만 입력하면 된다.
+
+1.5 버전에서 직접 입력했던 값들은 2.0 버전으로 오면서 모두 enum으로 대체되었다.
+
+
+CommonOAuth2Provider라는 enum이 새롭게 추가되어 구글, 깃허브, 페이스북, 옥타의 기본 설정값은 모두 여기서 제공한다.
+이외에 다른 소셜 로그인을 추가한다면 직접 다 추가해 주어야 한다.
+
+
+------
+
+#### 구글 서비스 등록
+
+
+###### application-oauth 등록
+
+application.properties가 있는 src/main/resources/디렉토리에
+application-oauth.properties 파일을 생성한다.
+그리고 해당 파일에 클라이언트ID와 클라이언트 보안 비밀 코드를 다음과 같이 등록한다.
+
+application-oauth.properties
+
+```
+spring.security.oauth2.client.registration.google.client-id=692886957287-663ep6r6ds8ee0oukr9f5mrqof57k6bj.apps.googleusercontent.com
+spring.security.oauth2.client.registration.google.client-secret=pVQcqYjwp_7fYyYdOJfkd5rk
+spring.security.oauth2.client.registration.google.scope=profile,email
+```
+
+----
+
+
+##### 관점 포인트
+
+```
+scope=profile,email
+```
+
+-----
+
+
+##### .gitignore 등록
+<br>
+
+우리의 프로젝트는 깃허브와 연동하여 사용하다 보니 application-oauth.properties 파일이 깃허브에 올라갈 수 있다.
+보안을 위해 해당 파일이 올라가는 것을 금지해주자
+
+application-oauth.properties
+추가한 뒤 커밋했을 때 커밋 파일 목록에 application-oauth.properties가 나오지 않으면 성공이다.
+만약 .gitignore에 추가했음에도 여전히 커밋 목록에 노출된다면 이는 Git의 캐시문제이다.
+
+
+-----
+
+#### User Entity 설정하기
+
+구글의 로그인 인증정보를 발급 받았으니 프로젝트 구현을 진행해보자
+
+
+우선 사용자 정보를 담당할 도메인인 User클래스를 생성해주자.
+
+
+----
+
+
+User
+```
+package com.jojoldu.book.springboot.domain.user;
+
+import com.jojoldu.book.springboot.domain.BaseTimeEntity;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+
+@Getter
+@NoArgsConstructor
+@Entity
+public class User extends BaseTimeEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
+    private String email;
+
+    @Column
+    private String picture;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role;
+
+    @Builder
+    public User(String name, String email, String picture, Role role){
+        this.name = name;
+        this.email = email;
+        this.picture = picture;
+        this.role = role;
+    }
+
+    public User update(String name, String picture){
+        this.name = name;
+        this.picture = picture;
+
+        return this;
+    }
+
+    public String getRoleKey(){
+        return this.role.getKey();
+    }
+}
+```
+
+@ Enumerated(EnumType.STRING)
+
+* JPA로 데이터베이스로 저장할 때 Enum 값을 어떤 형태로 저장할지를 결정합니다.    
+* 기본적으로 int로 된 숫자가 저장됩니다.   
+* 숫자로 저장되면 데이터베이스로 확인할 때 그 값이 무슨 코드를 의미하는지 알 수가 없습니다.   
+* 그래서 문자열 (EnumType.STRING)로 저장될 수 있도록 선언합니다.  
+
+<br>
+----
+<br>
+
+Role
+```
+package com.jojoldu.book.springboot.domain.user;
+
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@ Getter
+@ RequiredArgsConstructor
+public enum Role {
+    GUEST("ROLE_GUEST", "손님"),
+    USER("ROLE_USER", "일반 사용자");
+
+    private final String key;
+    private final String title;
+}
+```
+스프링 시큐리티에서는 권한 코드에 항상 ROLE_이 앞에 있어야 합니다.
+그래서 코드별 키 값을 ***ROLE_GEUST, ROLE_USER*** 등으로 지정합니다.
+
+
+-----
+
+
+UserRepository
+```
+package com.jojoldu.book.springboot.domain.user;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.Optional;
+
+public interface UserRepository extends JpaRepository<User, Long> {
+    Optional<User> findByEmail(String email);
+}
+```
+
+
+
+###### findByEmail(String email);   
+
+* 소셜 로그인으로 반환되는 값중 email을 통해 이미 생성된 사용자인지 처음 가입하는 사용자인지 판단하기 위한 메소드
+* PK 를 사용한 것이 아니라 Unique 를 사용한 것을 알 수 있다.   
+
+-------
+
+
+#### 스프링 시큐리티 설정
+먼저 build.gradle에 스프링 시큐리티 관련 의존성 하나를 추가해주자
+
+build.gradle
+```
+complie('org.springframework.boot::spring-boot-starter-oauth2-client')
+```
+
+
+###### spring-boot-starter-oauth2-client
+
+* 소셜 로그인 등 클라이언트 입장에서 소셜 기능 구현시 필요한 의존성입니다.  
+
+
+* spring-boot-starter-oauth2-client 와 spring-boot-starter-oauth2-jose를 기본으로 관리해줍니다.
+build.gradle설정이 끝났으면 OAuth 라이브러리를 이용한 소셜 로그인 코드를 작성해보자
+config.auth 패키지를 생성합니다.
+앞으로 시큐리티 관련 클래스는 모두 이곳에 담는다고 보면 될 것 같습니다.
+
+그리고 SecurityConfig 클래스를 생성해줍시다.
+
+###### SecurityConfig
+
+```
+package com.yacho.SpringbootAWS.config.auth;
+
+import com.yacho.SpringbootAWS.domain.member.Role;
+//
+여기서 위 경로를 제대로 안 써주면 h2안에있는 member 및 Role
+이 잡히는데 이 경우엔 에러가 나므로 경로를 제대로 써줘야 한다.
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+
+@RequiredArgsConstructor
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    private final CustomOAuth2UserService customOAuth2UserService;
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception{
+        http
+                .csrf().disable().headers().frameOptions().disable().and()
+                .authorizeRequests()
+                .antMatchers("/","/css/**","/images/**","/js/**","/h2-console/**", "/profile").permitAll()
+                .antMatchers("/api/v1/**").hasRole(Role.USER.name())
+                .anyRequest().authenticated()
+                .and()
+                .logout()
+                .logoutSuccessUrl("/")
+                .and()
+                .oauth2Login()
+                .userInfoEndpoint()
+                .userService(customOAuth2UserService);
+
+    }
+}
+```
+
+
+
+import com.yacho.SpringbootAWS.domain.member.Role;
+
+***여기서 위 경로를 제대로 안 써주면 h2안에있는 member 및 Role
+이 잡히는데 이 경우엔 에러가 나므로 경로를 제대로 써줘야 한다.(경로 바꾸면 디폴트가 h2기 때문에 role경로를 제대로 써줘야)***
+
+
+
+-----
+
+@ EnableWebSecurity   
+
+* Spring Security 설정들을 활성화시켜줍니다.     
+_____________________________________________________________
+http.csrf().disable().headers().frameOptions().disable()    
+
+* h2-console 화면을 사용하기 위해 해당 옵션들을 disable합니다.   
+_____________________________________________________________
+.authorizeRequests()  
+
+* URL 별 권한 관리를 설정하는 옵션의 시작점입니다.   
+* authorizeRequests() 가 선언되어야만 andMatchers() 옵션을 사용할 수 있습니다.   
+_____________________________________________________________
+.andMatchers("url", "url2")    
+
+* 권한 관리 대상을 지정하는 옵션입니다.   
+* URL, HTTP 메소드별로 관리가 가능합니다.   
+* "/" 등 지정된 URL들은 permitAll() 옵션을 통해 전체 열람 권한을 주었습니다.   
+* "api/v1/**" 주소를 가진 API는 USER 권한을 가진 사람만 가능하도록 했습니다.  
+_____________________________________________________________
+.anyRequest()
+
+* 설정된 값 이외 나머지 URL 들을 나타냅니다.  
+* 여기서는 .authenticated()을 추가하여 나머지 URL 들은 모두 인증된 사용자들에게만 허용합니다.   
+* 인증된 사용자 즉, 로그인 한 사용자들을 이야기합니다.   
+_____________________________________________________________
+.logout().logoutSuccessUrl("/")     
+* 로그아웃 기능에 대한 여러 설정의 진입점입니다.   
+* 로그아웃 성공시 / 주소로 이동합니다.  
+_____________________________________________________________
+.oauth2Login()   
+
+* OAuth2 로그인 기능에 대한 여러 설정의 진입점입니다.   
+_____________________________________________________________
+.userInfoEndpoint()   
+
+* OAuth2 로그인 성공 이후 사용자 정보를 가져올 때의 설정들을 담당합니다.   
+_____________________________________________________________
+.userService(customOAuth2UserService)    
+
+* 소셜 로그인 성공시 후속 조치를 진행할 UserService 인터페이스의 구현체를 등록합니다.       
+* 리소스 서버(즉, 소셜 서비스들)에서 사용자 정보를 가져온 상태에서 추가로 진행하고자 하는 기능을 명시할 수 있습니다.  
+* **OAuth2UserService 인터페이스의 추상메서드인 loadUser를 사용한다.**     
+
+
+
+-----
+
+
+
+설정 코드 작성이 끝났다면 CustomOAuth2UserService클래스를 생성하자
+이 클래스는 구글 로그인 이후 가져온 사용자 정보들을 기반으로
+가입 및 정보수정, 세션 저장등의 기능을 지원해준다.
+
+CustomOAuth2UserService
+
+```
+package com.jojoldu.book.springboot.config.auth;
+
+import com.jojoldu.book.springboot.config.auth.dto.OAuthAttributes;
+import com.jojoldu.book.springboot.config.auth.dto.SessionUser;
+import com.jojoldu.book.springboot.domain.user.User;
+import com.jojoldu.book.springboot.domain.user.UserRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
+import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
+import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.stereotype.Service;
+
+import javax.servlet.http.HttpSession;
+import java.util.Collections;
+
+@RequiredArgsConstructor
+@Service
+public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
+    private final UserRepository userRepository;
+    private final HttpSession httpSession;
+
+    @Override
+    public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
+        OAuth2UserService delegate = new DefaultOAuth2UserService();
+        OAuth2User oAuth2User = delegate.loadUser(userRequest);
+
+        String registrationId = userRequest.getClientRegistration().getRegistrationId();
+        String userNameAttributeName = userRequest.getClientRegistration().getProviderDetails()
+                .getUserInfoEndpoint().getUserNameAttributeName();
+
+        OAuthAttributes attributes = OAuthAttributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
+
+        User user = saveOrUpdate(attributes);
+        httpSession.setAttribute("user", new SessionUser(user));
+
+        return new DefaultOAuth2User(Collections.singleton(new SimpleGrantedAuthority(user.getRoleKey())),
+                attributes.getAttributes(),
+                attributes.getNameAttributeKey());
+    }
+
+    private User saveOrUpdate(OAuthAttributes attributes){
+        User user = userRepository.findByEmail(attributes.getEmail())
+                .map(entity -> entity.update(attributes.getName(), attributes.getPicture()))
+                .orElse(attributes.toEntity());
+
+        return userRepository.save(user);
+    }
+}
+```
+
+<br>
+-----
+<br>
+
+String registrationId = userRequest.getClientRegistration().getRegistrationId();
+
+* 현재 로그인 진행중인 서비스를 구분하는 코드   
+* 구글로 로그인, 네이버로 로그인하는지 구분하기 위해 사용되는 코드이다.   
+_________________________________________________________________________________________
+String userNameAttributeName =   
+userRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName();
+
+* OAuth2 로그인 진행시 키가 되는 필드값을 이야기합니다. PK 같은 역할   
+* 구글의 경우 기본적으로 코드를 지원하지만 ("sub") , 네이버 카카오등은 지원하지 않습니다.   
+* 이후 네이버 로그인과 구글 로그인을 동시 지원할 때 사용할 것입니다.  
+_________________________________________________________________________________________
+OAuthAttributes attributes =
+OAuthAttributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
+
+* oAuth2User 는 OAuth2UserService 로 만들어진 OAuth2User 객체를 참조하는 변수이다.  
+* OAuthAttributes attributes는 OAuth2UserService 를 통해 가져온 OAuth2User 클래스의 attribute를 담을 클래스입니다.
+* 이후 네이버 등 다른 소셜 로그인도 이 클래스를 사용합니다.   
+* 이것은 우리가 직접 정의해주는 클래스로 밑에서 클래스를 작성할 것입니다.   
+________________________________________________________________________________________  
+httpSession.setAttribute("user", new SessionUser(user));
+
+* 세션에 자용자 정보를 저장하기 위한 DTO 클래스  
+* User 클래스를 사용하면 안되기에 SessionUser를 만들었다.   
+* 왜 User 클래스를 사용하면 안되나요?**
+만약 User 클래스를 그대로 사용했다면 다음과 같은 에러가 발생합니다.   
+
+Failed to convert from type [java.lang.Object]
+to type [byte[]] for value 'com.jojoIdu.book.springboot.domain.user.User@4a43d6'    
+이는 User 클래스에 직렬화를 구현하지 않았다는 의미의 에러입니다.     
+그렇다면 User 클래스에 직렬화 코드를 넣으면 될까요? 그렇기에는 생각할 것이 많습니다.   
+
+바로 User 클래스가  데이터베이스와 직접 연결되는 엔티티이기 때문입니다       
+엔티티 클래스에는 언제 다른 엔티티와의 관계가 형성될지 모릅니다.       
+
+예를 들면 @ OneToMany , @ ManyToMany등 자식 엔티티를 갖고 있다면      
+직렬화 대상에 자식들까지 포함되니 성능 이슈, 부수 효과가 발생할 확률이 높습니다.      
+
+그래서 직렬화 기능을 가진 DTO를 하나 추가로 만드는 것이 이후 운영 및 유지보수 때 많은 도움이 됩니다.  
+
+
+-------
+
+
+구글 사용자 정보가 업데이트 되었을 때를 대비하여 update 기능도 같이 구현되었습니다.
+사용자의 이름이나, 프로필 사진이 변경되면 User 엔티티에도 반영이 됩니다.
+정확히 말하면 기존 Email 이 있다면 최신 정보로 받아오고
+Email 이 없다면 지금 정보로 Entity를 만들어라 하고 있습니다.
+
+CustomOAuth2UserService 클래스까지 생성되었다면 OAuthAttributes 클래스를 생성합니다.
+필자의 경우 OAuthAttributes는 DTO로 보기 때문에 config.auth.dto 패키지를 만들어 해당 패키지에 생성했습니다.
+
+OAuthAttributes
+
+```
+package com.jojoldu.book.springboot.config.auth.dto;
+
+import com.jojoldu.book.springboot.domain.user.Role;
+import com.jojoldu.book.springboot.domain.user.User;
+import lombok.Builder;
+import lombok.Getter;
+
+import java.util.Map;
+
+@Getter
+public class OAuthAttributes {
+    private Map<String, Object> attributes;
+    private String nameAttributeKey;
+    private String name;
+    private String email;
+    private String picture;
+
+    @Builder
+    public OAuthAttributes(Map<String, Object> attributes, String nameAttributeKey, String name, String email, String picture){
+        this.attributes = attributes;
+        this.nameAttributeKey = nameAttributeKey;
+        this.name = name;
+        this.email = email;
+        this.picture = picture;
+    }
+
+    public static OAuthAttributes of(String registrationId, String userNameAttributeName, Map<String, Object> attributes){
+        System.out.println("registration="+registrationId);
+        return ofGoogle(userNameAttributeName, attributes);
+    }
+    private static OAuthAttributes ofGoogle(String userNameAttributeName, Map<String, Object> attributes){
+        return OAuthAttributes.builder()
+                .name((String) attributes.get("name"))
+                .email((String) attributes.get("email"))
+                .picture((String) attributes.get("picture"))
+                .attributes(attributes)
+                .nameAttributeKey(userNameAttributeName)
+                .build();
+    }
+
+    public User toEntity(){
+        return User.builder()
+                .name(name)
+                .email(email)
+                .picture(picture)
+                .role(Role.GUEST)
+                .build();
+    }
+}
+```
+
+public static OAuthAttributes of(){}   
+
+* OAuth2User에서 반환하는 사용자 정보는 Map 자료구조 형태이기에 값 하나하나를 변환해야한다.   
+__________________________________________________________________________________________
+toEntity()    
+
+* User 엔티티를 생성합니다.   
+* OAuthAttributes 에서 엔티티를 생성하는 시점은처음 가입할 때입니다.   
+* 가입할 때의 기본 권한을 GUEST로 주기 위해서 role 빌더값에는 Role.GUEST를 사용합니다.   
+OAuthAttributes 클래스 생성이 끝났으면 같은 패키지에 SessionUser 클래스를 생성합니다.
+
+
+------
+
+###### SessionUser
+
+```
+package com.jojoldu.book.springboot.config.auth.dto;
+
+import com.jojoldu.book.springboot.domain.user.User;
+import lombok.Getter;
+
+import java.io.Serializable;
+
+@Getter
+public class SessionUser implements Serializable {
+
+    private String name;
+    private String email;
+    private String picture;
+
+    public SessionUser(User user){
+        this.name = user.getName();
+        this.email = user.getEmail();
+        this.picture = user.getPicture();
+    }
+}
+```
+
+SessionUser에는 인증된 사용자 정보만 필요합니다.
+그 외에 필요한 정보들은 없으니 name, email, picture 만 필드로 선언합니다.
+
+----
+
+로그인 테스트
+스프링 시큐리티가 잘 적용되었는지 확인하기 위해 화면에 로그인 버튼을 추가하자
+index.mustache에 로그인 버튼과 로그인 성공 시 사용자 이름을 보여주도록 하자
+
+index.mustache
+```
+{{>layout/header}}
+    <h1>스프링 부트로 시작하는 웹 서비스 ver.2</h1>
+    <div class="col-md-12">
+        <!-- 로그인 기능 영역 -->
+        <div class="row">
+            <div class="col-md-6">
+                <a href="/posts/save" role="button" class="btn btn-primary">글 등록</a>
+                {{#userName}}
+                    Looged in as : <span id="user">{{userName}}</span>
+                    <a href="/logout" class="btn btn-info active" role="button">Logout</a>
+                {{/userName}}
+                {{^userName}}
+                    <a href="/oauth2/authorization/google" class="btn btn-success active" role="button">
+                        Google Login
+                    </a>
+                {{/userName}}
+            </div>
+        </div>
+    </div>
+    <br>
+    <!-- 목록 출력 영역 -->
+    <table class="table table-horizontal table-bordered">
+        <thead class="thead-string">
+            <tr>
+                <th>게시글번호</th>
+                <th>제목</th>
+                <th>작성자</th>
+                <th>최종수정일</th>
+            </tr>
+        </thead>
+        <tbody id="tbody">
+            {{#posts}}
+                <tr>
+                    <td>{{id}}</td>
+                    <td><a href="/posts/update/{{id}}">{{title}}</a></td>
+                    <td>{{author}}</td>
+                    <td>{{modifiedDate}}</td>
+                </tr>
+            {{/posts}}
+        </tbody>
+    </table>
+{{>layout/footer}}
+```
+
+----
+
+
+{{#userName}}   
+
+* 머스테치는 다른 언어와 같은 if문을 제공하지 않습니다.     
+* true/false 여부만 판단할 뿐입니다.      
+* 그래서 머스터치에서는 항상 최종값을 넘겨줘야 합니다.      
+* 여기서도 역시 userName 이 있다면 userName을 노출시키도록 구성했습니다.    
+______________________________________________________________________________
+a href="/logout"    
+
+* 스프링 시큐리티에서 기본적으로 제공하는 로그아웃 URL 입니다.   
+* 즉, 개발자가 별도로 저 URL에 해당하는 컨트롤러를 만들 필요가 없습니다.   
+* SecurityCofing 클래스에서 URL을 변경할 순 있지만 기본 URL을 사용해도 충분하니 여기서는 그대로 사용합니다.   
+______________________________________________________________________________
+{{^userName}}
+
+* 머스테치 에서 해당 값이 존재하지 않는 경우에는 ^ 를 사용합니다.   
+* 여기서는 userName이 없다면 로그인 버튼을 노출시키도록 구성했습니다.  
+______________________________________________________________________________
+
+a href = "/oauth2/authorization/google"     
+
+* 스프링 시큐리티에서 기본적으로 제공하는 로그인 URL 입니다.   
+* 로그아웃 URL과 마찬가지로 개발자가 별도의 컨트롤러를 생성할 필요가 없습니다.  
+* 후에 네이버 로그인은 따로 설정을 해주어야 할 것입니다.  
+
+
+index.mustache에서 userName을 사용할 수 있게 IndexController 에서 UserName을 model에 저장하자
+
+----
+
+
+IndexController
+```
+package com.jojoldu.book.springboot.web;
+
+import com.jojoldu.book.springboot.config.auth.LoginUser;
+import com.jojoldu.book.springboot.config.auth.dto.SessionUser;
+import com.jojoldu.book.springboot.service.posts.PostsService;
+import com.jojoldu.book.springboot.web.dto.PostsResponseDto;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
+@RequiredArgsConstructor
+@Controller
+public class IndexController {
+
+    private final PostsService postsService;
+    private final HttpSession httpSession;
+
+    @GetMapping("/")
+    public String index(Model model){
+
+        model.addAttribute("posts", postsService.findAllDesc());
+        Session User user= (SessionUser) httpSession.getAttribute("user");
+        if(user != null){
+            model.addAttribute("userName", user.getName());
+        }
+        return "index";
+    }
+
+    @GetMapping("/posts/save")
+    public String postsSave(){
+        return "posts-save";
+    }
+
+    @GetMapping("/posts/update/{id}")
+    public String postsUpdate(@PathVariable Long id, Model model){
+
+        PostsResponseDto dto = postsService.findById(id);
+        model.addAttribute("post",dto);
+        return "posts-update";
+    }
+}
+```
+
+(SessionUser) httpSession.getAttribute("user");
+
+* 앞서 작성된 CustomOAuth2UserService에서 로그인 성공 시 세션에 SessionUser를 지정하도록 구성했습니다.          
+* 즉, 로그인 성공시 httpSession.getAttribute("user")에서 값을 가져올 수 있습니다.     
+______________________________________________________________________________
+if(user != null)   
+
+* 세션에 저장된 값이 있을 때만 model에 userName 으로 등록합니다.      
+* 세션에 저장된 값이 없으면 model엔 아무런 값이 없는 상태이니 로그인 버튼이 보이게 된다.
