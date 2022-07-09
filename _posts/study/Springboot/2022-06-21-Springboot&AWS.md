@@ -2754,8 +2754,8 @@ application-oauth.properties 파일을 생성한다.
 application-oauth.properties
 
 ```
-spring.security.oauth2.client.registration.google.client-id=692886957287-663ep6r6ds8ee0oukr9f5mrqof57k6bj.apps.googleusercontent.com
-spring.security.oauth2.client.registration.google.client-secret=pVQcqYjwp_7fYyYdOJfkd5rk
+spring.security.oauth2.client.registration.google.client-id=
+spring.security.oauth2.client.registration.google.client-secret=
 spring.security.oauth2.client.registration.google.scope=profile,email
 ```
 
