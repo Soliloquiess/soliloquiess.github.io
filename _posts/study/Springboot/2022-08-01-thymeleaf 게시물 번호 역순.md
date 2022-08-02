@@ -64,7 +64,6 @@ comments: true
 
 
 
-![20220802_091456](./assets/20220802_091456_nsidk5i1m.png)
 
 하지만
 
@@ -75,6 +74,8 @@ comments: true
 
 -----
 
+
+![20220802_091456](/assets/20220802_091456_g0pf6gymp.png)
 
 page
 
