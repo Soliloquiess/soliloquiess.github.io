@@ -74,8 +74,7 @@ comments: true
 
 -----
 
-
-![20220802_091456](/assets/20220802_091456_g0pf6gymp.png)
+![20220802_091456](/assets/20220802_091456_scjoirhy8.png)
 
 page
 
