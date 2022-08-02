@@ -31,7 +31,6 @@ comments: true
 
 ![20220717_123257](/assets/20220717_123257.png)
 
-
 - reader에서 null을 return 할 때 까지 Step은 반복
 - <INPUT, OUTPUT>chunk(int)
     - reader에서 INPUT 을 return
@@ -269,8 +268,12 @@ public class TemplateConfiguration {
 위 템플릿은 지울거긴 한데 일단 백업
 
 
+
+
+
 ![20220717_134006](/assets/20220717_134006.png)
-![20220717_134202](/assets/20220717_134202.png)
+![20220717_134202](/assets/20220717_134202_u43xh5t2k.png)
+
 ![20220717_134439](/assets/20220717_134439.png)
 
 ```
