@@ -1,5 +1,5 @@
 ---
-title: "[Springboot] Spring Batch  데이터 가져오기"
+title: "[Springboot] thymeleaf 게시물 번호 역순"
 layout: post
 subtitle: Springboot
 date: "2022-08-01-14:58:53 +0900"
@@ -64,8 +64,8 @@ comments: true
 
 
 
+![20220802_091456](/assets/20220802_091456_w2xvxq5w0.png)
 
-![20220802_091456](/assets/20220802_091456.png)
 
 
 
