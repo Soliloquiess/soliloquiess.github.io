@@ -74,11 +74,7 @@ comments: true
 
 -----
 
-![20220802_091456](/assets/20220802_091456_4u0xkjwjw.jpg)
-
-![20220802_091456](/assets/20220802_091456_bbxq1z4kg.png)
-
-![1](/assets/1.jpg)
+![20220802_091456](https://user-images.githubusercontent.com/37941513/182504265-4242263a-1254-4355-a96d-346574af795f.jpg)
 
 
 page
