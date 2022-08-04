@@ -47,7 +47,9 @@ crontab, jenkins …
 
 간단하게 생각하면, Spring Batch에서는 Job이 있습니다. Job은 여러개의 Step으로 구성되고, Step 은 Tasklet(기능) 으로 구성됩니다. 배치 작업 하나가 Job에 해당 됩니다. 즉 다음과 같은 그림입니다.
 
-![20220716_025821](/assets/20220716_025821.png)
+
+![20220716_025821](https://user-images.githubusercontent.com/37941513/182810151-a04ded04-65e4-457c-8d46-7f203c788a5e.png)
+
 
 #### SPRING BATCH 환경 구성과 기본 샘플
 
