@@ -11,7 +11,7 @@ order: 2
 <span style=
 "font-size:170%;
 font-weight:bold">
-조양훈
+
 </span>
 </center>
 
