@@ -1,5 +1,5 @@
----
-title: "[js] Javascript&Jquery part2"
+<!-- ---
+title: "[js] Javascript, Jquery part2"
 layout: post
 subtitle: JS
 date: "2021-08-16-23:45:51 +0900"
@@ -3812,4 +3812,4 @@ Font Awesome (500종 이상의 무료 vector 웹 아이콘)
 
 Velocity.js (jQuery Animate 함수처럼 이용가능한데 훨씬 더 매끄러움)
 
-GSAP (매우 매끄러운 자바스크립트 애니메이션, TweenMax 함수 이용가능) https://greensock.com/get-started/
+GSAP (매우 매끄러운 자바스크립트 애니메이션, TweenMax 함수 이용가능) https://greensock.com/get-started/ -->

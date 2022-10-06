@@ -1,4 +1,4 @@
----
+<!-- ---
 title: "[js] TypeScript part2"
 layout: post
 subtitle: JS
@@ -2314,7 +2314,7 @@ object 자료형인데 글자로 바꾸려고 전부 따옴표쳐놓은 자료�
 
 서버랑 통신할 때 가끔 사용합니다. 끝
 
-JSON --> object 이렇게 변환하고 싶으면 직접 따옴표를 제거하든가 아니면  
+JSON  object 이렇게 변환하고 싶으면 직접 따옴표를 제거하든가 아니면  
 
 JSON.parse() 소괄호 안에 JSON자료를 넣으면 그 자리에 따옴표가 제거된 object가 남습니다.
 
@@ -2338,7 +2338,7 @@ function 함수(x :string){
 let result = 함수(data)
 console.log(result)
 ```
-이렇게 하면 JSON --> object 자료 변환기를 만들 수 있습니다.
+이렇게 하면 JSON object 자료 변환기를 만들 수 있습니다.
 
 data라는 변수를 변환한 결과를 출력해보면 근데 타입은 이상한 any 타입입니다.
 
@@ -4855,4 +4855,4 @@ type a = 타입뽑기<(x :number) => void>
 
 참고로 함수만 들어올 수 있게 제한을 두고 싶으면
 
-언제나 T 라는 함수 파라미터 만들 때 extends로 제한을 두면 됩니다.
+언제나 T 라는 함수 파라미터 만들 때 extends로 제한을 두면 됩니다. -->

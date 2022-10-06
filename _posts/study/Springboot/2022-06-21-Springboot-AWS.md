@@ -1,5 +1,5 @@
 ---
-title: "[Springboot] Springboot&AWS 정리"
+title: "[Springboot] Springboot-AWS 정리"
 layout: post
 subtitle: Springboot
 date: "2022-06-21-14:58:53 +0900"

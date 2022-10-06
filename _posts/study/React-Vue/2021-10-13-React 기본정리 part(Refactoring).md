@@ -1,11 +1,11 @@
----
+<!-- ---
 title: "[React] React 기본정리 part2"
 layout: post
-subtitle: React&Vue
+subtitle: React-Vue
 date: "2021-10-04 19:45:51 +0900"
 
 categories: study
-tags: React&Vue
+tags: React-Vue
 # layout: post
 # title:  WebFrontEnd
 # subtitle:   "시작하기"
@@ -188,4 +188,4 @@ Card>가 3개 있으니까 그걸 반복문 돌려서 숙제를 해결했다고 
 ```
 붙여넣으면 상세페이지같은 레이아웃이 하나 생성됩니다.
 
-숙제할 때 사용합시다.
+숙제할 때 사용합시다. -->

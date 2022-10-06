@@ -1,5 +1,5 @@
----
-title: "[js] Javascript&ES6 part2"
+<!-- ---
+title: "[js] Javascript, ES6 part2"
 layout: post
 subtitle: JS
 date: "2021-03-22-23:45:51 +0900"
@@ -3193,4 +3193,4 @@ console.log(data.getter함수);
 숫자정렬하는 법은 구글에 찾아서 한번 적용해보시길 바랍니다.
 
 
-------
+------ -->
