@@ -1,35 +1,33 @@
----
-layout: post
-title:  "isas 사용법(네이버 피들러 사용 간단 스크래핑) "
-subtitle:  "etc"
+var moduleVersion = '20.10.21.1';
+var WeatherName = "샘플소스";
+console.log(WeatherName + " 스크립트 호출됨.");
+console.log('Version: ' + moduleVersion);
 
-date: "2022-10-24-17:26:51 +0900"
-categories: etc
-tags: etc
-comments: true
----
+function iSASObject(){
+    console.log("iSASObject 생성자 호출");
+    this.iSASOut = {};
+}
+
+iSASObject.prototype.log = function(logMsg){
+    try{
+        SASLOG("iSASOBject.Log(" + logMsg + "\")");
+    } catch(e){
+        console.log("iSASObject.LOG(" + logMsg + "\")");
+    }
+};
+
+iSASObject.prototype.setError = function(errcode){
+    this.iSASInOut.Output = {};
+    this.iSASInOut.Output.ErrorCode = errcode.toString(16).toUpperCase();
+    this.iSASInOut.Output.ErrorMessage = getCooconErrMsg(errcode.toString(16).toUpperCase());
+};
 
 
-
-<사진>
-
-isas30EngineServer를 킨 뒤 추가를 누른다.
-
-<사진>
-
-정보를 가져올 사이트에 들어간다.
-해당 사이트에서 소스를 보면 서울 중구 을지로 밖에 안 보이지만 오른쪽 옆 16군데의 전국 정보들을 더 얻어오고 싶다.
-
-이를 위해 fiddler를 사용 할 것
-
-<사진>
-
-fiddler를 가고 해당 사이트의 통신을 잡고 Header에서 Client와 Referer를 잡는다.
-
-- 예시 코드:
-
-```
 //////
+
+
+
+
 
 var 날씨 = function(){
     console.log(WeatherName + " 샘플구조체 생성자 호출");
@@ -127,18 +125,58 @@ var 날씨 = function(){
     }
 };
 
+
+
 ////
 
-```
-
-<br>
-
------
 
 
-<사진>
+function OnInit() {
+    console.log("OnInit()");
+    var result = true;
+    try {
+        //필요한거 로드
+        system.include("iSASTypes");
+        system.setStatus(IBXSTATE_BEGIN, 0);
+        result = false;
+    } catch (e) {  
+        console.log("Exception OnInit:[" + e.message + "]");        
+    } finally {
+        //flase 리턴
+        return result;
+    }
+}
 
-isas를 켜고 위에서 만든 샘플생성자, 생성함수를
-예시 코드에 설정한 "날씨", "날씨정보조회" 로 각각 변경한다.
-그리고 AsyncRunTest를 실행하면 결과가 잘 나오는 걸 볼 수 있다.
+function Execute(aInput) {
+    console.log("Execute[" + aInput + "]");
+    try {
+        console.log("Init Default Error");
+        iSASObj = JSON.parse(aInput);
+        iSASObj.Output = {};
+        iSASObj.Output.ErrorCode = '8000F110';
+        iSASObj.Output.ErrorMessage = "해당 모듈을 실행하는데 실패 했습니다.";
 
+        OnInit();
+
+        iSASObj = JSON.parse(aInput);
+        var ClassName = iSASObj.Class;
+        var ModuleName = iSASObj.Module;
+        if (Failed(SetClassName(ClassName, ModuleName))) {
+            iSASObj.Output = {};
+            iSASObj.Output.ErrorCode = '8000F111';
+            iSASObj.Output.ErrorMessage = "Class명과 Job명을 확인해주시기 바랍니다.";
+        } else {
+            obj.iSASInOut = "";
+            OnExcute(0, JSON.stringify(iSASObj));
+
+            console.log("결과 테스트 [" + obj.iSASInOut + "]");
+
+            if (obj.iSASInOut != "")
+                iSASObj = obj.iSASInOut;
+        }
+    } catch (e) {
+        console.log("exception:[" + e.message + "]");
+    } finally {
+        return JSON.stringify(iSASObj);
+    }
+}
