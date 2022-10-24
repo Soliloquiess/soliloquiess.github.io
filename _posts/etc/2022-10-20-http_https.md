@@ -12,8 +12,10 @@ comments: true
 
 #### HTTP는 Hypertext Transfer Protocol의 약자
 
-- HTTP 프로토콜은 서로 다른 통신 시스템 간의 통신을 제공합니다. 
+- HTTP 프로토콜은 서로 다른 통신 시스템 간의 통신을 제공한다. 
 - 사용자가 브라우저에서 HTTP 요청을 하면 웹 서버는 요청된 데이터를 웹 페이지 형태로 사용자에게 보냄. 간단히 말해서 HTTP 프로토콜을 통해 서버에서 클라이언트로 데이터를 전송할 수 있다고 말할 수 있음.
+
+<사진>
 
 - HTTP 는 TCP 계층 위에 있는 응용 프로그램 계층 프로토콜. 웹 브라우저와 서버에 몇 가지 표준 규칙을 제공하여 서로 통신하는 데 사용할 수 있다.
 
@@ -26,9 +28,9 @@ comments: true
 
 #### HTTPS의 전체 형식은 Hypertext Transfer Protocol Secure이다.
 
-- HTTP _프로토콜은 데이터 보안을 제공하지 않지만 HTTP는 데이터 보안을 보장한다. 따라서 HTTPS는 HTTP 프로토콜의 보안 버전이라고 말할 수 있습니다. 
+                                                                                                                                                                                                                           . 
 
-- 이 프로토콜을 사용하면 암호화된 형식으로 데이터를 전송할 수 있다. HTTPS 프로토콜의 사용은 주로 은행 계좌 정보를 입력해야 하는 경우에 필요하다. 
+- 이 프로토콜을 사용하면 암호화된 형식으로 데이터를 전송할 수 있다. HTTPS 프로토콜의 사용은 주로 은행 계좌 정보를 입력해야 하는 경우에 필요하다.                                         
 
 - HTTPS 프로토콜은 로그인 자격 증명을 입력해야 하는 경우 주로 사용된다. 크롬과 같은 최신 브라우저에서는 두 프로토콜, 즉 HTTP와 HTTPS가 다르게 표시된다. 
 
@@ -45,6 +47,8 @@ comments: true
 ------
 
 #### HTTP와 HTTPS의 주요 차이점
+
+
 HTTP 와 HTTPS 의 주요 차이점은 SSL 인증서. HTTPS 프로토콜은 보안 기능이 추가된 HTTP 프로토콜의 확장 버전이다.
 
 이 추가 보안 기능은 신용 카드 정보와 같은 민감한 데이터를 전송하는 웹 사이트에 매우 중요하다.
@@ -75,6 +79,7 @@ HTTP 와 HTTPS 의 주요 차이점은 SSL 인증서. HTTPS 프로토콜은 보�
 - 반면 HTTPS 프로토콜에는 데이터를 암호화된 형식으로 변환하는 SSL 인증서가 포함되어 있으므로 이 경우 외부인이 암호화된 텍스트를 이해하지 못 하기 때문에 데이터를 도용할 수 없다.
 
 #### 포트 번호
+
 - HTTP는 포트 번호 80을 통해 데이터를 전송하는 반면 HTTPS는 443 포트 번호를 통해 데이터를 전송. "포트 번호가 지정되지 않으면 HTTP로 간주될 것"
 
 - RFC 1340이 발표되었을 때 IETF(Internet Engineering Task Force)는 HTTP에 포트 번호 80을 제공. 1994년에 새로운 RFC가 출시되었을 때 HTTPS에는 포트 번호 443이 할당.
@@ -94,3 +99,55 @@ SSL 인증서는 무료 및 유료 서비스 모두에서 사용할 수 있다.
 
 - HTTP는 SSL 인증서를 포함하지 않으므로 데이터를 해독하지 않으며 데이터는 일반 텍스트 형식으로 전송.
 
+```
+import requests
+from bs4 import BeautifulSoup
+import re
+
+
+def scrape_weather():
+    print("[네이버 오늘의 날씨]")
+    url = "https://search.naver.com/search.naver?sm=tab_hty.top&where=nexearch&query=%EC%84%9C%EC%9A%B8+%EB%82%A0%EC%94%A8"
+    res = requests.get(url)
+    res.raise_for_status()
+    soup = BeautifulSoup(res.text, "html.parser")
+
+    # 오늘 날씨 : ex) 어제보다 1° 높아요  맑음
+    summary = soup.find("p", attrs={"class": "summary"}).get_text()
+    print(summary)
+    print("")
+
+    # 현재 온도 (최저 온도 / 최고 온도)
+    curr_temp = soup.find("div", attrs={"class": "temperature_text"}).get_text().replace(" 현재 온도", "")  # 4°
+    print(f"현재 온도 : {curr_temp}")
+
+    min_temp = soup.find("span", attrs={"class": "lowest"}).get_text().replace("최저기온", "")  # -4°
+    print(f"최저 온도 : {min_temp}")
+
+    max_temp = soup.find("span", attrs={"class": "highest"}).get_text().replace("최고기온", "")  # 6°
+    print(f"최고 온도 : {max_temp}")
+
+    # 오전 강수확률 OO%, 오후 강수확률 OO%
+    rainfall = soup.find_all("span", attrs={"class": "weather_left"})
+    for idx, rainfall_idx in enumerate(rainfall):
+        if idx == 0:
+            rainfall_morning = rainfall_idx
+            print("")
+            print("강수 확률 :", rainfall_morning.get_text())
+        elif idx == 1:
+            rainfall_afternoon = rainfall_idx
+            print("강수 확률 :", rainfall_afternoon.get_text())
+
+    # 미세먼지
+    dusts = soup.find("li", attrs={"class": "item_today level1"})
+    # print(dusts[0].find("li", attrs={"class":"item_today level1"}))
+    dusts = dusts.get_text()[2:]
+    print("")
+    print(dusts)
+
+
+if __name__ == "__main__":
+    scrape_weather()  #  날씨정보 가져오기, 직접 실행할 때만 동작하도록 함수 정의, 다른 파일에 의해서 호출될 때는 실행 안되게
+```
+
+ini바꾸면 됨
