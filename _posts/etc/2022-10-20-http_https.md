@@ -15,7 +15,7 @@ comments: true
 - HTTP 프로토콜은 서로 다른 통신 시스템 간의 통신을 제공한다. 
 - 사용자가 브라우저에서 HTTP 요청을 하면 웹 서버는 요청된 데이터를 웹 페이지 형태로 사용자에게 보냄. 간단히 말해서 HTTP 프로토콜을 통해 서버에서 클라이언트로 데이터를 전송할 수 있다고 말할 수 있음.
 
-<사진>
+사진
 
 - HTTP 는 TCP 계층 위에 있는 응용 프로그램 계층 프로토콜. 웹 브라우저와 서버에 몇 가지 표준 규칙을 제공하여 서로 통신하는 데 사용할 수 있다.
 
@@ -150,4 +150,55 @@ if __name__ == "__main__":
     scrape_weather()  #  날씨정보 가져오기, 직접 실행할 때만 동작하도록 함수 정의, 다른 파일에 의해서 호출될 때는 실행 안되게
 ```
 
-ini바꾸면 됨
+
+<br>
+
+------
+
+해당 피들러를 실행하고 잡아보면 에러가 뜬다.
+
+이는 SSL을 신뢰할수 없는 인증서라고 인식해서 이다.
+
+```
+    print("[네이버 오늘의 날씨]")
+    # url = "https://search.naver.com/search.naver?sm=tab_hty.top&where=nexearch&query=%EC%84%9C%EC%9A%B8+%EB%82%A0%EC%94%A8"
+    # url = "https://weather.naver.com/"
+    url = "https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=0&ie=utf8&query=%EC%84%9C%EC%9A%B8+%EB%82%A0%EC%94%A8"
+    res = requests.get(url, verify = False)
+```
+
+여기 부분에서 requests.get에서 verify = False를 주면 실행이 가능해진다.
+
+
+<br>
+
+-------
+
+#### fiddler
+
+- Http 트래픽을 검사하는 가장 인기 있는 도구 중 하나다. 이 도구를 사용하면 REST API 웹 요청을 매우 쉽게 테스트할 수 있다.
+
+
+#### 웹 요청 및 응답을 보는 방법
+
+- 피들러에서  capture을 실행. 이에 따라 캡쳐 실행 설정 가능
+
+#### HTTPS 트래픽을 캡처
+ 
+Fiddler 는 암호화되어 있기 때문에 HTTPS URL(보안 사이트) 에 대한 웹 요청의 내용을 표시하지 않는다
+
+그래서 쓰려면 옵션에서 설정해야 한다.
+
+사진
+
+
+Tools -> options -> Https
+
+
+<br>
+
+------------
+
+
+#### 웹 요청 및 응답을 보는 방법
+
