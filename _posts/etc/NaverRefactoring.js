@@ -22,43 +22,45 @@ iSASObject.prototype.setError = function(errcode){
     this.iSASInOut.Output.ErrorMessage = getCooconErrMsg(errcode.toString(16).toUpperCase());
 };
 
-function search(region){
-    var CityCode;
 
-    switch(region){
-        case "춘천":
-            CityCode= '01110675';
-            break;
 
-        
-        case "강릉":
-            CityCode= '01150615';
-            break;
+// function search(region){
+//     var CityCode;
 
-            
-        case "백령":
-            CityCode= '11720330';
-            break;
+//     switch(region){
+//         case "춘천":
+//             CityCode= '01110675';
+//             break;
 
-            
-        case "청주":
-            CityCode= '16111120';
-            break;
 
-        case "서울":
-            CityCode= '09140104';
-            break;  
-            
-        case "수원":
-            CityCode= '02113128';
-            break;
+//         case "강릉":
+//             CityCode= '01150615';
+//             break;
 
-        default:
-            CityCode='09140104';
-            break;
-    }
-    return CityCode;
-}
+
+//         case "백령":
+//             CityCode= '11720330';
+//             break;
+
+
+//         case "청주":
+//             CityCode= '16111120';
+//             break;
+
+//         case "서울":
+//             CityCode= '09140104';
+//             break;
+
+//         case "수원":
+//             CityCode= '02113128';
+//             break;
+
+//         default:
+//             CityCode='09140104';
+//             break;
+//     }
+//     return CityCode;
+// }
 
 
 //////
@@ -81,22 +83,22 @@ function rainy(currentWeather){
 }
 
 var clothesArr = [
-    ["민소매", "반팔", "짧은 치마", "린넨"], 
-    ["반팔", "얇은 셔츠", "반바지", "면바지"], 
-    ["블라우스", "긴팔 티", "면바지", "슬랙스"], 
-    ["얇은 가디건", "니트", "맨투맨", "후드", "긴바지"], 
+    ["민소매", "반팔", "짧은 치마", "린넨"],
+    ["반팔", "얇은 셔츠", "반바지", "면바지"],
+    ["블라우스", "긴팔 티", "면바지", "슬랙스"],
+    ["얇은 가디건", "니트", "맨투맨", "후드", "긴바지"],
     ["자켓", "가디건", "청자켓", "니트", "스타킹", "청바지"]
     ["트랜치 코트", "야상", "점퍼", "스타킹", "기모바지"],
     ["울 코트", "히트텍", "가죽 옷", "기모"],
     ["패딩", "두꺼운 코트", "누빔 옷", "기모", "목도리"]
-]; 
+];
 
 var cloth= [];
 function clothesRecommand(clothesArr,aplTm){
-    
+
     var _clothesArr = JSON.parse(JSON.stringify(clothesArr));
     console.log("clothesArr: ["+ JSON.stringify(clothesArr) +"]");
-    
+
     if (aplTm >= parseInt(28)){
         cloth.push(clothesArr[0]);
         return cloth;
@@ -114,12 +116,12 @@ function clothesRecommand(clothesArr,aplTm){
         return cloth;
     }
     else if  (aplTm >= 12){
-        
-        cloth.push(clothesArr[3]);
+
+        cloth.push(clothesArr[4]);
         // cloth = _clothesArr[4];
         console.log("TEST["+ aplTm +"]:["+ cloth +"]");
-        console.log("TEST["+ aplTm +"]:["+ JSON.stringify(cloth) +"]");      
-     
+        console.log("TEST["+ aplTm +"]:["+ JSON.stringify(cloth) +"]");
+
         return cloth;
 
         // return clothesArr[4];
@@ -155,7 +157,7 @@ var 날씨 = function(){
     this.userAgent += '"Accept":"image/webp,image/apngimage/*,*/*;q=0.8"';
     this.userAgent += '"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36"';
     this.userAgent += '}';
-};  
+};
 
 날씨.prototype = Object.create(iSASObject.prototype);
 
@@ -167,8 +169,8 @@ var 날씨 = function(){
         var input = dec(aInput.Input);
 
 
-        var regionName = search(input.regionName);
-
+        var regionName = input.regionName;
+        
         // 스크래핑 개발 기본
 
         // 1. 통신 (요청) // Request
@@ -176,14 +178,17 @@ var 날씨 = function(){
         //httpRequest.getWithUserAgent(userAgent, url); Header 새팅 필요 시
         var userAgent = '{"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"}';
 
-
-        httpRequest.getWithUserAgent(userAgent, `https://weather.naver.com/today/${regionName}`);
-
-
+        
+       
+        httpRequest.getWithUserAgent(userAgent, 'https://ac.weather.naver.com/ac?q_enc=utf-8&r_format=json&r_enc=utf-8&r_lt=1&st=1&q=' + httpRequest.URLEncodeAll(regionName));
         var ResultStr = httpRequest.result;
 
+        var regionSerial = JSON.parse(ResultStr).items[0][0][1];
 
-        httpRequest.getWithUserAgent(userAgent, `https://weather.naver.com/air/${regionName}`);
+        httpRequest.getWithUserAgent(userAgent, `https://weather.naver.com/today/${regionSerial}`);
+
+
+        httpRequest.getWithUserAgent(userAgent, `https://weather.naver.com/air/${regionSerial}`);
 
 
 
@@ -196,29 +201,29 @@ var 날씨 = function(){
 
         // 3. 결과처리 (결과포맷)
         //var ResTem = StrGrab(ResultStr, '<div class="email MY_EMAIL">', '</div>');
-        
+
         // "regionName":"춘천"
 
 
 
 
         var 날씨정보조회 = [];
-        
-       
 
-            var regionName = StrGrab(ResultStr, '"fullAreaName":"', '"');
+
+
+            // var regionName = StrGrab(ResultStr, '"fullAreaName":"', '"');
             var mareaNm = StrGrab(ResultStr, '"mareaNm":"', '"');
             var today = StrGrab(ResultStr, '<strong class="day">오늘</strong><span class="date">', '</span>');
-           
+
             var ul_str  = StrGrab(ResultStr, 'class="box_color">', '</ul>');
             var li_tmr = StrGrab(ul_str, '<li', '</li>', 2);
            var tommorow_morning = StrGrab(li_tmr,'<span class="weather_text">', '</span>',1);
-           
+
            var tommorow_evening = StrGrab(li_tmr,'<span class="weather_text">', '</span>',2)
             // var 오전 =  StrGrab();
 
-            var wetrTxt = StrGrab(ResultStr, '<span class="weather">', '</span>');   
-            
+            var wetrTxt = StrGrab(ResultStr, '<span class="weather">', '</span>');
+
             var currentWeather  = rainy(wetrTxt);
 
 
@@ -229,7 +234,7 @@ var 날씨 = function(){
             // var rainfall = StrGrab(ResultStr, '<dl><dt class="blind">강수확률</dt><dd>', '</dd>');
 
             var rainfall_mor = StrGrab(ResultStr, '<span class="blind">강수확률</span>', '</span>',  1);
-            
+
             var rainfall_eve = StrGrab(ResultStr, '<span class="blind">강수확률</span>', '</span>',  2);
             var lowest = StrGrab(ResultStr, '<span class="lowest"><span class="blind">최저기온</span>', '</span>');
             var highest =  StrGrab(ResultStr, '<span class="highest"><span class="blind">최고기온</span>', '</span>');
@@ -250,7 +255,7 @@ var 날씨 = function(){
 
             var item = {};
 
-            
+
             var tommorow_item = {};
 
             item.regionName = regionName;
@@ -271,7 +276,7 @@ var 날씨 = function(){
             item.cnPm10Grade= cnPm10Grade;
             item.cnPm25Value=cnPm25Value;
             item.cnPm25Grade=cnPm25Grade;
-
+            item.regionSerial= regionSerial;
             // item.tommorow_mor =tommorow_mor;
 
             item.currentWeather=currentWeather;
@@ -281,9 +286,9 @@ var 날씨 = function(){
 
             var tommorow_date = StrGrab(ResultStr, '<strong class="day">내일</strong><span class="date">', '</span>');
 
-            
- 
-                        
+
+
+
             var rainfall_nextmorning = StrGrab(ResultStr, '<span class="blind">강수확률</span>', '</span>',  3);
             var rainfall_nextevening = StrGrab(ResultStr, '<span class="blind">강수확률</span>', '</span>',  4);
 
@@ -291,13 +296,13 @@ var 날씨 = function(){
             tommorow_item.rainfall_nextmorning=rainfall_nextmorning;
             tommorow_item.rainfall_nextevening=rainfall_nextevening;
 
-           
+
             tommorow_item.tommorow_morning = tommorow_morning;
             tommorow_item.tommorow_evening = tommorow_evening;
             // tommorow_item.tommorow_wetrTxt = tommorow_wetrTxt;
 
             날씨정보조회.push(tommorow_item);
-        
+
         // var 날씨정보조회 = [];
         // var item = {};
 
@@ -305,7 +310,7 @@ var 날씨 = function(){
         // item.온도 = '12.1';
         // item.상태 = '맑음';
         // 날씨정보조회.push(item);
-    
+
         // var item = {};
 
         // item.지역명 = '부산';
@@ -320,7 +325,7 @@ var 날씨 = function(){
         this.iSASInOut.Output.Result = {};
         // this.iSASInOut.Output.Result.이메일 = ResTem;
         this.iSASInOut.Output.Result.날씨정보조회 = 날씨정보조회;
-        
+
         return S_IBX_OK;
     } catch(e){
         this.log("Exception " + e.message);
@@ -345,8 +350,8 @@ function OnInit() {
         system.include("iSASTypes");
         system.setStatus(IBXSTATE_BEGIN, 0);
         result = false;
-    } catch (e) {  
-        console.log("Exception OnInit:[" + e.message + "]");        
+    } catch (e) {
+        console.log("Exception OnInit:[" + e.message + "]");
     } finally {
         //flase 리턴
         return result;
@@ -386,3 +391,16 @@ function Execute(aInput) {
         return JSON.stringify(iSASObj);
     }
 }
+
+
+
+// var json = `{
+//     "query" : ["당진시"],
+//     "items" : [
+//     [[["충청남도 당진시"],["15270510"]],[["충청남도 당진시 송산면"],["15270390"]],[["충청남도 당진시 면천면"],["15270350"]],[["충청남도 당진시 고대면"],["15270310"]],[["충청남도 당진시 구룡동"],["15270111"]],[["충청남도 당진시 당진1동"],["15270510"]],[["충청남도 당진시 당진2동"],["15270520"]],[["충청남도 당진시 당진3동"],["15270530"]],[["충청남도 당진시 대덕동"],["15270107"]],[["충청남도 당진시 대호지면"],["15270330"]]]
+//     ]
+//     }`
+
+//     var regionSerial = JSON.parse(ResultStr).items[0][0][1];
+
+//     console.log(regionSerial)
