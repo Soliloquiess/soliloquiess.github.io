@@ -24,43 +24,43 @@ iSASObject.prototype.setError = function(errcode){
 
 
 
-// function search(region){
-//     var CityCode;
+function search(region){
+    var CityCode;
 
-//     switch(region){
-//         case "춘천":
-//             CityCode= '01110675';
-//             break;
-
-
-//         case "강릉":
-//             CityCode= '01150615';
-//             break;
+    switch(region){
+        case "춘천":
+            CityCode= '01110675';
+            break;
 
 
-//         case "백령":
-//             CityCode= '11720330';
-//             break;
+        case "강릉":
+            CityCode= '01150615';
+            break;
 
 
-//         case "청주":
-//             CityCode= '16111120';
-//             break;
+        case "백령":
+            CityCode= '11720330';
+            break;
 
-//         case "서울":
-//             CityCode= '09140104';
-//             break;
 
-//         case "수원":
-//             CityCode= '02113128';
-//             break;
+        case "청주":
+            CityCode= '16111120';
+            break;
 
-//         default:
-//             CityCode='09140104';
-//             break;
-//     }
-//     return CityCode;
-// }
+        case "서울":
+            CityCode= '09140104';
+            break;
+
+        case "수원":
+            CityCode= '02113128';
+            break;
+
+        default:
+            CityCode='09140104';
+            break;
+    }
+    return CityCode;
+}
 
 
 //////
@@ -181,17 +181,31 @@ var 날씨 = function(){
         
        
         httpRequest.getWithUserAgent(userAgent, 'https://ac.weather.naver.com/ac?q_enc=utf-8&r_format=json&r_enc=utf-8&r_lt=1&st=1&q=' + httpRequest.URLEncodeAll(regionName));
+        //URIENCODING을 해야 %127839712bas1278이런 코드들 한글로 가져옴
         var ResultStr = httpRequest.result;
 
         var regionSerial = JSON.parse(ResultStr).items[0][0][1];
+        var _regionSerial = regionSerial.toString();
+        console.log('regionSerial  : '+regionSerial);
 
-        httpRequest.getWithUserAgent(userAgent, `https://weather.naver.com/today/${regionSerial}`);
+        
+ //       httpRequest.getWithUserAgent(this.userAgent, `https://weather.naver.com/today/${regionSerial}`);
+        httpRequest.getWithUserAgent(userAgent, "https://weather.naver.com/today/"+_regionSerial);
+        // httpRequest.postWithUserAgent(userAgent, `https://weather.naver.com/today/${regionSerial}`);
 
 
         httpRequest.getWithUserAgent(userAgent, `https://weather.naver.com/air/${regionSerial}`);
 
 
 
+
+            //hardcoding
+        // httpRequest.getWithUserAgent(this.userAgent, `https://weather.naver.com/today/${regionName}`);
+        // httpRequest.getWithUserAgent(userAgent, `https://weather.naver.com/air/${regionName}`);
+
+
+        // https://weather.naver.com/today/09680590
+        // https://weather.naver.com/air/09680590
         var ResultAirStr = httpRequest.result;
 
 
@@ -258,6 +272,7 @@ var 날씨 = function(){
 
             var tommorow_item = {};
 
+            item.regionSerial= regionSerial;
             item.regionName = regionName;
             item.mareaNm = mareaNm;
             item.today = today;
@@ -276,7 +291,7 @@ var 날씨 = function(){
             item.cnPm10Grade= cnPm10Grade;
             item.cnPm25Value=cnPm25Value;
             item.cnPm25Grade=cnPm25Grade;
-            item.regionSerial= regionSerial;
+
             // item.tommorow_mor =tommorow_mor;
 
             item.currentWeather=currentWeather;
