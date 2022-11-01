@@ -22,52 +22,6 @@ iSASObject.prototype.setError = function(errcode){
     this.iSASInOut.Output.ErrorMessage = getCooconErrMsg(errcode.toString(16).toUpperCase());
 };
 
-
-
-function search(region){
-    var CityCode;
-
-    switch(region){
-        case "춘천":
-            CityCode= '01110675';
-            break;
-
-
-        case "강릉":
-            CityCode= '01150615';
-            break;
-
-
-        case "백령":
-            CityCode= '11720330';
-            break;
-
-
-        case "청주":
-            CityCode= '16111120';
-            break;
-
-        case "서울":
-            CityCode= '09140104';
-            break;
-
-        case "수원":
-            CityCode= '02113128';
-            break;
-
-        default:
-            CityCode='09140104';
-            break;
-    }
-    return CityCode;
-}
-
-
-//////
-
-
-// var currentWeather  = rainy(wetrTxt);
-
 var umbrella;
 
 //비 오면 우산 챙겨
@@ -87,7 +41,7 @@ var clothesArr = [
     ["반팔", "얇은 셔츠", "반바지", "면바지"],
     ["블라우스", "긴팔 티", "면바지", "슬랙스"],
     ["얇은 가디건", "니트", "맨투맨", "후드", "긴바지"],
-    ["자켓", "가디건", "청자켓", "니트", "스타킹", "청바지"]
+    ["자켓", "가디건", "청자켓", "니트", "스타킹", "청바지"],
     ["트랜치 코트", "야상", "점퍼", "스타킹", "기모바지"],
     ["울 코트", "히트텍", "가죽 옷", "기모"],
     ["패딩", "두꺼운 코트", "누빔 옷", "기모", "목도리"]
@@ -140,19 +94,17 @@ function clothesRecommand(clothesArr,aplTm){
     }
 
 
-    console.log("TEST["+ avr_temp +"]:["+ cloth +"]");
-    console.log("TEST["+ avr_temp +"]:["+ JSON.stringify(cloth) +"]");
+    this.log("TEST["+ avr_temp +"]:["+ cloth +"]");
+    this.log("TEST["+ avr_temp +"]:["+ JSON.stringify(cloth) +"]");
 
     //return cloth
 
 }
 
-
-
 var 날씨 = function(){
     console.log(WeatherName + " 샘플구조체 생성자 호출");
     this.errorMsg = "";
-    this.host = "";
+    this.host = "https://weather.naver.com";
     this.userAgent = '{';
     this.userAgent += '"Accept":"image/webp,image/apngimage/*,*/*;q=0.8"';
     this.userAgent += '"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36"';
@@ -171,43 +123,58 @@ var 날씨 = function(){
 
         var regionName = input.regionName;
         
-        // 스크래핑 개발 기본
+////////////////////
+                //오류처리
 
+        if(regionName==""){
+            this.log(regionName);
+            // console.log(regionSerial);
+            this.setError(E_IBX_PARAMETER_INVALID);
+            this.iSASInOut.Output.ErrorMessage = "지역명을 입력해주세요.";
+            return E_IBX_PARAMETER_INVALID;
+            
+        }
+
+        if(regionName.length<=1){
+            this.log(regionName);
+            this.setError(E_IBX_RESULT_LENGTH_OVER);
+            this.iSASInOut.Output.ErrorMessage = "잘못된 입력입니다.";
+            return E_IBX_RESULT_LENGTH_OVER;
+        }
+
+        //http 호출
+        if (!httpRequest.getWithUserAgent(this.userAgent, this.host +`/today/${regionSerial}`)){
+            //E_IBX_FAILTOGETPAGE = 0x8000E200;  http 호출 실패/서버 응답 없음 시작
+            this.setError(E_IBX_FAILTOGETPAGE);
+            return E_IBX_FAILTOGETPAGE;
+        }
+        
+        //http 호출
+        if (!httpRequest.getWithUserAgent(this.userAgent, this.host +`/air/${regionSerial}`)){
+            //E_IBX_FAILTOGETPAGE = 0x8000E200;  http 호출 실패/서버 응답 없음 시작
+            this.setError(E_IBX_FAILTOGETPAGE);
+            return E_IBX_FAILTOGETPAGE;
+        }
+////////////////
+
+        // 스크래핑 개발 기본
         // 1. 통신 (요청) // Request
         //httpRequest.get(url); Header 새팅 불필요 시
         //httpRequest.getWithUserAgent(userAgent, url); Header 새팅 필요 시
         var userAgent = '{"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"}';
-
         
-       
         httpRequest.getWithUserAgent(userAgent, 'https://ac.weather.naver.com/ac?q_enc=utf-8&r_format=json&r_enc=utf-8&r_lt=1&st=1&q=' + httpRequest.URLEncodeAll(regionName));
         //URIENCODING을 해야 %127839712bas1278이런 코드들 한글로 가져옴
+       
         var ResultStr = httpRequest.result;
-
         var regionSerial = JSON.parse(ResultStr).items[0][0][1];
-        var _regionSerial = regionSerial.toString();
-        console.log('regionSerial  : '+regionSerial);
-
         
- //       httpRequest.getWithUserAgent(this.userAgent, `https://weather.naver.com/today/${regionSerial}`);
-        httpRequest.getWithUserAgent(userAgent, "https://weather.naver.com/today/"+_regionSerial);
-        // httpRequest.postWithUserAgent(userAgent, `https://weather.naver.com/today/${regionSerial}`);
+        httpRequest.getWithUserAgent(userAgent, `https://weather.naver.com/today/${regionSerial}`); 
 
-
+        var ResultTodayStr = httpRequest.result; //통신 결과처리 응답 결국 이 변수 있어야 함.
         httpRequest.getWithUserAgent(userAgent, `https://weather.naver.com/air/${regionSerial}`);
 
-
-
-
-            //hardcoding
-        // httpRequest.getWithUserAgent(this.userAgent, `https://weather.naver.com/today/${regionName}`);
-        // httpRequest.getWithUserAgent(userAgent, `https://weather.naver.com/air/${regionName}`);
-
-
-        // https://weather.naver.com/today/09680590
-        // https://weather.naver.com/air/09680590
         var ResultAirStr = httpRequest.result;
-
 
         // 2. 결과 (응답) // Response
         // this.log ==> console.log
@@ -216,57 +183,122 @@ var 날씨 = function(){
         // 3. 결과처리 (결과포맷)
         //var ResTem = StrGrab(ResultStr, '<div class="email MY_EMAIL">', '</div>');
 
-        // "regionName":"춘천"
-
-
-
+        this.log('regionSerial  : '+regionSerial);
+        this.log('regionName  : '+regionName);
 
         var 날씨정보조회 = [];
 
-
+///////////////////
 
             // var regionName = StrGrab(ResultStr, '"fullAreaName":"', '"');
-            var mareaNm = StrGrab(ResultStr, '"mareaNm":"', '"');
-            var today = StrGrab(ResultStr, '<strong class="day">오늘</strong><span class="date">', '</span>');
+            var mareaNm = StrGrab(ResultTodayStr, '"mareaNm":"', '"');
+            if(mareaNm==""){
+                this.setError(E_IBX_RESULT_FAIL);
+                this.iSASInOut.Output.ErrorMessage = "없는 지역구입니다.";
+                this.log(mareaNm);
+                return E_IBX_RESULT_FAIL;
+            }
 
-            var ul_str  = StrGrab(ResultStr, 'class="box_color">', '</ul>');
+            var today = StrGrab(ResultTodayStr, '<strong class="day">오늘</strong><span class="date">', '</span>');
+
+            if(today==""){
+                this.setError(E_IBX_RESULT_FAIL);
+                this.iSASInOut.Output.ErrorMessage = "없는 날짜입니다.";
+                this.log(today);
+                return E_IBX_RESULT_FAIL;
+            }
+
+            var ul_str  = StrGrab(ResultTodayStr, 'class="box_color">', '</ul>');
             var li_tmr = StrGrab(ul_str, '<li', '</li>', 2);
-           var tommorow_morning = StrGrab(li_tmr,'<span class="weather_text">', '</span>',1);
+        
 
-           var tommorow_evening = StrGrab(li_tmr,'<span class="weather_text">', '</span>',2)
-            // var 오전 =  StrGrab();
-
-            var wetrTxt = StrGrab(ResultStr, '<span class="weather">', '</span>');
-
+            var wetrTxt = StrGrab(ResultTodayStr, '<span class="weather">', '</span>');
+            if(wetrTxt==""){
+                this.setError(E_IBX_RESULT_FAIL);
+                this.log(wetrTxt);
+                return E_IBX_RESULT_FAIL;
+            }
             var currentWeather  = rainy(wetrTxt);
 
-
-
-            var aplTm = StrGrab(ResultStr, '<span class="blind">현재 온도</span>', '<span class="degree">');
+            var aplTm = StrGrab(ResultTodayStr, '<span class="blind">현재 온도</span>', '<span class="degree">');
+            if(aplTm==""){
+                this.setError(E_IBX_RESULT_FAIL);
+                this.log(aplTm);
+                return E_IBX_RESULT_FAIL;
+            }
             // console.log("circuit" +circuit );
-            // var aplTm = StrGrab(ResultStr, '"stationO3Legend1":"', '"');
-            // var rainfall = StrGrab(ResultStr, '<dl><dt class="blind">강수확률</dt><dd>', '</dd>');
-
-            var rainfall_mor = StrGrab(ResultStr, '<span class="blind">강수확률</span>', '</span>',  1);
-
-            var rainfall_eve = StrGrab(ResultStr, '<span class="blind">강수확률</span>', '</span>',  2);
-            var lowest = StrGrab(ResultStr, '<span class="lowest"><span class="blind">최저기온</span>', '</span>');
-            var highest =  StrGrab(ResultStr, '<span class="highest"><span class="blind">최고기온</span>', '</span>');
-            console.log("lowest:::" + lowest);
-            console.log("highest:::" + highest);
-
+            // var aplTm = StrGrab(ResultTodayStr, '"stationO3Legend1":"', '"');
+            // var rainfall = StrGrab(ResultTodayStr, '<dl><dt class="blind">강수확률</dt><dd>', '</dd>');
+            var rainfall_mor = StrGrab(ResultTodayStr, '<span class="blind">강수확률</span>', '</span>',  1);
+            
+            if(rainfall_mor==""){
+                this.setError(E_IBX_RESULT_FAIL);
+                this.log(rainfall_mor);
+                return E_IBX_RESULT_FAIL;
+            }
+            var rainfall_eve = StrGrab(ResultTodayStr, '<span class="blind">강수확률</span>', '</span>',  2);
+            if(rainfall_eve==""){
+                this.setError(E_IBX_RESULT_FAIL);
+                this.log(rainfall_eve);
+                return E_IBX_RESULT_FAIL;
+            }
+            var lowest = StrGrab(ResultTodayStr, '<span class="lowest"><span class="blind">최저기온</span>', '</span>');
+            if(lowest==""){
+                this.setError(E_IBX_RESULT_FAIL);
+                this.log(lowest);
+                return E_IBX_RESULT_FAIL;
+            }
+            var highest =  StrGrab(ResultTodayStr, '<span class="highest"><span class="blind">최고기온</span>', '</span>');
+            if(highest==""){
+                this.setError(E_IBX_RESULT_FAIL);
+                this.log(highest);
+                return E_IBX_RESULT_FAIL;
+            }
+            
             var avr_temp = parseFloat((parseFloat(highest) + parseFloat(lowest))/2);
-            console.log("avr_temp:::" + avr_temp);
+            if(avr_temp==""){
+                this.setError(E_IBX_RESULT_FAIL);
+                this.log(avr_temp);
+                return E_IBX_RESULT_FAIL;
+            }
 
             var todayclothes = clothesRecommand(clothesArr, aplTm);
+            if(todayclothes==""){
+                this.setError(E_IBX_RESULT_FAIL);
+                this.log(todayclothes);
+                return E_IBX_RESULT_FAIL;
+            }
             console.log("todayclothes:::" + JSON.stringify(todayclothes));
 
+
+///////////////////
+
             var cnPm10Value =  StrGrab(ResultAirStr, '<span class="value _cnPm10Value">', '</span>');
+            if(cnPm10Value==""){
+                this.setError(E_IBX_RESULT_FAIL);
+                this.log(cnPm10Value);
+                return E_IBX_RESULT_FAIL;
+            }
             var cnPm10Grade =  StrGrab(ResultAirStr, '<span class="grade _cnPm10Grade">', '</span>');
+            if(cnPm10Grade==""){
+                this.setError(E_IBX_RESULT_FAIL);
+                this.log(cnPm10Grade);
+                return E_IBX_RESULT_FAIL;
+            }
             var cnPm25Value = StrGrab(ResultAirStr, '<span class="value _cnPm25Value">', '</span>');
+            if(cnPm25Value==""){
+                this.setError(E_IBX_RESULT_FAIL);
+                this.log(cnPm25Value);
+                return E_IBX_RESULT_FAIL;
+            }
 
             var cnPm25Grade = StrGrab(ResultAirStr, '<span class="grade _cnPm25Grade">', '</span>');
 
+            if(cnPm25Grade==""){
+                this.setError(E_IBX_RESULT_FAIL);
+                this.log(cnPm25Grade);
+                return E_IBX_RESULT_FAIL;
+            }
             var item = {};
 
 
@@ -297,15 +329,45 @@ var 날씨 = function(){
             item.currentWeather=currentWeather;
             날씨정보조회.push(item);
 
+///////////내일////////
 
+            var tommorow_date = StrGrab(ResultTodayStr, '<strong class="day">내일</strong><span class="date">', '</span>');
+            if(tommorow_date==""){
+                this.setError(E_IBX_RESULT_FAIL);
+                this.iSASInOut.Output.ErrorMessage = "없는 날짜입니다.";
+                this.log(tommorow_date);
+                return E_IBX_RESULT_FAIL;
+            }
 
-            var tommorow_date = StrGrab(ResultStr, '<strong class="day">내일</strong><span class="date">', '</span>');
+            var rainfall_nextmorning = StrGrab(ResultTodayStr, '<span class="blind">강수확률</span>', '</span>',  3);
+            if(rainfall_nextmorning==""){
+                this.setError(E_IBX_RESULT_FAIL);
+                this.log(rainfall_nextmorning);
+                return E_IBX_RESULT_FAIL;
+            }
+            var rainfall_nextevening = StrGrab(ResultTodayStr, '<span class="blind">강수확률</span>', '</span>',  4);
+            if(rainfall_nextevening==""){
+                this.setError(E_IBX_RESULT_FAIL);
+                this.log(rainfall_nextevening);
+                return E_IBX_RESULT_FAIL;
+            }
 
+            var tommorow_morning = StrGrab(li_tmr,'<span class="weather_text">', '</span>',1);
+            if(tommorow_morning==""){
+                this.setError(E_IBX_RESULT_FAIL);
+                this.iSASInOut.Output.ErrorMessage = "없는 날짜입니다.";
+                this.log(tommorow_morning);
+                return E_IBX_RESULT_FAIL;
+            }
 
-
-
-            var rainfall_nextmorning = StrGrab(ResultStr, '<span class="blind">강수확률</span>', '</span>',  3);
-            var rainfall_nextevening = StrGrab(ResultStr, '<span class="blind">강수확률</span>', '</span>',  4);
+           var tommorow_evening = StrGrab(li_tmr,'<span class="weather_text">', '</span>',2)
+           if(tommorow_evening==""){
+            this.setError(E_IBX_RESULT_FAIL);
+            this.iSASInOut.Output.ErrorMessage = "없는 날짜입니다.";
+            this.log(tommorow_evening);
+            return E_IBX_RESULT_FAIL;
+            }
+            // var 오전 =  StrGrab();
 
             tommorow_item.tommorow_date =tommorow_date;
             tommorow_item.rainfall_nextmorning=rainfall_nextmorning;
