@@ -1,0 +1,239 @@
+<!--
+	/*
+ 	 * Filename	: Loan01.jsp
+	 * Function	: 대출정보를 입력받는다.
+	 *
+	 * Comment 	: 데모 대출화면
+	 * History	: 2003/07/15, juno@initech.com
+	 * Version	: 1.0
+	 * Author	: Copyright (c)  by Initech Corp. All Rights Reserved.
+	 */
+-->
+
+<html>
+<head>
+	<title>전자서명 데모</title>
+	<meta http-equiv="Content-Type" Pragma="no-cache" Cache-control="no-cache" content="text/html; charset=euc-kr">
+	<style type="text/css">
+	<!--
+		A:link, A:active, A:visited { font-size: 9pt; color: #000080; line-height: 13pt; text-decoration: none; }
+		A:hover { text-decoration: underline; color: #008080;}
+		.text1 { font-size:9pt; font-style: normal; line-height: 11pt; font-weight:normal}
+		.text2 { font-size:11pt; font-style: normal; line-height: 13pt; font-weight:normal}
+	-->
+	</style>
+
+    <script src="/initech/plugin64/INIplugin.js"></script>
+	<script src="/initech/plugin64/cert.js"></script>
+	<script src="/initech/plugin64/install.js"></script>
+	<script src="/initech/plugin64/noframe.js"></script>
+    <script language="javascript">
+	
+	function SecureSubmit(){
+		
+		InitCache();
+		
+		if(EncFormVerify2(document.readForm, document.sendForm));
+			document.sendForm.submit();
+
+		return false;
+	}
+	
+</script>
+</head>
+
+<body>
+<h5><center>빠르고 편한 인터넷 대출(예적금 담보대출 신청사항입력) <p><hr>
+예적금 담보 대출을 받으시기 위하여 손님의 인적사항을 입력하는 곳입니다.<br>
+지금부터 입력하시는 모든 사항는 "신용정보의 이용 및 보호에 관한 법률"에 의거하여 절대 비밀이 보장됩니다.
+</center></h4><br><br>
+<form name="sendForm" action="Sign2.jsp" method="post">
+	<input type="hidden" name="INIpluginData">
+</form>
+<form name="readForm" action="Sign2.jsp" method="post"  OnSubmit="return SecureSubmit();">
+
+<font size=2 color=000099><b>[ 개인정보 ]</b></font>
+<table class="text1">
+<tr>
+	<td align=center bgcolor=f0f0f0 class="text2">
+	<b>성명</b></td>
+	<td align=center  width="33%" class="text2">
+	<div align="left">
+	<input type="text" name="name" maxlength="15" size="15" value="홍길동">
+    </div>
+    </td>
+
+	<td align=center bgcolor=f0f0f0 height=21 width="16%" class="text2">
+	<font color=000099><b><font color="#000000">주민등록번호</font></b></font></td>
+	<td align=center  width="33%" class="text2">
+	<div align="left">
+	<font face="돋움" size="2">
+	<input type="text" name="jumin" maxlength="15" size="15" value="760830-2245544">
+        </font></div>
+        </td>
+</tr>
+<tr>
+	<td align=center bgcolor=f0f0f0 height=21 width="16%" class="text2">
+	<font color=000099><b><font color="#000000">이메일주소</font></b></font></td>
+	<td align=center  width="33%" class="text2">
+	<div align="left">
+	<font face="돋움" size="2">
+	<input type="text" name="mail" maxlength="20" size="20" value="hong@initech.com">
+        </font></div>
+        </td>
+	<td align=center bgcolor=f0f0f0 class="text2">
+	<b>집전화 번호</b></td>
+	<td align=center class="text2">
+	<div align="left">
+	<input type="text" name="tel" maxlength="15" size="15" value="02-1234-5647">
+    </div>
+    </td>
+</tr>
+<tr>
+	<td align=center bgcolor=f0f0f0 height=21 width="16%" class="text2">
+	<font color=000099><b><font color="#000000">주소</font></b></font></td>
+	<td align=center  width="33%" class="text2">
+	<div align="left">
+	<font face="돋움" size="2">
+	<input type="text" name="addr" maxlength="40" size="40" value="서울시 송파구 거여동 559-23 현대아파트 3동 10호">
+        </font></div>
+        </td>
+	<td align=center bgcolor=f0f0f0 height=21 width="16%" class="text2">
+	<b>핸드폰 번호</b></td>
+	<td align=center  width="33%" class="text2">
+	<div align="left">
+	<input type="text" name="hand" maxlength="15" size="15" value="017-740-5455">
+    </div>
+    </td>
+</tr>
+</table><p>
+
+<font size=2 color=000099><b>[ 직장 정보 ]</b></font>
+<table>
+<tr>
+	<td align=center bgcolor=f0f0f0 height=21 width="16%">
+	<font color=000099><b><font color="#000000">직장명</font></b></font></td>
+	<td align=center  width="33%">
+	<div align="left">
+	<font face="돋움" size="2">
+	<input type="text" name="cname" maxlength="15" size="15" value="(주) 이니텍">
+        </font></div>
+        </td>
+
+	<td align=center bgcolor=f0f0f0 height=21 width="16%">
+	<font color=000099><b><font color="#000000">직위</font></b></font></td>
+	<td align=center  width="33%">
+	<div align="left">
+	<font face="돋움" size="2">
+	<input type="text" name="grade" maxlength="15" size="15" value="연구원">
+        </font></div>
+        </td>
+</tr>
+
+<tr>
+	<td align=center bgcolor=f0f0f0 height=21 width="16%">
+	<font color=000099><b><font color="#000000">근무년수(개월)</font></b></font></td>
+	<td align=center  width="33%">
+	<div align="left">
+	<font face="돋움" size="2">
+	<input type="text" name="jobyear" maxlength="15" size="15" value="15">
+        </font></div>
+        </td>
+
+	<td align=center bgcolor=f0f0f0 height=21 width="16%">
+	<font color=000099><b><font color="#000000">전화번호</font></b></font></td>
+	<td align=center  width="33%">
+	<div align="left">
+	<font face="돋움" size="2">
+	<input type="text" name="ctel" maxlength="15" size="15" value="02-2140-0000">
+        </font></div>
+        </td>
+</tr>
+
+<tr>
+	<td align=center bgcolor=f0f0f0 height=21 width="16%">
+	<font color=000099><b><font color="#000000">급여 소득</font></b></font></td>
+	<td align=center  width="33%">
+	<div align="left">
+	<font face="돋움" size="2">
+	<input type="text" name="money" maxlength="15" size="15" value="30,000,000">
+        </font></div>
+        </td>
+
+	<td align=center bgcolor=f0f0f0 height=21 width="16%">
+	<font color=000099><b><font color="#000000">급여 외 소득</font></b></font></td>
+	<td align=center  width="33%">
+	<div align="left">
+	<font face="돋움" size="2">
+	<input type="text" name="money2" maxlength="15" size="15" value="10,000,000">
+        </font></div>
+        </td>
+</tr>
+<tr>
+	<td align=center bgcolor=f0f0f0 height=21 width="16%">
+	<font color=000099><b><font color="#000000">직장주소</font></b></font></td>
+	<td align=center  width="33%">
+	<div align="left">
+	<font face="돋움" size="2">
+	<input type="text" name="caddr" maxlength="40" size="40" value="서울시 송파구 거여동 559-5 이니텍빌딩5층">
+        </font></div>
+        </td>
+        <td>
+        </td>
+</tr>
+
+</table><p>
+
+<font size=2 color=000099><b>[ 대출 정보 ]</b></font>
+<table>
+<tr>
+	<td align=center bgcolor=f0f0f0 height=21 width="16%">
+	<font color=000099><b><font color="#000000">신청금액</font></b></font></td>
+	<td align=center  width="33%">
+	<div align="left">
+	<font face="돋움" size="2">
+	<input type="text" name="amount" maxlength="15" size="15" value="50,000,000">
+        </font></div>
+        </td>
+</tr>
+
+<tr>
+	<td align=center bgcolor=f0f0f0 height=21 width="16%">
+	<font color=000099><b><font color="#000000">담보계좌번호</font></b></font></td>
+	<td align=center  width="33%">
+	<div align="left">
+	<font face="돋움" size="2">
+	<input type="text" name="account" maxlength="15" size="15" value="396-54-456611">
+        </font></div>
+        </td>
+</tr>
+
+<tr>
+	<td align=center bgcolor=f0f0f0 height=21 width="16%">
+	<font color=000099><b><font color="#000000">대출금 입금계좌</font></b></font></td>
+	<td align=center  width="33%">
+	<div align="left">
+	<font face="돋움" size="2">
+	<input type="text" name="inputaccount" maxlength="15" size="15" value="345-85-451466">
+        </font></div>
+        </td>
+</tr>
+
+<tr>
+	<td align=center bgcolor=f0f0f0 height=21 width="16%">
+	<font color=000099><b><font color="#000000">입금계좌 비밀번호</font></b></font></td>
+	<td align=center  width="33%">
+	<div align="left">
+	<font face="돋움" size="2">
+	<input type="text" name="pass" maxlength="15" size="15" value="1111">
+        </font></div>
+        </td>
+</tr>
+</table>
+<p><center>
+<input value="대출신청" type=submit><P>
+</center>
+</form>
+
+</body>
+</html>
