@@ -22,35 +22,94 @@ iSASObject.prototype.setError = function(errcode){
     this.iSASInOut.Output.ErrorMessage = getCooconErrMsg(errcode.toString(16).toUpperCase());
 };
 
-var 샘플생성자 = function(){
-    console.log(WeatherName + " 샘플구조체 생성자 호출");
+var 전자서명 = function(){
+    console.log(전자서명 + " 전자서명 생성자 호출");
     this.errorMsg = "";
-    this.host = "";
+    this.host = "http://demo.initech.com/";
     this.userAgent = '{';
     this.userAgent += '"Accept":"image/webp,image/apngimage/*,*/*;q=0.8"';
+    // this.userAgent += '"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36"';
     this.userAgent += '"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36"';
-    this.userAgent += '}';
+    this.userAgent += '}';//User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko
 };
 
-샘플생성자.prototype = Object.create(iSASObject.prototype);
+전자서명.prototype = Object.create(iSASObject.prototype);
 
-샘플생성자.prototype.샘플함수 =function(aInput){
-    this.log(WeatherName + " 샘플함수 호출[" + aInput + "]");
+전자서명.prototype.전자서명조회 =function(aInput){
+    this.log(전자서명 + " 전자서명조회 호출[" + aInput + "]");
     try{
         system.setStatus(IBXSTATE_CHECKPARAM, 10);
+        var Signature = dec(aInput.Input);
+        
 
+        var certInfo = {
+            이름: Signature.이름,
+            만료일자: Signature.만료일자,
+            
+            비밀번호: Signature.비밀번호
+        }
+
+    if(!certInfo){
+        this.setError(E_IBX_RESULT_FAIL);
+        return E_IBX_RESULT_FAIL;
+    }
+
+    if(!certManager.findCert(certInfo)) {
+        //실패
+        this.log("인증서를 찾을 수 없습니다.");
+        this.setError(E_IBX_CERTIFY_NOT_FOUND);
+        return E_IBX_CERTIFY_NOT_FOUND;
+    } else {
+        //성공
+        this.log("인증서 찾음.");
+    }
+    
+
+    if(!certManager.verifyPassword(password)) {
+        //실패
+        this.log("인증서 검증 실패.");
+        this.setError(E_IBX_KEY_ACCOUNT_PASSWORD_1_INVALID);
+        return E_IBX_KEY_ACCOUNT_PASSWORD_1_INVALID;
+    } else {
+        //성공
+        this.log("인증서 검증 성공.");
+    }
+    
+    
+
+
+    if(httpRequest.get(this.host) == false) {
+        //실패
+        this.setError(E_IBX_FAILTOGETPAGE);
+            return E_IBX_FAILTOGETPAGE;
+    }
+    
+    //plain = 암호화 할 데이터
+    //password = 입력할 패스워드
+    //timeURL = 서버와 통신할 url
+    var encData11 = certManager.MakeINIpluginData(11, plain, password, timeUrl);
+    
+
+
+
+
+
+
+
+////////////////
         this.iSASInOut.Output ={};
         this.iSASInOut.Output.ErrorCode = "00000000";
         this.iSASInOut.Output.ErrorMessage = "";
         this.iSASInOut.Output.Result = {};
         return S_IBX_OK;
+        
     } catch(e){
         this.log("Exception " + e.message);
         this.setError(E_IBX_UNKNOWN);
         return E_IBX_UNKNOWN;
     } finally{
         system.setStatus(IBXSTATE_DONE, 100);
-        this.log(WeatherName + " 샘플함수 finally");
+        this.log(WeatherName + " 전자서명조회 finally");
     }
 };
 
