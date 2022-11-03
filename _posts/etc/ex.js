@@ -1,0 +1,2 @@
+"__INIts__=1667450334
+name=%c8%ab%b1%e6%b5%bf&jumin=760830-2245544&mail=hong@initech.com&tel=02-1234-5647&addr=%bc%ad%bf%ef%bd%c3+%bc%db%c6%c4%b1%b8+%b0%c5%bf%a9%b5%bf+559-23+%c7%f6%b4%eb%be%c6%c6%c4%c6%ae+3%b5%bf+10%c8%a3&hand=017-740-5455&cname=%28%c1%d6%29+%c0%cc%b4%cf%c5%d8&grade=%bf%ac%b1%b8%bf%f8&jobyear=15&ctel=02-2140-0000&money=30%2c000%2c000&money2=10%2c000%2c000&caddr=%bc%ad%bf%ef%bd%c3+%bc%db%c6%c4%b1%b8+%b0%c5%bf%a9%b5%bf+559-5+%c0%cc%b4%cf%c5%d8%ba%f4%b5%f95%c3%fe&amount=50%2c000%2c000&account=396-54-456611&inputaccount=345-85-451466&pass=1111"
