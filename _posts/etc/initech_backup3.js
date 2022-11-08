@@ -44,9 +44,13 @@ var 전자서명 = function () {
         system.setStatus(IBXSTATE_CHECKPARAM, 10);
         var input = dec(aInput.Input);
         var certInfo = input.인증서;
-        certInfo.이름;
-        certInfo.비밀번호;
-    
+
+
+        // var certInfo = "{\"이름\":\"" + input.인증서.이름 + "\"" +
+        //     ",\"만료일자\":\"\"" + 만료일자+"\""+
+        //     ",\"비밀번호\":\"" + 비밀번호 + "\"}";
+ㅂ
+
 
         var person = input.서명정보;
 
@@ -177,7 +181,9 @@ var 전자서명 = function () {
             return E_IBX_FAILTOGETPAGE;
         }
 
-////////////////////////////
+////////////////////////////2번쨰 인증
+
+
 // var SignTitle = httpRequest.URLEncodeAll(StrGrab(ResultStr, '<input type="hidden" name="PKCS7SignTitle" value="', '">'), 'EUC-KR');
         
         var ResultStr = httpRequest.result;
@@ -324,24 +330,32 @@ var 전자서명 = function () {
         this.log("ResultStr [" + ResultStr + "]");
 
         var frm = StrGrab(ResultStr, 'name="formName"', '</form>'); //primary key 
-        var SignTitle = StrGrab(frm, 'name="PKCS7SignTitle"', '>'); //  value="이니텍은행 전자서명" mainkey 
-            SignTitle = StrGrab(SignTitle, 'value="', '"');// 이니텍은행 전자서명
-            SignTitle = httpRequest.URLEncodeAll(SignTitle, 'EUC-KR'); 
+        
         var 개인정보 ={}
 
         var frm = StrGrab(ResultStr, 'name="formName"', '</form>'); //primary key 
             개인정보.이름 = StrGrab(frm, 'name="name"', '>'); 
             개인정보.이름 = StrGrab(개인정보.이름, 'value="', '"');
 
-        
-        // 개인정보.이름 = StrGrab(ResultStr,'<input type="hidden" name="name"          value="','">');
-        개인정보.주민등록번호 = StrGrab(ResultStr,'<input type="hidden" name="jumin"         value="','">');
-        개인정보.주소 = StrGrab(ResultStr,'<input type="hidden" name="addr"          value="','">');
+            개인정보.주민등록번호 = StrGrab(frm, 'name="jumin"', '>'); 
+            개인정보.주민등록번호 = StrGrab(개인정보.주민등록번호, 'value="', '"');
 
-        개인정보.대출금액 = StrGrab(ResultStr,'<input type="hidden" name="amount"        value="','">');
-        개인정보.담보계좌번호 = StrGrab(ResultStr,'<input type="hidden" name="account"       value="','">');
-        개인정보.대출금입금계좌 = StrGrab(ResultStr,'<input type="hidden" name="inputaccount"  value="','">');
-        개인정보.비밀번호 = StrGrab(ResultStr,'<input type="hidden" name="pass"          value="','">');
+            개인정보.주소 = StrGrab(frm, 'name="addr"', '>'); 
+            개인정보.주소 = StrGrab(개인정보.주소, 'value="', '"');
+        
+            개인정보.대출금액 = StrGrab(frm, 'name="amount"', '>'); 
+            개인정보.대출금액 = StrGrab(개인정보.대출금액, 'value="', '"');
+
+            개인정보.담보계좌번호 = StrGrab(frm, 'name="account"', '>'); 
+            개인정보.담보계좌번호 = StrGrab(개인정보.담보계좌번호, 'value="', '"');
+
+            개인정보.대출금입금계좌 = StrGrab(frm, 'name="inputaccount"', '>'); 
+            개인정보.대출금입금계좌 = StrGrab(개인정보.대출금입금계좌, 'value="', '"');
+
+            개인정보.비밀번호 = StrGrab(frm, 'name="pass"', '>'); 
+            개인정보.비밀번호 = StrGrab(개인정보.비밀번호, 'value="', '"');
+
+
 
         this.iSASInOut.Output ={};
         this.iSASInOut.Output.ErrorCode = "00000000";
