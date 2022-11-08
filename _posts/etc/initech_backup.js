@@ -44,9 +44,13 @@ var 전자서명 = function () {
         system.setStatus(IBXSTATE_CHECKPARAM, 10);
         var input = dec(aInput.Input);
         var certInfo = input.인증서;
-        certInfo.이름;
-        certInfo.비밀번호;
-    
+
+
+        // var certInfo = "{\"이름\":\"" + input.인증서.이름 + "\"" +
+        //     ",\"만료일자\":\"\"" + 만료일자+"\""+
+        //     ",\"비밀번호\":\"" + 비밀번호 + "\"}";
+
+
 
         var person = input.서명정보;
 
@@ -62,41 +66,41 @@ var 전자서명 = function () {
         var 입금계좌비밀번호 = httpRequest.URLEncodeAll(person.입금계좌비밀번호, "EUC-KR");
 
 
-    if(!성명){
-        this.setError(E_IBX_P00012_NAME_NOENTER)
-        return E_IBX_P00012_NAME_NOENTER;
-    }
+        if(!성명){
+            this.setError(E_IBX_P00012_NAME_NOENTER)
+            return E_IBX_P00012_NAME_NOENTER;
+        }
 
-    if(!주민등록번호){
-        this.setError(E_IBX_REGNO_RESIDENT_NOTENTER)
-        return E_IBX_REGNO_RESIDENT_NOTENTER;
-    }
+        if(!주민등록번호){
+            this.setError(E_IBX_REGNO_RESIDENT_NOTENTER)
+            return E_IBX_REGNO_RESIDENT_NOTENTER;
+        }
 
-    if(!주소){
-        this.setError(E_IBX_A97XX1_ADDRESS_NOTENTER)
-        return E_IBX_A97XX1_ADDRESS_NOTENTER;
-    }
+        if(!주소){
+            this.setError(E_IBX_A97XX1_ADDRESS_NOTENTER)
+            return E_IBX_A97XX1_ADDRESS_NOTENTER;
+        }
 
-    if(!신청금액){
-        this.setError(E_IBX_REMIT_AMOUNT_NOTENTER)
-        return E_IBX_REMIT_AMOUNT_NOTENTER;
-    }
+        if(!신청금액){
+            this.setError(E_IBX_REMIT_AMOUNT_NOTENTER)
+            return E_IBX_REMIT_AMOUNT_NOTENTER;
+        }
 
-    
-    if(!담보계좌번호 ){
-        this.setError(E_IBX_ACCOUNT_NO_NOTENTER)
-        return E_IBX_ACCOUNT_NO_NOTENTER;
-    }
+        
+        if(!담보계좌번호 ){
+            this.setError(E_IBX_ACCOUNT_NO_NOTENTER)
+            return E_IBX_ACCOUNT_NO_NOTENTER;
+        }
     
  
-    if(!대출금입금계좌 || !담보계좌번호){
-        this.setError(E_IBX_ACCOUNT_NO_NOTENTER)
-        return E_IBX_ACCOUNT_NO_NOTENTER;
-    }
-    if(!입금계좌비밀번호){
-        this.setError(E_IBX_ACCOUNT_PASSWORD_NOTENTER)
-        return E_IBX_ACCOUNT_PASSWORD_NOTENTER;
-    }
+        if(!대출금입금계좌 || !담보계좌번호){
+            this.setError(E_IBX_ACCOUNT_NO_NOTENTER)
+            return E_IBX_ACCOUNT_NO_NOTENTER;
+        }
+        if(!입금계좌비밀번호){
+            this.setError(E_IBX_ACCOUNT_PASSWORD_NOTENTER)
+            return E_IBX_ACCOUNT_PASSWORD_NOTENTER;
+        }
 
 
         this.log("인증서 개인정보 정보 [" + JSON.stringify(person) + "]")
@@ -177,7 +181,9 @@ var 전자서명 = function () {
             return E_IBX_FAILTOGETPAGE;
         }
 
-////////////////////////////
+////////////////////////////2번쨰 인증
+
+
 // var SignTitle = httpRequest.URLEncodeAll(StrGrab(ResultStr, '<input type="hidden" name="PKCS7SignTitle" value="', '">'), 'EUC-KR');
         
         var ResultStr = httpRequest.result;
@@ -186,26 +192,99 @@ var 전자서명 = function () {
         var frm = StrGrab(ResultStr, 'name="formName"', '</form>'); //primary key 
         var SignTitle = StrGrab(frm, 'name="PKCS7SignTitle"', '>'); //  value="이니텍은행 전자서명" mainkey 
             SignTitle = StrGrab(SignTitle, 'value="', '"');// 이니텍은행 전자서명
-            SignTitle = httpRequest.URLEncodeAll(SignTitle, 'EUC-KR'); // %EC%9D%B4%EB%8B%88%ED%85%8D%EC%9D%80%ED%96%89+%EC%A0%84%EC%9E%90%EC%84%9C%EB%AA%85
-
+            SignTitle = httpRequest.URLEncodeAll(SignTitle, 'EUC-KR'); 
 
         var SignInfo = StrGrab(frm, 'name="PKCS7SignInfo"', '>');
+            SignInfo = StrGrab(SignInfo, 'value="', '"');
+            SignInfo = httpRequest.URLEncodeAll(SignInfo, 'EUC-KR');
 
-        var SignInfo = httpRequest.URLEncodeAll(StrGrab(ResultStr, '<input type="hidden" name="PKCS7SignInfo" value="', '">'), 'EUC-KR');
-        var SignInfo2 = httpRequest.URLEncodeAll(StrGrab(ResultStr, '<input type="hidden" name="PKCS7SignInfo" value=', '>',2), 'EUC-KR');
-        var name = httpRequest.URLEncodeAll(StrGrab(ResultStr, '<input type="hidden" name="name"          value="', '">'), 'EUC-KR');
-        var jumin =  httpRequest.URLEncodeAll(StrGrab(ResultStr, '<input type="hidden" name="jumin"         value="', '">'), 'EUC-KR');
-        var addr = httpRequest.URLEncodeAll(StrGrab(ResultStr, '<input type="hidden" name="addr"          value="', '">'), 'EUC-KR');
-        var amount = httpRequest.URLEncodeAll(StrGrab(ResultStr, '<input type="hidden" name="amount"        value="', '">'), 'EUC-KR');
-        var account = httpRequest.URLEncodeAll(StrGrab(ResultStr, '<input type="hidden" name="account"       value="', '">', 1), 'EUC-KR');
-        var account2 = httpRequest.URLEncodeAll(StrGrab(ResultStr, '<input type="hidden" name="account"       value="', '">', 2), 'EUC-KR');
-        var inputaccount = httpRequest.URLEncodeAll(StrGrab(ResultStr, '<input type="hidden" name="inputaccount"  value="', '">'), 'EUC-KR');
-        var inputaccount2 = httpRequest.URLEncodeAll(StrGrab(ResultStr, '<input type="hidden" name="inputaccount2"  value="', '">'), 'EUC-KR');
-        var pass = httpRequest.URLEncodeAll(StrGrab(ResultStr, '<input type="hidden" name="pass"          value="', '">'), 'EUC-KR');
-        var SearchCondition = httpRequest.URLEncodeAll(StrGrab(ResultStr, '<option value="', '">'), 'EUC-KR');
+        // var SignInfo = httpRequest.URLEncodeAll(StrGrab(ResultStr, '<input type="hidden" name="PKCS7SignInfo" value="', '">'), 'EUC-KR');
+        var SignInfo2 = StrGrab(frm, 'name="PKCS7SignInfo"', '>',2);
+            SignInfo2 = StrGrab(SignInfo2, 'value="', '"');
+            SignInfo2 = httpRequest.URLEncodeAll(SignInfo2, 'EUC-KR');
+
+        var name = StrGrab(frm, 'name="name"', '>');
+            name = StrGrab(name, 'value="', '"');
+            name = httpRequest.URLEncodeAll(name, 'EUC-KR');
+        
+        var jumin = StrGrab(frm, 'name="jumin"', '>');
+            jumin = StrGrab(jumin, 'value="', '"');
+            jumin = httpRequest.URLEncodeAll(jumin, 'EUC-KR');
+            
+        var addr = StrGrab(frm, 'name="addr"', '>');
+            addr = StrGrab(addr, 'value="', '"');
+            addr = httpRequest.URLEncodeAll(addr, 'EUC-KR');            
+            
+        var amount = StrGrab(frm, 'name="amount"', '>');
+            amount = StrGrab(amount, 'value="', '"');
+            amount = httpRequest.URLEncodeAll(amount, 'EUC-KR');
+
+        var account = StrGrab(frm, 'name="account"', '>',1);
+            account = StrGrab(account, 'value="', '"');
+            account = httpRequest.URLEncodeAll(account, 'EUC-KR');
+
+        var account2 = StrGrab(frm, 'name="account2"', '>',2);
+            account2 = StrGrab(account2, 'value="', '"');
+            account2 = httpRequest.URLEncodeAll(account2, 'EUC-KR');
+
+        var inputaccount = StrGrab(frm, 'name="inputaccount"', '>');
+            inputaccount = StrGrab(inputaccount, 'value="', '"');
+            inputaccount = httpRequest.URLEncodeAll(inputaccount, 'EUC-KR');
+                
+        var inputaccount2 = StrGrab(frm, 'name="inputaccount2"', '>');
+            inputaccount2 = StrGrab(inputaccount2, 'value="', '"');
+            inputaccount2 = httpRequest.URLEncodeAll(inputaccount2, 'EUC-KR');
+
+        var pass = StrGrab(frm, 'name="pass"', '>');
+            pass = StrGrab(pass, 'value="', '"');
+            pass = httpRequest.URLEncodeAll(pass, 'EUC-KR');
 
 
-        postData2 = httpRequest.URLEncodeAll(`성명=${name}&주민등록번호=${jumin}&주소=${addr}`, 'EUC-KR');
+        var SearchCondition = StrGrab(frm, 'name="SearchCondition"', '>');
+            SearchCondition = StrGrab(SearchCondition, 'value="', '"');
+            SearchCondition = httpRequest.URLEncodeAll(SearchCondition, 'EUC-KR');
+
+
+        // if(!SignTitle){
+        //     this.setError(E_IBX_DESC_INVALID)
+        //     return E_IBX_DESC_INVALID;
+        // }
+
+        // if(!SignInfo){
+        //     this.setError(E_IBX_DESC_INVALID)
+        //     return E_IBX_DESC_INVALID;
+        // }
+
+        // if(!SignInfo2){
+        //     this.setError(E_IBX_DESC_INVALID)
+        //     return E_IBX_DESC_INVALID;
+        // }
+
+        // if(!name){
+        //     this.setError(E_IBX_P00012_NAME_NOENTER)
+        //     return E_IBX_P00012_NAME_NOENTER;
+        // }
+
+        
+        // if(!jumin ){
+        //     this.setError(E_IBX_REGNO_RESIDENT_NOTENTER)
+        //     return E_IBX_REGNO_RESIDENT_NOTENTER;
+        // }
+        
+    
+        // if(!addr){
+        //     this.setError(E_IBX_A97XX1_ADDRESS_NOTENTER)
+        //     return E_IBX_A97XX1_ADDRESS_NOTENTER;
+        // }
+        // if(!amount){
+        //     this.setError(E_IBX_REMIT_AMOUNT_NOTENTER)
+        //     return E_IBX_REMIT_AMOUNT_NOTENTER;
+        // }
+
+
+///// postdata2 에 적용
+
+        postData2 = httpRequest.URLEncodeAll(`성명=${name}&주민등록번호=${jumin}&주소=${addr}`, 'EUC-KR'); //데이터 맞추기
         this.log('postData2'+postData2)
         
         //PC용
@@ -214,23 +293,7 @@ var 전자서명 = function () {
 
         
         this.log('PKCS7SignData'+PKCS7SignData);
-        // PKCS7SignData = httpRequest.URLEncodeAll(PKCS7SignData, "UTF-8");
-        // this.log("PKCS7SignData : " + PKCS7SignData);
-        // if (PKCS7SignData == '') {
-        //     this.setMultiError(remitParam, E_IBX_CERTIFY_UNKNOWN);
-        //     return E_IBX_CERTIFY_UNKNOWN;
-        // }
 
-        // var SignData = certManager.SignData(postData2, certInfo.비밀번호, "UTF-8");
-        // this.log('SignedData [ ' + SignData + ']');
-
-   
-
-        // var PKCS7SignData = certManager.PKCS7SignData(plain, certInfo.비밀번호, "UTF-8");
-        // this.log('PKCS7SignData [ ' + PKCS7SignData + ']');
-        // pkcs7 = certManager.PKCS7SignData("dummy=dummy", certInfo.비밀번호);
-        // formelement = "N";
-        // this.log("pkcs7:[" + pkcs7 + "]");
         var postData2 = '__INIts__=' + (new Date().getTime()).toString().substring(0, 10);
         
         postData2 += '&PKCS7SignedData='+ httpRequest.URLEncodeAll(PKCS7SignData, 'EUC-KR');
@@ -248,26 +311,16 @@ var 전자서명 = function () {
         postData2 += '&pass=' + pass
         postData2 += '&SearchCondition=' + SearchCondition
 
-        // var PKCS7SignData = certManager.PKCS7SignData(plain, certInfo.비밀번호, "UTF-8");
-        // postData2 += "&PKCS7SignedData=" + pkcs7;
-        // var SignedData = certManager.SignData(postData2, certInfo.비밀번호, "EUC-KR");
-        this.log("postData22"+postData2);
+        this.log("postData2"+postData2);
 
-        // PKCS7SignData = httpRequest.URLEncodeAll(PKCS7SignData, "UTF-8");
-        // this.log("PKCS7SignData222 : " + PKCS7SignData);
-        // if (PKCS7SignData == '') {
-        //     this.setMultiError(remitParam, E_IBX_CERTIFY_UNKNOWN);
-        //     return E_IBX_CERTIFY_UNKNOWN;
-        // }
         
-        
-        var INIpluginData = certManager.MakeINIpluginData(10, postData2, certInfo.비밀번호,  "http://demo.initech.com/initech/plugin64/tools/Time.jsp");
+        var INIpluginData = certManager.MakeINIpluginData(10, postData2, certInfo.비밀번호,  this.host+ "/initech/plugin64/tools/Time.jsp");
         
 
         this.log('postData22 [ ' + postData2 + ']');
 
-
-        if(!httpRequest.post('http://demo.initech.com/initech/demo/sign64/Sign2_Result.jsp', 'INIpluginData=' + httpRequest.URLEncodeAll(INIpluginData, 'UTF-8'))) {
+        this.log("INIpluginData"+INIpluginData);
+        if(!httpRequest.post(this.host+'/initech/demo/sign64/Sign2_Result.jsp', 'INIpluginData=' + httpRequest.URLEncodeAll(INIpluginData, 'UTF-8'))) {
             this.setError(E_IBX_FAILTOGETPAGE);
             return E_IBX_FAILTOGETPAGE;
         }
@@ -275,16 +328,38 @@ var 전자서명 = function () {
         this.log('ResultStr [ ' + ResultStr + ' ]');
 
         ////// 로그 찍히는 거 확인
+        var ResultStr = httpRequest.result;
+        this.log("ResultStr [" + ResultStr + "]");
 
+        var frm = StrGrab(ResultStr, 'name="formName"', '</form>'); //primary key 
+    
+
+        //출력
         var 개인정보 ={}
-        개인정보.이름 = StrGrab(ResultStr,'<input type="hidden" name="name"          value="','">');
-        개인정보.주민등록번호 = StrGrab(ResultStr,'<input type="hidden" name="jumin"         value="','">');
-        개인정보.주소 = StrGrab(ResultStr,'<input type="hidden" name="addr"          value="','">');
 
-        개인정보.대출금액 = StrGrab(ResultStr,'<input type="hidden" name="amount"        value="','">');
-        개인정보.담보계좌번호 = StrGrab(ResultStr,'<input type="hidden" name="account"       value="','">');
-        개인정보.대출금입금계좌 = StrGrab(ResultStr,'<input type="hidden" name="inputaccount"  value="','">');
-        개인정보.비밀번호 = StrGrab(ResultStr,'<input type="hidden" name="pass"          value="','">');
+        var frm = StrGrab(ResultStr, 'name="formName"', '</form>'); //primary key 
+            개인정보.이름 = StrGrab(frm, 'name="name"', '>'); 
+            개인정보.이름 = StrGrab(개인정보.이름, 'value="', '"');
+
+            개인정보.주민등록번호 = StrGrab(frm, 'name="jumin"', '>'); 
+            개인정보.주민등록번호 = StrGrab(개인정보.주민등록번호, 'value="', '"');
+
+            개인정보.주소 = StrGrab(frm, 'name="addr"', '>'); 
+            개인정보.주소 = StrGrab(개인정보.주소, 'value="', '"');
+        
+            개인정보.대출금액 = StrGrab(frm, 'name="amount"', '>'); 
+            개인정보.대출금액 = StrGrab(개인정보.대출금액, 'value="', '"');
+
+            개인정보.담보계좌번호 = StrGrab(frm, 'name="account"', '>'); 
+            개인정보.담보계좌번호 = StrGrab(개인정보.담보계좌번호, 'value="', '"');
+
+            개인정보.대출금입금계좌 = StrGrab(frm, 'name="inputaccount"', '>'); 
+            개인정보.대출금입금계좌 = StrGrab(개인정보.대출금입금계좌, 'value="', '"');
+
+            개인정보.비밀번호 = StrGrab(frm, 'name="pass"', '>'); 
+            개인정보.비밀번호 = StrGrab(개인정보.비밀번호, 'value="', '"');
+
+
 
         this.iSASInOut.Output ={};
         this.iSASInOut.Output.ErrorCode = "00000000";
@@ -352,3 +427,7 @@ function Execute(aInput) {
         return JSON.stringify(iSASObj);
     }
 }
+
+
+//input : 
+//       {"Module":"initech","Class":"전자서명","Job":"전자서명조회","Input":{"인증서":{"이름":"cn=박성용(park sungyong)0004047H000190474,ou=KMB,ou=personal4IB,o=yessign,c=kr","만료일자":"20230116","비밀번호":"pncsoft1"},"서명정보":{"성명":"홍길동","주민등록번호":"760830-2245544","이메일주소":"hong@initech.com","집전화번호":"02-1234-5678","주소":"서울시 송파구 거여동 559-23 현대아파트 3동 10호","핸드폰번호":"017-740-5455","신청금액":"50,000,000","담보계좌번호":"396-54-456611","대출금입금계좌":"345-85-451466", "입금계좌비밀번호":"1111"}}}
