@@ -117,7 +117,9 @@ var 전자서명 = function () {
         var 담보계좌번호 = person.담보계좌번호;
         var 대출금입금계좌 = person.대출금입금계좌;
         var 입금계좌비밀번호 = person.입금계좌비밀번호;
-        // var 입금계좌비밀번호 = parseInt(person.입금계좌비밀번호); 
+        // var 입금계좌비밀번호 = parseInt(person.입금계좌비밀번호);
+
+        
 
         if(!성명){
             this.setError(E_IBX_P00012_NAME_NOENTER)
@@ -155,6 +157,9 @@ var 전자서명 = function () {
             return E_IBX_ACCOUNT_PASSWORD_NOTENTER;
         }
 
+        
+
+
 
         var 성명 = httpRequest.URLEncodeAll(person.성명, "EUC-KR");
         var 주민등록번호 = httpRequest.URLEncodeAll(person.주민등록번호, "EUC-KR");
@@ -168,7 +173,7 @@ var 전자서명 = function () {
         var 입금계좌비밀번호 = httpRequest.URLEncodeAll(person.입금계좌비밀번호, "EUC-KR");
 
 
-
+        
         this.log("인증서 개인정보 정보 [" + JSON.stringify(person) + "]")
         
         if(!certInfo) {
@@ -306,9 +311,10 @@ var 전자서명 = function () {
             SearchCondition = httpRequest.URLEncodeAll(SearchCondition, 'EUC-KR');
 
 
-            jumin = this.maskJumin(jumin);
-            // account = this.maskAcctNo(account);
-            pass =this.maskPassNo(pass);
+            // jumin = this.maskJumin(jumin);
+            // // account = this.maskAcctNo(account);
+
+            // pass =this.maskPassNo(pass);
 
         if(!SignTitle){
             this.setError(E_IBX_DESC_INVALID)
@@ -418,45 +424,26 @@ var 전자서명 = function () {
             개인정보.주소 = StrGrab(StrGrab(frm, 'name="addr"', '>'), 'value="', '"');
         
             개인정보.대출금액 =  StrGrab(StrGrab(frm, 'name="amount"', '>'), 'value="', '"');
-            // 개인정보.대출금액 = parseInt(StrReplace(개인정보.대출금액, ",", ""));
+            개인정보.대출금액 = 개인정보.대출금액.replace(/,/g, "");
+
             개인정보.담보계좌번호 = StrGrab(StrGrab(frm, 'name="account"', '>'), 'value="', '"'); 
 
             개인정보.대출금입금계좌 = StrGrab(StrGrab(frm, 'name="inputaccount"', '>'), 'value="', '"');
 
-            개인정보.비밀번호 = StrGrab(StrGrab(frm, 'name="pass"', '>'), 'value="', '"');
+            개인정보.비밀번호 = parseInt(StrGrab(StrGrab(frm, 'name="pass"', '>'), 'value="', '"'));
 
-        if(!개인정보.이름){
-            this.setError(E_IBX_P00012_NAME_NOENTER)
-            return E_IBX_P00012_NAME_NOENTER;
-        }
+        // this.log("typeof"+typeof 개인정보.비밀번호);
 
-        if(!개인정보.주민등록번호){
-            this.setError(E_IBX_REGNO_RESIDENT_NOTENTER)
-            return E_IBX_REGNO_RESIDENT_NOTENTER;
-        }
+        this.iSASInOut.Output={};
+        this.iSASInOut.Input.인증서.비밀번호 = input.인증서.비밀번호.replace(/./g, "*"); //input
+        // this.iSASInOut.Input.서명정보.주민등록번호 = (input.서명정보.주민등록번호);
+        this.iSASInOut.Input.서명정보.주민등록번호 = 주민등록번호.replace(/^(\d{6})-?(\d{7})$/g, '$1*******');
+        // this.iSASInOut.Input.주민등록번호 = 주민등록번호.replace(/^(\d{6})-?(\d{7})$/g, '$1*******');
 
-        if(!개인정보.주소){
-            this.setError(E_IBX_A97XX1_ADDRESS_NOTENTER)
-            return E_IBX_A97XX1_ADDRESS_NOTENTER;
-        }
-
-        if(!개인정보.대출금액){
-            this.setError(E_IBX_REMIT_AMOUNT_NOTENTER)
-            return E_IBX_REMIT_AMOUNT_NOTENTER;
-        }
-
-        
-        if(!개인정보.담보계좌번호 || !개인정보.대출금입금계좌 ){
-            this.setError(E_IBX_ACCOUNT_NO_NOTENTER)
-            return E_IBX_ACCOUNT_NO_NOTENTER;
-        }
-
-        if(!개인정보.비밀번호){
-            this.setError(E_IBX_ACCOUNT_PASSWORD_NOTENTER)
-            return E_IBX_ACCOUNT_PASSWORD_NOTENTER;
-        }
-
-        this.iSASInOut.Output ={};
+        this.iSASInOut.Input.서명정보.신청금액 = 신청금액.replace(/,/g, "");
+        this.iSASInOut.Input.서명정보.입금계좌비밀번호 = 입금계좌비밀번호.replace(/./g, "*");
+        // this.iSASInOut.Input.서명정보.신청금액 = input.서명정보.신청금액.replace(/,/g, "");
+        // this.iSASInOut.Input.서명정보.입금계좌비밀번호 = input.서명정보.입금계좌비밀번호.replace(/./g, "*");
         this.iSASInOut.Output.ErrorCode = "00000000";
         this.iSASInOut.Output.ErrorMessage = "";
         this.iSASInOut.Output.Result = {};
