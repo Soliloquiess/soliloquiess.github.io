@@ -228,7 +228,7 @@ var 전자서명 = function () {
         this.log("sCert:[" +SCert);
         SCert = StrReplace(SCert, "-----BEGIN CERTIFICATE-----", "");
         SCert = StrReplace(SCert, "-----END CERTIFICATE-----", "");
-        this.log("sCert:[" + SCert + "]");
+        this.log("sCert:[" + SCert );
 
         certManager.LoadCert(SCert);
 

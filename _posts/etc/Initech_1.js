@@ -204,31 +204,46 @@ var 전자서명 = function () {
             return E_IBX_FAILTOGETPAGE;
         }
 
-        
-        
-        var SCert = StrGrab(httpRequest.result, 'SCert = "', '";', 2);
-        var i = 1;
-        while(true) {
-            var tempStr = StrGrab(httpRequest.result, 'SCert += "', '";', i++);
-            if(tempStr != "") {
-                SCert += tempStr;
-            } else {
-                break;
-            }
-        }
+                // 
+        var SCert = StrGrab(httpRequest.result, 'SCert += "', 'SCert += "-----END CERTIFICATE-----\\n";');
+        SCert = StrReplace(SCert, 'SCert += "', '');
+        SCert = StrReplace(SCert, '\\n";', '');
+        // var i = 1;
+        // while(true) {
+        //     var tempStr = StrGrab(httpRequest.result, 'SCert += "', '";', i++);
+        //     if(tempStr != "") {
+        //         SCert += tempStr;
+        //     } else {
+        //         break;
+        //     }
+        // }
 
+        this.log("scert"+SCert);
+        //eval = 코드 줄이기 위한 함수..?
+        
+        // var Scert = "--------BEGIN ------";
+        // SCert += "welkfjweljfwelkfjlwkefjlwke"
+        // SCert += "welkfjweljfwelkfjlwkefjlwke"
+        // SCert += "welkfjweljfwelkfjlwkefjlwke"
+        // SCert += "welkfjweljfwelkfjlwkefjlwke"
+        // SCert += "welkfjweljfwelkfjlwkefjlwke"
+        // SCert += "--------END ------";
+        
+        // eval('var test = 2 + 2' ); // 4
+        
         // SCert = StrReplace(SCert, '\\n', '');
         // SCert = StrReplace(SCert, '\\', '\\n');
         // ex: SCert => var S = "safks;lkg;sljg'"
 
-        // eval(SCert);
+        eval("SCert=SCert");
 
-        this.log("sCert:[" +SCert);
-        SCert = StrReplace(SCert, "\\n", "");
-        this.log("sCert:[" +SCert);
-        SCert = StrReplace(SCert, "-----BEGIN CERTIFICATE-----", "");
-        SCert = StrReplace(SCert, "-----END CERTIFICATE-----", "");
-        this.log("sCert:[" + SCert + "]");
+
+        // this.log("sCert:[" +SCert);
+        // SCert = StrReplace(SCert, "\\n", "");
+        // this.log("sCert:[" +SCert);
+        // SCert = StrReplace(SCert, "-----BEGIN CERTIFICATE-----", "");
+        // SCert = StrReplace(SCert, "-----END CERTIFICATE-----", "");
+        // this.log("sCert:[" + SCert + "]");
 
         certManager.LoadCert(SCert);
 
