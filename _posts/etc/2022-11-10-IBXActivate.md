@@ -50,3 +50,9 @@ etc)
 - NPKI = 인증서 레포지토리
 - pfx -> NPKI를 extract하기 위한 인증키
 - 일반적인 NPKI 경로: C:\Users\사용자\AppData\LocalLow\NPKI
+
+<br>
+
+-----------
+
+
