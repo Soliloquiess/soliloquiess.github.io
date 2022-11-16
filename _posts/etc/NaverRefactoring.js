@@ -1,9 +1,7 @@
-var moduleVersion = '20.10.21.1';
+var moduleVersion = '20.11.14.3';// YYMMDD. version
 var WeatherName = "샘플소스";
 console.log(WeatherName + " 스크립트 호출됨.");
 console.log('Version: ' + moduleVersion);
-
-//피드백 1~4 내용 아래에 번호로 정리
 
 function iSASObject(){
     console.log("iSASObject 생성자 호출");
@@ -24,89 +22,29 @@ iSASObject.prototype.setError = function(errcode){
     this.iSASInOut.Output.ErrorMessage = getCooconErrMsg(errcode.toString(16).toUpperCase());
 };
 
-var umbrella;
 
-//비 오면 우산 챙겨
-function rainy(currentWeather){
-    if (currentWeather == '비'){
-        umbrella =  "\n\t *비 온대요. 우산 챙겨요\n\n"
-        return umbrella;
-    }
-    else{
-        umbrella =  "\n\t 우산은 필요 없을거 같스빈다!\n\n"
-        return umbrella;
-    }
-}
+// var changeYMD = function(날짜) {
+//     var currentDate = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
+//     var day = currentDate.getDate()
+//     var month = currentDate.getMonth() + 1
+//     var year = currentDate.getFullYear()
+//     YYMMDD = year+month+day;
+//     return YYMMDD;
+// }
 
-var clothesArr = [
-    ["민소매", "반팔", "짧은 치마", "린넨"],
-    ["반팔", "얇은 셔츠", "반바지", "면바지"],
-    ["블라우스", "긴팔 티", "면바지", "슬랙스"],
-    ["얇은 가디건", "니트", "맨투맨", "후드", "긴바지"],
-    ["자켓", "가디건", "청자켓", "니트", "스타킹", "청바지"],
-    ["트랜치 코트", "야상", "점퍼", "스타킹", "기모바지"],
-    ["울 코트", "히트텍", "가죽 옷", "기모"],
-    ["패딩", "두꺼운 코트", "누빔 옷", "기모", "목도리"]
-];
-
-var cloth= [];
-function clothesRecommand(clothesArr,aplTm){
-
-    var _clothesArr = JSON.parse(JSON.stringify(clothesArr));
-    console.log("clothesArr: ["+ JSON.stringify(clothesArr) +"]");
-
-    if (aplTm >= parseInt(28)){
-        cloth.push(clothesArr[0]);
-        return cloth;
-    }
-    else if (aplTm >= 27){
-        cloth.push(clothesArr[1]);
-        return cloth;
-    }
-    else if (aplTm >= 20){
-        cloth.push(clothesArr[2]);
-        return cloth;
-    }
-    else if (aplTm >= 17){
-        cloth.push(clothesArr[3]);
-        return cloth;
-    }
-    else if  (aplTm >= 12){
-
-        cloth.push(clothesArr[4]);
-        // cloth = _clothesArr[4];
-        console.log("TEST["+ aplTm +"]:["+ cloth +"]");
-        console.log("TEST["+ aplTm +"]:["+ JSON.stringify(cloth) +"]");
-
-        return cloth;
-
-        // return clothesArr[4];
-    }
-    else if (aplTm >= 9){
-        cloth.push(clothesArr[5]);
-        return cloth;
-    }
-    else if (aplTm >= 5){
-        cloth.push(clothesArr[6]);
-        return cloth;
-    }
-    else if (aplTm <= 4){
-        cloth.push(clothesArr[7]);
-        return cloth;
-    }
-
-
-    this.log("TEST["+ avr_temp +"]:["+ cloth +"]");
-    this.log("TEST["+ avr_temp +"]:["+ JSON.stringify(cloth) +"]");
-
-    //return cloth
-
+function getFormatDate(date){
+    var year = date.getFullYear();              //yyyy
+    var month = (1 + date.getMonth());          //M
+    month = month >= 10 ? month : '0' + month;  //month 두자리로 저장
+    var day = date.getDate();                   //d
+    day = day >= 10 ? day : '0' + day;          //day 두자리로 저장
+    return  year + '' + month + '' + day;       //'-' 추가하여 yyyy-mm-dd 형태 생성 가능
 }
 
 var 날씨 = function(){
-    console.log(WeatherName + " 샘플구조체 생성자 호출");
     this.errorMsg = "";
     this.host = "https://weather.naver.com";
+
     this.userAgent = '{';
     this.userAgent += '"Accept":"image/webp,image/apngimage/*,*/*;q=0.8"';
     this.userAgent += '"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36"';
@@ -115,255 +53,177 @@ var 날씨 = function(){
 
 날씨.prototype = Object.create(iSASObject.prototype);
 
-날씨.prototype.날씨정보조회 =function(aInput){
-    this.log(WeatherName + " 날씨정보조회 호출[" + aInput + "]");
-    try{
+날씨.prototype.날씨정보조회 = function(aInput){
+    this.log(WeatherName + "날씨 날씨정보조회 호출[" + aInput + "]");
+    try {
         system.setStatus(IBXSTATE_CHECKPARAM, 10);
 
         var input = dec(aInput.Input);
 
 
-        var regionName = input.regionName;
+        var 지역명 = input.지역명;
         
-////////////////////
-        //  피드백1 오류처리
-        if(regionName==""){
-            this.log(regionName);
-            this.setError(E_IBX_PARAMETER_INVALID);
-            this.iSASInOut.Output.ErrorMessage = "지역명을 입력해주세요.";
-            return E_IBX_PARAMETER_INVALID;
-            
+        if(!지역명){
+            this.setError(E_IBX_PARAMETER_NOTENTER);
+            this.iSASInOut.Output.ErrorMessage = "지역명이 미입력입니다. 확인 후 거래하시기 바랍니다.";
+            return E_IBX_PARAMETER_NOTENTER;
         }
 
-        if(regionName.length<=1){
-            this.setError(E_IBX_RESULT_LENGTH_OVER);
-            return E_IBX_RESULT_LENGTH_OVER;
-        }
-        
-        //피드백1. 입력값 말고 에러코드 E_IBX_FAILTOGETPAGE로 setError
-
-
-        //피드백2. 통신 응답시 로그 출력
-        
-        
-        if (!httpRequest.getWithUserAgent(this.userAgent, this.host +`/today/${regionSerial}`)){
-            //E_IBX_FAILTOGETPAGE = 0x8000E200;  http 호출 실패/서버 응답 없음 시작
-            this.setError(E_IBX_FAILTOGETPAGE);
-            return E_IBX_FAILTOGETPAGE;
-        }
-        
-        //http 호출(통신오류 검증)
-        if (!httpRequest.getWithUserAgent(this.userAgent, this.host +`/air/${regionSerial}`)){
-            //E_IBX_FAILTOGETPAGE = 0x8000E200;  http 호출 실패/서버 응답 없음 시작
-            this.setError(E_IBX_FAILTOGETPAGE);
-            return E_IBX_FAILTOGETPAGE;
-        }
-
-////////////////
-
-        // 스크래핑 개발 기본
-        // 1. 통신 (요청) // Request
-        //httpRequest.get(url); Header 새팅 불필요 시
-        //httpRequest.getWithUserAgent(userAgent, url); Header 새팅 필요 시
         var userAgent = '{"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"}';
         
-        //httpRequest.getWithUserAgent ==> true/false
-        //http 호출(통신오류 검증)
+          //    지역 정보 통신    
+       
+        this.url = '/ac?';
+        this.param  = 'q_enc='      + 'utf-8';
+        this.param += '&r_format='  + 'json';
+        this.param += '&r_enc='     + 'utf-8';
+        this.param += '&r_lt='      + '1';
+        this.param += '&st='        + '1';
+        //    지역명 인코딩 해서 통신
+        this.param += '&q='         + httpRequest.URLEncodeAll(지역명);
 
-        // 피드백 3. 통신 오류 검증은 반드시 해야한다
-        // 통신 오류 검증 !http . 통신 실패시 E_IBX_FAILTOGETPAGE
-
-        // 피드백 4. 그외 과도한 공백 제거 및 비슷한 내용의 예외처리 하나로 해서 코드 양 줄이기
-         
-        if (!httpRequest.getWithUserAgent(userAgent, 'https://ac.weather.naver.com/ac?q_enc=utf-8&r_format=json&r_enc=utf-8&r_lt=1&st=1&q=' + httpRequest.URLEncodeAll(regionName))){
-            this.setError(E_IBX_FAILTOAOSCHECK);
+        if (!httpRequest.getWithUserAgent(userAgent, `https://ac.weather.naver.com` + this.url + this.param)){
+            this.setError(E_IBX_FAILTOGETPAGE);
             return E_IBX_FAILTOGETPAGE;
         }
         var ResultStr = httpRequest.result;
         
-        // 2. 결과 (응답) // Response
+      
+       
+        try {
+            var regionSerial = JSON.parse(ResultStr).items[0][0][1];
+            this.log("regionSerial"+regionSerial);
 
-        //피드백2. 응답값 로그 출력
-        this.log("main1: ["+ ResultStr +"]");
-        //URIENCODING을 해야 %127839712bas1278이런 코드들 한글로 가져옴
-       
-       
-        var regionSerial = JSON.parse(ResultStr).items[0][0][1];
-        this.log("regionSerial"+regionSerial);
+        } catch (error) {
+            this.log("error.message:::" + error.message);
+            this.setError(E_IBX_SITE_INVALID + 1);
+            return E_IBX_SITE_INVALID + 1;
+        }
+
         
+        this.log('regionserial:::')
+
+        if(!regionSerial){
+            
+            this.setError(E_IBX_PARAMETER_INVALID);
+            return E_IBX_PARAMETER_INVALID;
+        }
         
-        //http 호출(통신오류 검증)
-        if(!httpRequest.getWithUserAgent(userAgent, `https://weather.naver.com/today/${regionSerial}`)){
-            this.setError(E_IBX_FAILTOAOSCHECK);
+        if (!httpRequest.getWithUserAgent(this.userAgent, this.host +`/today/`+ regionSerial)){
+            this.setError(E_IBX_FAILTOGETPAGE);
             return E_IBX_FAILTOGETPAGE;
         }; 
 
-        var ResultTodayStr = httpRequest.result; //통신 결과처리 응답 결국 이 변수 있어야 함.
-        this.log(ResultTodayStr);
+
+        ResultStr = httpRequest.result; 
+       
+
+        var 현재날씨 = StrGrab(ResultStr, '"weather">', '</span>');
+
+        var 현재기온 = StrGrab(ResultStr, '현재 온도</span>', '<');
+     
+        var frm = StrGrab(ResultStr, '"box_color">', '</ul>');
+
+        // var 오늘날짜 = StrGrab(frm, '"date">', '</span>');
+        var 오늘날짜 = new Date();
+        오늘날짜 = getFormatDate(오늘날짜);
+        // this.log(typeof(오늘날짜))
+        // 오늘날짜.replace(/./g,'');
+        // this.log(typeof("오늘날짜:::"+오늘날짜))
+        // this.log("오늘날짜:::"+오늘날짜)
+        // 오늘날짜 = changeYMD(오늘날짜);
         
-        //http 호출(통신오류 검증)
-        if(!httpRequest.getWithUserAgent(userAgent, `https://weather.naver.com/air/${regionSerial}`)){
-            this.setError(E_IBX_FAILTOAOSCHECK);
+        this.log("오늘날짜:::"+ 오늘날짜);
+        var 최저기온 = StrGrab(frm, '최저기온</span>', '<');
+
+        var 최고기온 =  StrGrab(frm, '최고기온</span>', '<');
+       
+        
+        var 오전날씨 = StrGrab(frm,'weather_text">', '</span>',1);
+        var 오후날씨 = StrGrab(frm,'weather_text">', '</span>',2);
+        
+        var 평균기온 = parseFloat((parseFloat(최고기온) + parseFloat(최저기온))/2);
+
+        if(!현재날씨||!현재기온||!오늘날짜||!최저기온 || !최고기온||!평균기온){
+            this.setError(E_IBX_RESULT_FAIL);
+            return E_IBX_RESULT_FAIL;
+        }
+
+
+        if (!httpRequest.getWithUserAgent(this.userAgent, this.host +`/air/` + regionSerial)){
+            this.setError(E_IBX_FAILTOGETPAGE);
             return E_IBX_FAILTOGETPAGE;
       
         };
 
-        var ResultAirStr = httpRequest.result;
-        this.log(ResultAirStr);
+        var ResultStr = httpRequest.result;
 
-        
-        // 3. 결과처리 (결과포맷)
-        //var ResTem = StrGrab(ResultStr, '<div class="email MY_EMAIL">', '</div>');
-        // this.log('ResultTodayStr  : '+ResultTodayStr);
-        // this.log('regionName  : '+regionName);
-
-
-///////////////////
+        var 미세먼지등급 =  StrGrab(ResultStr, 'grade _cnPm10Grade">', '<');
+        var 초미세먼지등급 = StrGrab(ResultStr, 'grade _cnPm25Grade">', '<');
+        if(!미세먼지등급 || !초미세먼지등급 ){
+            this.setError(E_IBX_RESULT_FAIL);
+            return E_IBX_RESULT_FAIL;
+        }
 
 
-        var 날씨정보조회 = [];
+        var 날씨정보조회 = {};
 
 
-            // var regionName = StrGrab(ResultStr, '"fullAreaName":"', '"');
-            var mareaNm = StrGrab(ResultTodayStr, '"mareaNm":"', '"');
-            if(mareaNm==""){
-                this.setError(E_IBX_RESULT_FAIL);
-                //this.iSASInOut.Output.ErrorMessage = "없는 지역구입니다.";
-                return E_IBX_RESULT_FAIL;
-            }
-
-            var today = StrGrab(ResultTodayStr, '<strong class="day">오늘</strong><span class="date">', '</span>');
-
-            if(today==""){
-                this.setError(E_IBX_RESULT_FAIL);
-                return E_IBX_RESULT_FAIL;
-            }
-
-            var ul_str  = StrGrab(ResultTodayStr, 'class="box_color">', '</ul>');
-            var li_tmr = StrGrab(ul_str, '<li', '</li>', 2);
+        날씨정보조회.오늘 = {};
         
 
-            var wetrTxt = StrGrab(ResultTodayStr, '<span class="weather">', '</span>');
-            if(wetrTxt==""){
-                this.setError(E_IBX_RESULT_FAIL);
-                return E_IBX_RESULT_FAIL;
-            }
-            var currentWeather  = rainy(wetrTxt);
+        날씨정보조회.오늘.지역명 = 지역명;
+        날씨정보조회.오늘.오늘날짜 = 오늘날짜;
+        날씨정보조회.오늘.현재날씨 = 현재날씨;
 
-            var aplTm = StrGrab(ResultTodayStr, '<span class="blind">현재 온도</span>', '<span class="degree">');
-            if(aplTm==""){
-                this.setError(E_IBX_RESULT_FAIL);
-                return E_IBX_RESULT_FAIL;
-            }
-            var rainfall_mor = StrGrab(ResultTodayStr, '<span class="blind">강수확률</span>', '</span>',  1);
-            
-            var rainfall_eve = StrGrab(ResultTodayStr, '<span class="blind">강수확률</span>', '</span>',  2);
-            if(rainfall_eve=="" || rainfall_mor==""){
-                this.setError(E_IBX_RESULT_FAIL);
-                return E_IBX_RESULT_FAIL;
-            }
-            var lowest = StrGrab(ResultTodayStr, '<span class="lowest"><span class="blind">최저기온</span>', '</span>');
-
-            var highest =  StrGrab(ResultTodayStr, '<span class="highest"><span class="blind">최고기온</span>', '</span>');
-            if(highest=="" || lowest==""){
-                this.setError(E_IBX_RESULT_FAIL);
-                return E_IBX_RESULT_FAIL;
-            }
-            
-            var avr_temp = parseFloat((parseFloat(highest) + parseFloat(lowest))/2);
-
-            var todayclothes = clothesRecommand(clothesArr, aplTm);
-            if(todayclothes=="" || avr_temp ==""){
-                this.setError(E_IBX_RESULT_FAIL);
-                return E_IBX_RESULT_FAIL;
-            }
-            console.log("todayclothes:::" + JSON.stringify(todayclothes));
+        날씨정보조회.오늘.평균기온 = 평균기온 + '';
 
 
-///////////////////
-
-            var cnPm10Value =  StrGrab(ResultAirStr, '<span class="value _cnPm10Value">', '</span>');
-            var cnPm10Grade =  StrGrab(ResultAirStr, '<span class="grade _cnPm10Grade">', '</span>');
-            
-            if(cnPm10Grade=="" || cnPm10Value==""){
-                this.setError(E_IBX_RESULT_FAIL);
-                return E_IBX_RESULT_FAIL;
-            }
-
-            var cnPm25Value = StrGrab(ResultAirStr, '<span class="value _cnPm25Value">', '</span>');
-            var cnPm25Grade = StrGrab(ResultAirStr, '<span class="grade _cnPm25Grade">', '</span>');
-
-            if(cnPm25Grade=="" || cnPm25Value==""){
-                this.setError(E_IBX_RESULT_FAIL);
-                return E_IBX_RESULT_FAIL;
-            }
-            var item = {};
+        날씨정보조회.오늘.현재기온 = 현재기온;
+        날씨정보조회.오늘.오전날씨 = 오전날씨;
+        날씨정보조회.오늘.오후날씨 = 오후날씨;
+        날씨정보조회.오늘.최저기온= 최저기온+"C";
+        날씨정보조회.오늘.최고기온= 최고기온+"C";
+        날씨정보조회.오늘.미세먼지등급= 미세먼지등급;
+        날씨정보조회.오늘.초미세먼지등급=초미세먼지등급;
 
 
-            var tommorow_item = {};
-
-            item.regionSerial= regionSerial;
-            item.regionName = regionName;
-            item.mareaNm = mareaNm;
-            item.today = today;
-            item.wetrTxt = wetrTxt;
-
-            item.avr_temp = avr_temp + '';
-            item.todayclothes = todayclothes;
-
-
-            item.aplTm = aplTm;
-            item.rainfall_mor= rainfall_mor;
-            item.rainfall_eve= rainfall_eve;
-            item.lowest= lowest+"C";
-            item.highest= highest+"C";
-            item.cnPm10Value= cnPm10Value;
-            item.cnPm10Grade= cnPm10Grade;
-            item.cnPm25Value=cnPm25Value;
-            item.cnPm25Grade=cnPm25Grade;
-
-            // item.tommorow_mor =tommorow_mor;
-
-            item.currentWeather=currentWeather;
-            날씨정보조회.push(item);
+       
 
 ///////////내일////////
 
-            var tommorow_date = StrGrab(ResultTodayStr, '<strong class="day">내일</strong><span class="date">', '</span>');
+        // var 내일날짜 = StrGrab(frm, '"date">', '<',2);
+        // 내일날짜 = changeYMD(내일날짜)
 
-            if(tommorow_date==""){
-                this.setError(E_IBX_RESULT_FAIL);
-                this.iSASInOut.Output.ErrorMessage = "없는 날짜입니다.";
-                return E_IBX_RESULT_FAIL;
-            }
-
-            var rainfall_nextmorning = StrGrab(ResultTodayStr, '<span class="blind">강수확률</span>', '</span>',  3);
-            var rainfall_nextevening = StrGrab(ResultTodayStr, '<span class="blind">강수확률</span>', '</span>',  4);
-
-            if(rainfall_nextevening=="" || rainfall_nextmorning==""){
-                this.setError(E_IBX_RESULT_FAIL);
-                return E_IBX_RESULT_FAIL;
-            }
-
-           var tommorow_morning = StrGrab(li_tmr,'<span class="weather_text">', '</span>',1);
-           var tommorow_evening = StrGrab(li_tmr,'<span class="weather_text">', '</span>',2)
-
-           if(tommorow_evening=="" || tommorow_morning ==""){
+        var 내일날짜 = new Date();
+        // 내일날짜 = getFormatDate(오늘날짜+parseInt(1));
+        내일날짜 = new Date(today.setDate(오늘날짜.getDate() + 1));
+        내일날짜 = getFormatDate(내일날짜);
+        
+        this.log("내일날짜:::"+ 내일날짜);
+        if(!내일날짜){
             this.setError(E_IBX_RESULT_FAIL);
             this.iSASInOut.Output.ErrorMessage = "없는 날짜입니다.";
             return E_IBX_RESULT_FAIL;
-            }
-            // var 오전 =  StrGrab();
+        }
 
-            tommorow_item.tommorow_date =tommorow_date;
-            tommorow_item.rainfall_nextmorning=rainfall_nextmorning;
-            tommorow_item.rainfall_nextevening=rainfall_nextevening;
+  
 
+       var 내일오전날씨 = StrGrab(frm,'weather_text">', '</span>',3);
+       var 내일오후날씨 = StrGrab(frm,'weather_text">', '</span>',4);
 
-            tommorow_item.tommorow_morning = tommorow_morning;
-            tommorow_item.tommorow_evening = tommorow_evening;
+       if(!내일오전날씨|| !내일오후날씨  ){
+            this.setError(E_IBX_RESULT_FAIL);
+            return E_IBX_RESULT_FAIL;
+        }
 
-            날씨정보조회.push(tommorow_item);
+        날씨정보조회.내일 = {};
+        
+        날씨정보조회.내일.내일날짜 = 내일날짜;
+
+        날씨정보조회.내일.내일오전날씨 = 내일오전날씨;
+        날씨정보조회.내일.내일오후날씨 = 내일오후날씨;
+
 
 
         // OUTPUT
@@ -426,7 +286,7 @@ function Execute(aInput) {
             obj.iSASInOut = "";
             OnExcute(0, JSON.stringify(iSASObj));
 
-            console.log("결과 테스트 [" + obj.iSASInOut + "]");
+            // console.log("결과 테스트 [" + obj.iSASInOut + "]");
 
             if (obj.iSASInOut != "")
                 iSASObj = obj.iSASInOut;
@@ -437,3 +297,10 @@ function Execute(aInput) {
         return JSON.stringify(iSASObj);
     }
 }
+
+
+
+// {"Module":"naverweather_feedback","Class":"날씨","Job":" 날씨정보조회","Input":{"지역명":"서울특별시 강남구"}}
+
+// var ul_str  = StrGrab(Result오늘날짜Str, 'class="box_color">', '</ul>');
+// var li_tmr = StrGrab(ul_str, '<li', '</li>', 2);

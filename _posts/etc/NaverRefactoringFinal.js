@@ -23,6 +23,24 @@ iSASObject.prototype.setError = function(errcode){
 };
 
 
+// var changeYMD = function(날짜) {
+//     var currentDate = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
+//     var day = currentDate.getDate()
+//     var month = currentDate.getMonth() + 1
+//     var year = currentDate.getFullYear()
+//     YYMMDD = year+month+day;
+//     return YYMMDD;
+// }
+
+function getFormatDate(date){
+    var year = date.getFullYear();              //yyyy
+    var month = (1 + date.getMonth());          //M
+    month = month >= 10 ? month : '0' + month;  //month 두자리로 저장
+    var day = date.getDate();                   //d
+    day = day >= 10 ? day : '0' + day;          //day 두자리로 저장
+    return  year + '' + month + '' + day;       //'-' 추가하여 yyyy-mm-dd 형태 생성 가능
+}
+
 var 날씨 = function(){
     this.errorMsg = "";
     this.host = "https://weather.naver.com";
@@ -50,23 +68,6 @@ var 날씨 = function(){
             this.iSASInOut.Output.ErrorMessage = "지역명이 미입력입니다. 확인 후 거래하시기 바랍니다.";
             return E_IBX_PARAMETER_NOTENTER;
         }
-
-        
-        if (!httpRequest.getWithUserAgent(this.userAgent, this.host +`/today/`+ regionSerial)){
-            this.setError(E_IBX_FAILTOGETPAGE);
-            return E_IBX_FAILTOGETPAGE;
-        }
-
-        var ResultStr = httpRequest.result;
-        this.log("today" + ResultStr);
-
-        if (!httpRequest.getWithUserAgent(this.userAgent, this.host +`/air/` + regionSerial)){
-            this.setError(E_IBX_FAILTOGETPAGE);
-            return E_IBX_FAILTOGETPAGE;
-        }
-
-        ResultStr = httpRequest.result + ""; 
-        this.log("air" + ResultStr);
 
         var userAgent = '{"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"}';
         
@@ -98,30 +99,49 @@ var 날씨 = function(){
             this.setError(E_IBX_SITE_INVALID + 1);
             return E_IBX_SITE_INVALID + 1;
         }
+
+        
+        this.log('regionserial:::')
+
+        if(!regionSerial){
+            
+            this.setError(E_IBX_PARAMETER_INVALID);
+            return E_IBX_PARAMETER_INVALID;
+        }
         
         if (!httpRequest.getWithUserAgent(this.userAgent, this.host +`/today/`+ regionSerial)){
             this.setError(E_IBX_FAILTOGETPAGE);
             return E_IBX_FAILTOGETPAGE;
         }; 
 
-        ResultStr = httpRequest.result + ""; 
+
+        ResultStr = httpRequest.result; 
        
 
-        var 현재날씨 = StrGrab(ResultStr, 'class="weather">', '</span>');
+        var 현재날씨 = StrGrab(ResultStr, '"weather">', '</span>');
 
-        var 현재기온 = StrGrab(ResultStr, 'class="blind">현재 온도</span>', '<',1);
+        var 현재기온 = StrGrab(ResultStr, '현재 온도</span>', '<');
      
-        var frm = StrGrab(ResultStr, 'ul class="box_color">', '</ul>');
+        var frm = StrGrab(ResultStr, '"box_color">', '</ul>');
 
-        var 오늘날짜 = StrGrab(frm, 'class="date">', '</span>',1);
+        // var 오늘날짜 = StrGrab(frm, '"date">', '</span>');
+        var 오늘날짜 = new Date();
+        오늘날짜 = getFormatDate(오늘날짜);
+
+        // this.log(typeof(오늘날짜))
+        // 오늘날짜.replace(/./g,'');
+        // this.log(typeof("오늘날짜:::"+오늘날짜))
+        // this.log("오늘날짜:::"+오늘날짜)
+        // 오늘날짜 = changeYMD(오늘날짜);
         
-        var 최저기온 = StrGrab(frm, 'class="blind">최저기온</span>', '<',1);
+        this.log("오늘날짜:::"+ 오늘날짜);
+        var 최저기온 = StrGrab(frm, '최저기온</span>', '<');
 
-        var 최고기온 =  StrGrab(frm, 'class="blind">최고기온</span>', '<',1);
+        var 최고기온 =  StrGrab(frm, '최고기온</span>', '<');
        
         
-        var 오전날씨 = StrGrab(frm,'class="weather_text">', '</span>',1);
-        var 오후날씨 = StrGrab(frm,'class="weather_text">', '</span>',2);
+        var 오전날씨 = StrGrab(frm,'weather_text">', '</span>',1);
+        var 오후날씨 = StrGrab(frm,'weather_text">', '</span>',2);
         
         var 평균기온 = parseFloat((parseFloat(최고기온) + parseFloat(최저기온))/2);
 
@@ -139,8 +159,8 @@ var 날씨 = function(){
 
         var ResultStr = httpRequest.result;
 
-        var 미세먼지등급 =  StrGrab(ResultStr, 'class="grade _cnPm10Grade">', '<');
-        var 초미세먼지등급 = StrGrab(ResultStr, 'class="grade _cnPm25Grade">', '<');
+        var 미세먼지등급 =  StrGrab(ResultStr, 'grade _cnPm10Grade">', '<');
+        var 초미세먼지등급 = StrGrab(ResultStr, 'grade _cnPm25Grade">', '<');
         if(!미세먼지등급 || !초미세먼지등급 ){
             this.setError(E_IBX_RESULT_FAIL);
             return E_IBX_RESULT_FAIL;
@@ -173,8 +193,17 @@ var 날씨 = function(){
 
 ///////////내일////////
 
-        var 내일날짜 = StrGrab(frm, 'class="date">', '<',2);
+        // var 내일날짜 = StrGrab(frm, '"date">', '<',2);
+        // 내일날짜 = changeYMD(내일날짜)
 
+        // var 내일날짜 = new Date();
+        
+        // var 내일날짜 = date.setDate(date.getDate() + 1);
+        // 내일날짜 = getFormatDate(내일날짜);
+        
+        var 내일날짜 = new Date();
+        내일날짜.setDate(오늘날짜.getDate()+1);
+        this.log("내일날짜:::"+ 내일날짜);
         if(!내일날짜){
             this.setError(E_IBX_RESULT_FAIL);
             this.iSASInOut.Output.ErrorMessage = "없는 날짜입니다.";
@@ -183,8 +212,8 @@ var 날씨 = function(){
 
   
 
-       var 내일오전날씨 = StrGrab(frm,'class="weather_text">', '</span>',3);
-       var 내일오후날씨 = StrGrab(frm,'class="weather_text">', '</span>',4);
+       var 내일오전날씨 = StrGrab(frm,'weather_text">', '</span>',3);
+       var 내일오후날씨 = StrGrab(frm,'weather_text">', '</span>',4);
 
        if(!내일오전날씨|| !내일오후날씨  ){
             this.setError(E_IBX_RESULT_FAIL);

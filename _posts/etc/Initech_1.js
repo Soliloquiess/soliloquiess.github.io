@@ -100,10 +100,7 @@ var 전자서명 = function () {
         var certInfo = input.인증서;
 
 
-        // var certInfo = "{\"이름\":\"" + input.인증서.이름 + "\"" +
-        //     ",\"만료일자\":\"\"" + 만료일자+"\""+
-        //     ",\"비밀번호\":\"" + 비밀번호 + "\"}";
-
+//  사이트 내 서명 정보 입력
 
         var person = input.서명정보;
 
@@ -117,10 +114,9 @@ var 전자서명 = function () {
         var 담보계좌번호 = person.담보계좌번호;
         var 대출금입금계좌 = person.대출금입금계좌;
         var 입금계좌비밀번호 = person.입금계좌비밀번호;
-        // var 입금계좌비밀번호 = parseInt(person.입금계좌비밀번호);
 
         
-
+//서명 정보 입력  valid 여부
         if(!성명){
             this.setError(E_IBX_P00012_NAME_NOENTER)
             return E_IBX_P00012_NAME_NOENTER;
@@ -158,22 +154,19 @@ var 전자서명 = function () {
         }
 
         
+        성명 = httpRequest.URLEncodeAll(person.성명, "EUC-KR");
+        주민등록번호 = httpRequest.URLEncodeAll(person.주민등록번호, "EUC-KR");
+        이메일주소 =httpRequest.URLEncodeAll(person.이메일주소, "EUC-KR");
+        집전화번호 = httpRequest.URLEncodeAll(person.집전화번호, "EUC-KR");
+        주소 = httpRequest.URLEncodeAll(person.주소, "EUC-KR");
+        핸드폰번호 = httpRequest.URLEncodeAll(person.핸드폰번호, "EUC-KR");
+        신청금액 = httpRequest.URLEncodeAll(person.신청금액, "EUC-KR");
+        담보계좌번호 = httpRequest.URLEncodeAll(person.담보계좌번호, "EUC-KR");
+        대출금입금계좌 = httpRequest.URLEncodeAll(person.대출금입금계좌, "EUC-KR");
+        입금계좌비밀번호 = httpRequest.URLEncodeAll(person.입금계좌비밀번호, "EUC-KR");
 
 
-
-        var 성명 = httpRequest.URLEncodeAll(person.성명, "EUC-KR");
-        var 주민등록번호 = httpRequest.URLEncodeAll(person.주민등록번호, "EUC-KR");
-        var 이메일주소 =httpRequest.URLEncodeAll(person.이메일주소, "EUC-KR");
-        var 집전화번호 = httpRequest.URLEncodeAll(person.집전화번호, "EUC-KR");
-        var 주소 = httpRequest.URLEncodeAll(person.주소, "EUC-KR");
-        var 핸드폰번호 = httpRequest.URLEncodeAll(person.핸드폰번호, "EUC-KR");
-        var 신청금액 = httpRequest.URLEncodeAll(person.신청금액, "EUC-KR");
-        var 담보계좌번호 = httpRequest.URLEncodeAll(person.담보계좌번호, "EUC-KR");
-        var 대출금입금계좌 = httpRequest.URLEncodeAll(person.대출금입금계좌, "EUC-KR");
-        var 입금계좌비밀번호 = httpRequest.URLEncodeAll(person.입금계좌비밀번호, "EUC-KR");
-
-
-        
+        //인증서 valid 검증 여부
         this.log("인증서 개인정보 정보 [" + JSON.stringify(person) + "]")
         
         if(!certInfo) {
@@ -204,46 +197,16 @@ var 전자서명 = function () {
             return E_IBX_FAILTOGETPAGE;
         }
 
-                // 
+        //scert를 통해 사이트 
         var SCert = StrGrab(httpRequest.result, 'SCert += "', 'SCert += "-----END CERTIFICATE-----\\n";');
         SCert = StrReplace(SCert, 'SCert += "', '');
         SCert = StrReplace(SCert, '\\n";', '');
-        // var i = 1;
-        // while(true) {
-        //     var tempStr = StrGrab(httpRequest.result, 'SCert += "', '";', i++);
-        //     if(tempStr != "") {
-        //         SCert += tempStr;
-        //     } else {
-        //         break;
-        //     }
-        // }
 
         this.log("scert"+SCert);
         //eval = 코드 줄이기 위한 함수..?
-        
-        // var Scert = "--------BEGIN ------";
-        // SCert += "welkfjweljfwelkfjlwkefjlwke"
-        // SCert += "welkfjweljfwelkfjlwkefjlwke"
-        // SCert += "welkfjweljfwelkfjlwkefjlwke"
-        // SCert += "welkfjweljfwelkfjlwkefjlwke"
-        // SCert += "welkfjweljfwelkfjlwkefjlwke"
-        // SCert += "--------END ------";
-        
-        // eval('var test = 2 + 2' ); // 4
-        
-        // SCert = StrReplace(SCert, '\\n', '');
-        // SCert = StrReplace(SCert, '\\', '\\n');
-        // ex: SCert => var S = "safks;lkg;sljg'"
 
         eval("SCert=SCert");
 
-
-        // this.log("sCert:[" +SCert);
-        // SCert = StrReplace(SCert, "\\n", "");
-        // this.log("sCert:[" +SCert);
-        // SCert = StrReplace(SCert, "-----BEGIN CERTIFICATE-----", "");
-        // SCert = StrReplace(SCert, "-----END CERTIFICATE-----", "");
-        // this.log("sCert:[" + SCert + "]");
 
         certManager.LoadCert(SCert);
 
@@ -277,14 +240,11 @@ var 전자서명 = function () {
 ////////////////////////////2번쨰 인증
 
 
-// var SignTitle = httpRequest.URLEncodeAll(StrGrab(ResultStr, '<input type="hidden" name="PKCS7SignTitle" value="', '">'), 'EUC-KR');
-        
         var ResultStr = httpRequest.result;
         this.log("ResultStr [" + ResultStr + "]");
 
-        var frm = StrGrab(ResultStr, 'name="formName"', '</form>'); //primary key 
-        var SignTitle = StrGrab(StrGrab(frm, 'name="PKCS7SignTitle"', '>'), 'value="', '"'); //  value="이니텍은행 전자서명" mainkey 
-            // SignTitle = StrGrab(SignTitle// 이니텍은행 전자서명
+        var frm = StrGrab(ResultStr, 'name="formName"', '</form>');
+        var SignTitle = StrGrab(StrGrab(frm, 'name="PKCS7SignTitle"', '>'), 'value="', '"'); 
             SignTitle = httpRequest.URLEncodeAll(SignTitle, 'EUC-KR'); 
 
         var SignInfo = StrGrab(StrGrab(frm, 'name="PKCS7SignInfo"', '>'), 'value="', '"');
@@ -324,13 +284,11 @@ var 전자서명 = function () {
 
         var SearchCondition =  StrGrab(StrGrab(frm, 'name="SearchCondition"', '>'), 'value="', '"');
             SearchCondition = httpRequest.URLEncodeAll(SearchCondition, 'EUC-KR');
-
-
             // jumin = this.maskJumin(jumin);
             // // account = this.maskAcctNo(account);
-
             // pass =this.maskPassNo(pass);
-
+            
+        //valid 검증
         if(!SignTitle){
             this.setError(E_IBX_DESC_INVALID)
             return E_IBX_DESC_INVALID;
@@ -451,14 +409,8 @@ var 전자서명 = function () {
 
         this.iSASInOut.Output={};
         this.iSASInOut.Input.인증서.비밀번호 = input.인증서.비밀번호.replace(/./g, "*"); //input
-        // this.iSASInOut.Input.서명정보.주민등록번호 = (input.서명정보.주민등록번호);
         this.iSASInOut.Input.서명정보.주민등록번호 = 주민등록번호.replace(/^(\d{6})-?(\d{7})$/g, '$1*******');
-        // this.iSASInOut.Input.주민등록번호 = 주민등록번호.replace(/^(\d{6})-?(\d{7})$/g, '$1*******');
-
-        this.iSASInOut.Input.서명정보.신청금액 = 신청금액.replace(/,/g, "");
         this.iSASInOut.Input.서명정보.입금계좌비밀번호 = 입금계좌비밀번호.replace(/./g, "*");
-        // this.iSASInOut.Input.서명정보.신청금액 = input.서명정보.신청금액.replace(/,/g, "");
-        // this.iSASInOut.Input.서명정보.입금계좌비밀번호 = input.서명정보.입금계좌비밀번호.replace(/./g, "*");
         this.iSASInOut.Output.ErrorCode = "00000000";
         this.iSASInOut.Output.ErrorMessage = "";
         this.iSASInOut.Output.Result = {};
