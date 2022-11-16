@@ -196,13 +196,16 @@ var 날씨 = function(){
         // var 내일날짜 = StrGrab(frm, '"date">', '<',2);
         // 내일날짜 = changeYMD(내일날짜)
 
-        // var 내일날짜 = new Date();
+        var 내일날짜 = new Date();
+        내일날짜.setDate(내일날짜.getDate() + 1);
+
+        내일날짜 = getFormatDate(내일날짜);
         
         // var 내일날짜 = date.setDate(date.getDate() + 1);
         // 내일날짜 = getFormatDate(내일날짜);
-        
-        var 내일날짜 = new Date();
-        내일날짜.setDate(오늘날짜.getDate()+1);
+
+        // var 내일날짜 = 내일날짜.setDate(오늘날짜.getDate()+1);
+        // 내일날짜.setDate(오늘날짜.getDate()+1);
         this.log("내일날짜:::"+ 내일날짜);
         if(!내일날짜){
             this.setError(E_IBX_RESULT_FAIL);
