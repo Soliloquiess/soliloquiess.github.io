@@ -69,10 +69,42 @@ var 날씨 = function(){
             return E_IBX_PARAMETER_NOTENTER;
         }
 
-        var userAgent = '{"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"}';
+        var region = httpRequest.URLEncodeAll(지역명);
+
+
+        if(!httpRequest.postWithUserAgent(this.userAgent, this.host + '/search/api/searchResult', 'keyword=' + region)) {
+            // 오류처리
+            this.setError(E_IBX_FAILTOGETPAGE);
+            return E_IBX_FAILTOGETPAGE;
+        }
+
+        var searchInput = httpRequest.result;
+        this.log('지역검색결과 [ ' + searchInput + ' ]');
+
+        // if(StrGrab(searchInput, '<strong class="tit">', '</strong>') != '') {
+        //     this.iSASInOut.Output.ErrorMessage = "일시적인 서비스 장애 입니다.";
+        //     this.setError(E_IBX_SITE_INTERNAL);
+        //     return E_IBX_SITE_INTERNAL;
+        // }
+
+        if(StrGrab(searchInput, '</strong>', '</p>') == '에 대한 검색결과가 없습니다.') {
+            this.setError(I_IBX_RESULT_NOTPRESENT);
+            this.iSASInOut.Output.ErrorMessage = "검색결과가 없습니다."; 
+
+            return I_IBX_RESULT_NOTPRESENT;
+        }  
         
-          //    지역 정보 통신    
-       
+        // if(StrGrab(searchInput, '"mark">', '</span>') != "") {    // 검색 리스트 중에 제일 첫번째 (태그는 반복, 자동완성에서 검색과 제일 유사한 값)
+        //     검색어 = StrGrab(searchInput, '"mark">', '</span>');
+     
+        // }
+
+        // if(StrGrab(searchInput, '<span class="main">', '</span>') != "") {    // 검색 리스트 중에 제일 첫번째 (태그는 반복, 자동완성에서 검색과 제일 유사한 값)
+        //     검색어 = StrGrab(searchInput, '<span class="main">', '</span>');
+        // } else {
+        //     검색어 = StrGrab(searchInput, '<span class="main">', '</span>');
+        // }
+
         this.url = '/ac?';
         this.param  = 'q_enc='      + 'utf-8';
         this.param += '&r_format='  + 'json';
@@ -86,8 +118,21 @@ var 날씨 = function(){
             this.setError(E_IBX_FAILTOGETPAGE);
             return E_IBX_FAILTOGETPAGE;
         }
-        var ResultStr = httpRequest.result;
+
+        var searchResult = httpRequest.result;
+        var searchJSON = JSON.parse(searchResult);
+        // 지역명 = searchJSON.items[0][0][1]  // 구조 [[['지역명' : '지역코드']]]
+        // this.log('지역명 [ ' + 지역명 + ' ]');
+
+        var userAgent = '{"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"}';
         
+          //    지역 정보 통신    
+       
+ 
+        var ResultStr = httpRequest.result;        
+        this.log("지역명"+ ResultStr);
+      //로그 찍을 떄 앞에 부연설명 있어야 하는지.
+        this.log("지역명"+ ResultStr);
       
        
         try {
@@ -99,9 +144,6 @@ var 날씨 = function(){
             this.setError(E_IBX_SITE_INVALID + 1);
             return E_IBX_SITE_INVALID + 1;
         }
-
-        
-        this.log('regionserial:::')
 
         if(!regionSerial){
             
@@ -116,8 +158,9 @@ var 날씨 = function(){
 
 
         ResultStr = httpRequest.result; 
-       
-
+        this.log(""+ResultStr);
+        
+        var _지역명= StrGrab(ResultStr, 'location_name">', '<');;
         var 현재날씨 = StrGrab(ResultStr, '"weather">', '</span>');
 
         var 현재기온 = StrGrab(ResultStr, '현재 온도</span>', '<');
@@ -140,12 +183,10 @@ var 날씨 = function(){
         var 최고기온 =  StrGrab(frm, '최고기온</span>', '<');
        
         
-        var 오전날씨 = StrGrab(frm,'weather_text">', '</span>',1);
+        var 오전날씨 = StrGrab(frm,'weather_text">', '</span>');
         var 오후날씨 = StrGrab(frm,'weather_text">', '</span>',2);
-        
-        var 평균기온 = parseFloat((parseFloat(최고기온) + parseFloat(최저기온))/2);
 
-        if(!현재날씨||!현재기온||!오늘날짜||!최저기온 || !최고기온||!평균기온){
+        if(!현재날씨||!현재기온||!오늘날짜||!최저기온 || !최고기온){
             this.setError(E_IBX_RESULT_FAIL);
             return E_IBX_RESULT_FAIL;
         }
@@ -173,13 +214,9 @@ var 날씨 = function(){
         날씨정보조회.오늘 = {};
         
 
-        날씨정보조회.오늘.지역명 = 지역명;
+        날씨정보조회.오늘.지역명 = _지역명;
         날씨정보조회.오늘.오늘날짜 = 오늘날짜;
         날씨정보조회.오늘.현재날씨 = 현재날씨;
-
-        날씨정보조회.오늘.평균기온 = 평균기온 + '';
-
-
         날씨정보조회.오늘.현재기온 = 현재기온;
         날씨정보조회.오늘.오전날씨 = 오전날씨;
         날씨정보조회.오늘.오후날씨 = 오후날씨;

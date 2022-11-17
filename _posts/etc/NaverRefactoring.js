@@ -69,10 +69,37 @@ var 날씨 = function(){
             return E_IBX_PARAMETER_NOTENTER;
         }
 
-        var userAgent = '{"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"}';
+        var region = httpRequest.URLEncodeAll(지역명);
+
+
+        if(!httpRequest.postWithUserAgent(this.userAgent, this.host + '/search/api/searchResult', 'keyword=' + region)) {
+            // 오류처리
+            this.setError(E_IBX_FAILTOGETPAGE);
+            return E_IBX_FAILTOGETPAGE;
+        }
+
+        var searchInput = httpRequest.result;
+        this.log('지역검색결과 [ ' + searchInput + ' ]');
+
+        // if(StrGrab(searchInput, '<strong class="tit">', '</strong>') != '') {
+        //     this.iSASInOut.Output.ErrorMessage = "일시적인 서비스 장애 입니다.";
+        //     this.setError(E_IBX_SITE_INTERNAL);
+        //     return E_IBX_SITE_INTERNAL;
+        // }
+
+        var 검색어 = '';
+        if(StrGrab(searchInput, '</strong>', '</p>') == '에 대한 검색결과가 없습니다.') {
+            this.setError(I_IBX_RESULT_NOTPRESENT);
+            this.iSASInOut.Output.ErrorMessage = "검색결과가 없습니다."; 
+
+            return I_IBX_RESULT_NOTPRESENT;
+        }  
         
-          //    지역 정보 통신    
-       
+        if(StrGrab(searchInput, '"mark">', '</span>') != "") {    // 검색 리스트 중에 제일 첫번째 (태그는 반복, 자동완성에서 검색과 제일 유사한 값)
+            검색어 = StrGrab(searchInput, '"mark">', '</span>');
+     
+        }
+
         this.url = '/ac?';
         this.param  = 'q_enc='      + 'utf-8';
         this.param += '&r_format='  + 'json';
@@ -86,6 +113,17 @@ var 날씨 = function(){
             this.setError(E_IBX_FAILTOGETPAGE);
             return E_IBX_FAILTOGETPAGE;
         }
+
+        var searchResult = httpRequest.result;
+        var searchJSON = JSON.parse(searchResult);
+        // 지역명 = searchJSON.items[0][0][1]  // 구조 [[['지역명' : '지역코드']]]
+        // this.log('지역명 [ ' + 지역명 + ' ]');
+
+        var userAgent = '{"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"}';
+        
+          //    지역 정보 통신    
+       
+ 
         var ResultStr = httpRequest.result;
         
       
@@ -127,6 +165,7 @@ var 날씨 = function(){
         // var 오늘날짜 = StrGrab(frm, '"date">', '</span>');
         var 오늘날짜 = new Date();
         오늘날짜 = getFormatDate(오늘날짜);
+
         // this.log(typeof(오늘날짜))
         // 오늘날짜.replace(/./g,'');
         // this.log(typeof("오늘날짜:::"+오늘날짜))
@@ -196,10 +235,15 @@ var 날씨 = function(){
         // 내일날짜 = changeYMD(내일날짜)
 
         var 내일날짜 = new Date();
-        // 내일날짜 = getFormatDate(오늘날짜+parseInt(1));
-        내일날짜 = new Date(today.setDate(오늘날짜.getDate() + 1));
+        내일날짜.setDate(내일날짜.getDate() + 1);
+
         내일날짜 = getFormatDate(내일날짜);
         
+        // var 내일날짜 = date.setDate(date.getDate() + 1);
+        // 내일날짜 = getFormatDate(내일날짜);
+
+        // var 내일날짜 = 내일날짜.setDate(오늘날짜.getDate()+1);
+        // 내일날짜.setDate(오늘날짜.getDate()+1);
         this.log("내일날짜:::"+ 내일날짜);
         if(!내일날짜){
             this.setError(E_IBX_RESULT_FAIL);
