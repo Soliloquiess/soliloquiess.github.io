@@ -8,11 +8,134 @@ function iSASObject(){
     this.iSASOut = {};
 }
 
+// const regex = /^[ㄱ-ㅎ|가-힣]+$/;
+// function check(parameter){
+    
+//     if (parameter == '')
+//     {
+//         return false;
+
+//     }
+//     if(regex.test(parameter)){
+//         return false;
+//     }
+
+//     // 자리수 체크
+//     if (parameter.length > 15)
+//     {
+//         return false;
+//     }    
+// }
+
+
+function validateJumin(jumin1, jumin2)
+{
+    var jumin1    = jumin1,
+        jumin2    = jumin2,
+        jumin     = jumin1+''+jumin2;
+        jumin_arr = [],
+        number = [2,3,4,5,6,7,8,9,2,3,4,5],
+        sum     = 0;
+
+    if (jumin1 == '')
+    {
+        return false;
+
+    }
+ 
+    if (jumin2 == '')
+    {
+        return false;
+
+    }    
+ 
+    // // 입력값 체크
+    if (jumin1.match('[^0-9]'))
+    {
+        return false;
+
+    }
+    if (jumin2.match('[^0-9]'))
+    {
+        return false;
+
+    }
+ 
+    // 자리수 체크
+    if (jumin.length != 13)
+    {
+        return false;
+
+    }    
+ 
+ 
+    // // // 공식: M = (11 - ((2×A + 3×B + 4×C + 5×D + 6×E + 7×F + 8×G + 9×H + 2×I + 3×J + 4×K + 5×L) % 11)) % 10
+    for (var i = 0; i<13; i++) 
+    { 
+        jumin_arr[i] = jumin.substring(i,i+1); 
+    }
+    
+    for (var i = 0; i<12; i++)
+    {
+        sum = sum + (jumin_arr[i] * number[i]); 
+    }
+ 
+    sum = (11 - (sum % 11)) % 10;
+    
+    if (sum != jumin_arr[12])
+    { 
+        return false; 
+    }
+ 
+    return jumin1+'-'+jumin2;
+}
+ 
+function validate(name) {
+    var re = /^[가-힣]{2,15}$/; 
+    return re.test(String(name))
+}
+
 
 function validateEmail(email) {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
 }
+
+function validatePw(name) {
+    var re = /^[0-9]{4,4}$/;    //최소4자, 최대4자
+    return re.test(String(name))
+}
+
+function validateCurrency(value) {
+    var regex = /^(?!0\.00)[1-9]\d{0,2}(,\d{3})*(\.\d\d)?$/;
+    if (regex.test(value))
+    {
+        //Input is valid, check the number of decimal places
+        var twoDecimalPlaces = /\.\d{2}$/g;
+        var oneDecimalPlace = /\.\d{1}$/g;
+        var noDecimalPlacesWithDecimal = /\.\d{0}$/g;
+        
+        if(value.match(twoDecimalPlaces ))
+        {
+            //all good, return as is
+            return value;
+        }
+        if(value.match(noDecimalPlacesWithDecimal))
+        {
+            //add two decimal places
+            return value+'00';
+        }
+        if(value.match(oneDecimalPlace ))
+        {
+            //ad one decimal place
+            return value+'0';
+        }
+        //else there is no decimal places and no decimal
+        return value+".00";
+    }
+    return null;
+};
+
 
 iSASObject.prototype.log = function(logMsg){
     try{
@@ -28,18 +151,7 @@ iSASObject.prototype.setError = function(errcode){
     this.iSASInOut.Output.ErrorMessage = getCooconErrMsg(errcode.toString(16).toUpperCase());
 };
 
-iSASObject.prototype.maskJumin = function(str) {
-    if(str == null || str == ""){
-        str = "";
-        return str;
-    }
-    if( str.length == 14 && str.indexOf('-') == 6 ){
-        str = str.substring(0, 8) + "******";	
-    }else if (str.length == 13) {
-        str = str.substring(0, 6) + str.substring(6, 7) + "******";
-    }
-    return str;
-};
+
 
 
 iSASObject.prototype.maskAcctNo = function(strAcctNo) {
@@ -115,7 +227,18 @@ var 전자서명 = function () {
         var person = input.서명정보;
 
         var 성명 = person.성명;
+
         var 주민등록번호 = person.주민등록번호;
+        
+        var jumin1 = 주민등록번호.substr(0, 6);
+        var jumin2 = 주민등록번호.substr(7, 7);
+        
+        this.log("jumin1:::"+jumin2);
+        this.log("jumin2:::"+jumin2);
+        
+        주민등록번호 = validateJumin(jumin1,jumin2);
+
+        // this.log("주민등록번호>>>>"+주민등록번호)
         
 		// var 주민등록번호 = StrTrim(input.서명정보.주민등록번호);
         // 주민등록번호.replace(/^(\d{6})-?(\d{7})$/g, '$1*******');
@@ -124,21 +247,31 @@ var 전자서명 = function () {
         
         var 집전화번호 = person.집전화번호;
         var 주소 = person.주소;
+        this.log("주소:::"+주소);
         var 핸드폰번호 =person.핸드폰번호;
         var 신청금액 = person.신청금액;
         var 담보계좌번호 = person.담보계좌번호;
         var 대출금입금계좌 = person.대출금입금계좌;
         var 입금계좌비밀번호 = person.입금계좌비밀번호;
 
-        this.log("주민등록번호:::"+주민등록번호);
 
+        this.log("주민등록번호:::"+주민등록번호);
+        
         //    인증서 정보 Valid & 로그처리    // 
-        if(!성명){
-            this.setError(E_IBX_P00012_NAME_NOENTER)
-            return E_IBX_P00012_NAME_NOENTER;
+
+        
+        this.log("성명:::"+성명);
+
+        if(!validate(성명)){
+            this.setError(E_IBX_P00222_INCORRECT_INFOMATION)
+            return E_IBX_P00222_INCORRECT_INFOMATION;
         }
         var r = new RegExp(/\d{6}(\-|)[1-4]\d{6}$/);
 
+        // if(성명.length>15){
+        //     this.setError(E_IBX_P00222_INCORRECT_INFOMATION)
+        //     return E_IBX_P00222_INCORRECT_INFOMATION;
+        // }
         if (r.test(주민등록번호) ==false) {
         
             this.setError(E_IBX_REGNO_RESIDENT_INVALID);
@@ -152,7 +285,17 @@ var 전자서명 = function () {
         }
 
 
-        if(!주소){
+        // this.log("주소.length"+주소.length);
+        // 주소길이 = 주소.length
+        
+        // this.log("주소길이"+주소길이);
+        // if(!(주소)|| !validatecheck(주소길이)){
+        //     this.setError(E_IBX_A97XX1_ADDRESS_NOTENTER)
+        //     return E_IBX_A97XX1_ADDRESS_NOTENTER;
+        // }
+
+        
+        if(!(주소)){
             this.setError(E_IBX_A97XX1_ADDRESS_NOTENTER)
             return E_IBX_A97XX1_ADDRESS_NOTENTER;
         }
@@ -162,20 +305,26 @@ var 전자서명 = function () {
             return E_IBX_REMIT_AMOUNT_NOTENTER;
         }
 
-        
-        if(!담보계좌번호 ){
-            this.setError(E_IBX_ACCOUNT_NO_NOTENTER)
-            return E_IBX_ACCOUNT_NO_NOTENTER;
+        this.log("신청금액<<<<<<"+신청금액);
+        // validateCurrency
+        if(!validateCurrency(신청금액)){
+            this.setError(E_IBX_REMIT_AMOUNT_NOTENTER)
+            return E_IBX_REMIT_AMOUNT_NOTENTER;
         }
-    
  
         if(!대출금입금계좌 || !담보계좌번호){
             this.setError(E_IBX_ACCOUNT_NO_NOTENTER)
             return E_IBX_ACCOUNT_NO_NOTENTER;
         }
+
         if(!입금계좌비밀번호){
             this.setError(E_IBX_ACCOUNT_PASSWORD_NOTENTER)
             return E_IBX_ACCOUNT_PASSWORD_NOTENTER;
+        }
+
+        if(!validatePw(입금계좌비밀번호)){
+            this.setError(E_IBX_ACCOUNT_NO_INVALID)
+            return E_IBX_ACCOUNT_NO_INVALID;
         }
 
         
@@ -419,8 +568,11 @@ var 전자서명 = function () {
 
         개인정보.대출금입금계좌 = StrGrab(StrGrab(frm, 'name="inputaccount"', '>'), 'value="', '"');
 
-        개인정보.비밀번호 = parseInt(StrGrab(StrGrab(frm, 'name="pass"', '>'), 'value="', '"'));
+        개인정보.비밀번호 = StrGrab(StrGrab(frm, 'name="pass"', '>'), 'value="', '"');
 
+        this.log("개인정보.대출금액"+개인정보.대출금액);
+        
+        this.log(typeof(개인정보.대출금액));
         // this.log("typeof"+typeof 개인정보.비밀번호);
 
         this.iSASInOut.Output={};
