@@ -8,91 +8,65 @@ function iSASObject(){
     this.iSASOut = {};
 }
 
-// const regex = /^[ㄱ-ㅎ|가-힣]+$/;
-// function check(parameter){
-    
-//     if (parameter == '')
-//     {
-//         return false;
 
-//     }
-//     if(regex.test(parameter)){
-//         return false;
-//     }
-
-//     // 자리수 체크
-//     if (parameter.length > 15)
-//     {
-//         return false;
-//     }    
-// }
-
-
-function validateJumin(jumin1, jumin2)
-{
-    var jumin1    = jumin1,
-        jumin2    = jumin2,
-        jumin     = jumin1+''+jumin2;
-        jumin_arr = [],
-        number = [2,3,4,5,6,7,8,9,2,3,4,5],
-        sum     = 0;
-
-    if (jumin1 == '')
-    {
+function isNumeric(s) {
+    for (i=0; i<s.length; i++) {
+      c = s.substr(i, 1);
+      if (c < "0" || c > "9") {
         return false;
+      }
+    }
+    return true;
+  }
+  
+//입력값 replace 같은거로 없애거나 변경하지 말랬다.
+function validateJumin(주민등록번호) {
 
+    if(주민등록번호=="" || !주민등록번호 || 주민등록번호.length!=14) {
+      return false;
     }
- 
-    if (jumin2 == '')
-    {
-        return false;
+   
+    var jumin1 = 주민등록번호.substr(0,6);
+    var jumin2 = 주민등록번호.substr(7, 7);
+    var yy     = jumin1.substr(0,2);        // 년
+    var mm     = jumin1.substr(2,2);        // 월
+    var dd     = jumin1.substr(4,2);        // 일
+    var gender  = jumin2.substr(0,1);        // 성
+  
+    if (!isNumeric(jumin1)) {
+      return false;
+    }
+   
+    if (jumin1.length != 6) {
+      return false;
+    }
+   
+    if (yy < "00"
+        || yy > "99"
+        || mm < "01"
+        || mm > "12"
+        || dd < "01"
+        || dd > "31") {
+      return false;
+    }
+   
+    if (!isNumeric(jumin2)) {
+      return false;
+    }
+  
+    if (jumin2.length != 7) {
+      return false;
+    }
 
-    }    
- 
-    // // 입력값 체크
-    if (jumin1.match('[^0-9]'))
-    {
-        return false;
-
+    if (gender < "1" || gender > "4") {
+      return false;
     }
-    if (jumin2.match('[^0-9]'))
-    {
-        return false;
-
-    }
- 
-    // 자리수 체크
-    if (jumin.length != 13)
-    {
-        return false;
-
-    }    
- 
- 
-    // // // 공식: M = (11 - ((2×A + 3×B + 4×C + 5×D + 6×E + 7×F + 8×G + 9×H + 2×I + 3×J + 4×K + 5×L) % 11)) % 10
-    for (var i = 0; i<13; i++) 
-    { 
-        jumin_arr[i] = jumin.substring(i,i+1); 
-    }
-    
-    for (var i = 0; i<12; i++)
-    {
-        sum = sum + (jumin_arr[i] * number[i]); 
-    }
- 
-    sum = (11 - (sum % 11)) % 10;
-    
-    if (sum != jumin_arr[12])
-    { 
-        return false; 
-    }
- 
-    return jumin1+'-'+jumin2;
+    return 주민등록번호;
 }
  
 function validate(name) {
     var re = /^[가-힣]{2,15}$/; 
-    return re.test(String(name))
+    return re.test(String(name));
 }
 
 
@@ -103,34 +77,30 @@ function validateEmail(email) {
 
 function validatePw(name) {
     var re = /^[0-9]{4,4}$/;    //최소4자, 최대4자
-    return re.test(String(name))
+    return re.test(String(name));
 }
 
+//아니면 입력값 중 얘들이 있으면 에러 띄우는거도 나쁘진 않아보이기도.
 function validateCurrency(value) {
-    var regex = /^(?!0\.00)[1-9]\d{0,2}(,\d{3})*(\.\d\d)?$/;
+    var regex = /(?!0\.00)[1-9]\d{0,2}(,\d{3})*(\.\d\d)?$/;
     if (regex.test(value))
     {
-        //Input is valid, check the number of decimal places
         var twoDecimalPlaces = /\.\d{2}$/g;
         var oneDecimalPlace = /\.\d{1}$/g;
         var noDecimalPlacesWithDecimal = /\.\d{0}$/g;
         
         if(value.match(twoDecimalPlaces ))
         {
-            //all good, return as is
             return value;
         }
         if(value.match(noDecimalPlacesWithDecimal))
         {
-            //add two decimal places
             return value+'00';
         }
         if(value.match(oneDecimalPlace ))
         {
-            //ad one decimal place
             return value+'0';
         }
-        //else there is no decimal places and no decimal
         return value+".00";
     }
     return null;
@@ -151,53 +121,6 @@ iSASObject.prototype.setError = function(errcode){
     this.iSASInOut.Output.ErrorMessage = getCooconErrMsg(errcode.toString(16).toUpperCase());
 };
 
-
-
-
-iSASObject.prototype.maskAcctNo = function(strAcctNo) {
-    if (!strAcctNo) return strAcctNo;
-    var begin = strAcctNo.substring(0, 3);
-    var end = strAcctNo.substring(strAcctNo.length - 1);
-    var mid = "";
-    for (var i = 0; i < strAcctNo.length - 4; i++) {
-        mid += "*";
-    }
-    strAcctNo = begin + mid + end;
-    return strAcctNo;
-};
-
-iSASObject.prototype.maskPassNo = function(maskPassNo) {    			
-    var begin = 0;
-    var end = 4;
-    strPassNo = this.maskString(maskPassNo, begin, end);
-    return strPassNo;
-};
-
-
-
-iSASObject.prototype.maskString = function(str, begin, end) {
-    if (str == null || str == "") {
-        str = "";
-        return str;
-    }
-        
-    var mask = '';
-    var str2 = '';
-    for ( var i=0; i < (end-begin); i++ ) {
-        mask += '*';
-    }
-    str = StrTrim(str);
-    str2 = str.substring(begin, str.length-end)
-    str2 = str2.replace( str2, mask );
-//        str = str.substring(0, begin) + str2 + str.substring(str.length-3);
-        str = str.replace( str.substring(begin, end), mask );
-    return str;
-};
-
-
-var getServerCert = function() {
-    
-}
 
 var 전자서명 = function () {
     console.log(WeatherName + " 샘플구조체 생성자 호출");
@@ -221,33 +144,32 @@ var 전자서명 = function () {
         //  사이트 내 서명 정보 입력
         var certInfo = input.인증서;
 
-
-
         //    client 정보  저장    // 
         var person = input.서명정보;
 
-        var 성명 = person.성명;
+        if(certInfo.비밀번호) {
+            this.iSASInOut.Input.인증서.비밀번호 = certInfo.비밀번호.replace(/./g, "*");
+        }
+        if(person.주민등록번호) {
+            this.iSASInOut.Input.서명정보.주민등록번호 = person.주민등록번호.replace(/./g, "*");
+        }
+        if(person.비밀번호) {
+            this.iSASInOut.Input.서명정보.비밀번호 = person.비밀번호.replace(/./g, "*");
+        }
 
+        var 성명 = person.성명;
         var 주민등록번호 = person.주민등록번호;
         
-        var jumin1 = 주민등록번호.substr(0, 6);
-        var jumin2 = 주민등록번호.substr(7, 7);
-        
-        this.log("jumin1:::"+jumin2);
-        this.log("jumin2:::"+jumin2);
-        
-        주민등록번호 = validateJumin(jumin1,jumin2);
+        주민등록번호 = validateJumin(주민등록번호);
 
-        // this.log("주민등록번호>>>>"+주민등록번호)
+        this.log("주민등록번호>>>>"+주민등록번호)
         
 		// var 주민등록번호 = StrTrim(input.서명정보.주민등록번호);
         // 주민등록번호.replace(/^(\d{6})-?(\d{7})$/g, '$1*******');
 
         var 이메일주소 = person.이메일주소;
-        
         var 집전화번호 = person.집전화번호;
         var 주소 = person.주소;
-        this.log("주소:::"+주소);
         var 핸드폰번호 =person.핸드폰번호;
         var 신청금액 = person.신청금액;
         var 담보계좌번호 = person.담보계좌번호;
@@ -300,6 +222,7 @@ var 전자서명 = function () {
             return E_IBX_A97XX1_ADDRESS_NOTENTER;
         }
 
+        // this.log("신청금액:::"+주소);
         if(!신청금액){
             this.setError(E_IBX_REMIT_AMOUNT_NOTENTER)
             return E_IBX_REMIT_AMOUNT_NOTENTER;
@@ -576,10 +499,18 @@ var 전자서명 = function () {
         // this.log("typeof"+typeof 개인정보.비밀번호);
 
         this.iSASInOut.Output={};
-        this.iSASInOut.Input.인증서.비밀번호 = input.인증서.비밀번호.replace(/./g, "*"); //input
-        // this.iSASInOut.Input.서명정보.주민등록번호 = 주민등록번호;
-        this.iSASInOut.Input.서명정보.주민등록번호 = 주민등록번호.replace(/^(\d{6})-?(\d{7})$/g, '$1*******');
-
+        // this.iSASInOut.Input.인증서.비밀번호 = input.인증서.비밀번호.replace(/./g, "*"); //input
+        // // this.iSASInOut.Input.서명정보.주민등록번호 = 주민등록번호;
+        // this.iSASInOut.Input.서명정보.주민등록번호 = 주민등록번호.replace(/^(\d{6})-?(\d{7})$/g, '$1*******');
+        if(certInfo.비밀번호) {
+            this.iSASInOut.Input.인증서.비밀번호 = certInfo.비밀번호.replace(/./g, "*");
+        }
+        if(person.주민등록번호) {
+            this.iSASInOut.Input.서명정보.주민등록번호 = person.주민등록번호.replace(/./g, "*");
+        }
+        if(person.비밀번호) {
+            this.iSASInOut.Input.서명정보.비밀번호 = person.비밀번호.replace(/./g, "*");
+        }
 
 
         // if (!isJuminValid(주민등록번호)) {
