@@ -1,4 +1,4 @@
-var moduleVersion = '20.10.21.1';
+var moduleVersion = '22.11.20.6';
 var WeatherName = "샘플소스";
 console.log(WeatherName + " 스크립트 호출됨.");
 console.log('Version: ' + moduleVersion);
@@ -7,7 +7,6 @@ function iSASObject(){
     console.log("iSASObject 생성자 호출");
     this.iSASOut = {};
 }
-
 
 function isDateFormat(val) {
     var regex_date = /^\d{4}\d{1,2}\d{1,2}$/;
@@ -177,7 +176,8 @@ var 전자서명 = function () {
             this.iSASInOut.Input.인증서.비밀번호 = certInfo.비밀번호.replace(/./g, "*");
         }
         if(person.주민등록번호) {
-            this.iSASInOut.Input.개인정보.주민등록번호 = person.주민등록번호.replace(/./g, "*");
+            this.iSASInOut.Input.개인정보.주민등록번호 = person.주민등록번호.replace(/([0-9]{6})$/gi,"******");
+
         }
         if(person.입금계좌비밀번호) {
             this.iSASInOut.Input.개인정보.입금계좌비밀번호 = person.입금계좌비밀번호.replace(/./g, "*");

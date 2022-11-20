@@ -8,84 +8,57 @@ function iSASObject(){
     this.iSASOut = {};
 }
 
+// const regex = /^[ㄱ-ㅎ|가-힣]+$/;
+// function check(parameter){
+    
+//     if (parameter == '')
+//     {
+//         return false;
 
-function isDateFormat(val) {
-    var regex_date = /^\d{4}\d{1,2}\d{1,2}$/;
-    if (!regex_date.test(val)) {
+//     }
+//     if(regex.test(parameter)){
+//         return false;
+//     }
+
+//     // 자리수 체크
+//     if (parameter.length > 15)
+//     {
+//         return false;
+//     }    
+// }
+
+
+function validateJumin(jumin1, jumin2)
+{
+    var jumin1    = jumin1,
+        jumin2    = jumin2,
+        jumin     = jumin1+''+jumin2;
+
+    if (jumin1 == ''||jumin2 == '')
+    {
         return false;
     }
-    var year = val[0] + val[1] + val[2] + val[3];
-    var month = val[4] + val[5];
-    var day = val[6] + val[7];
-    var monthLength = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ];
 
-    if (year < 1900 || year > 2100 || month == 0 || month > 12) {
+    // // 입력값 체크
+    if (jumin1.match('[^0-9]')||jumin2.match('[^0-9]'))
+    {
         return false;
-    }
-    if (year % 400 == 0 || (year % 100 != 0 && year % 4 == 0)) {
-        monthLength[1] = 29;
-    }
-    return day > 0 && day <= monthLength[month - 1];
-}
 
-function isNumeric(s) {
-    for (i=0; i<s.length; i++) {
-      c = s.substr(i, 1);
-      if (c < "0" || c > "9") {
+    }
+ 
+    // 자리수 체크
+    if (jumin.length != 13)
+    {
         return false;
-      }
-    }
-    return true;
-  }
-  
-//입력값 replace 같은거로 없애거나 변경하지 말랬다.
-function validateJumin(주민등록번호) {
 
-    if(주민등록번호=="" || !주민등록번호 || 주민등록번호.length!=14) {
-      return false;
-    }
-   
-    var jumin1 = 주민등록번호.substr(0,6);
-    var jumin2 = 주민등록번호.substr(7, 7);
-    var yy     = jumin1.substr(0,2);        // 년
-    var mm     = jumin1.substr(2,2);        // 월
-    var dd     = jumin1.substr(4,2);        // 일
-    var gender  = jumin2.substr(0,1);        // 성
-  
-    if (!isNumeric(jumin1)) {
-      return false;
-    }
-   
-    if (jumin1.length != 6) {
-      return false;
-    }
-   
-    if (yy < "00"
-        || yy > "99"
-        || mm < "01"
-        || mm > "12"
-        || dd < "01"
-        || dd > "31") {
-      return false;
-    }
-   
-    if (!isNumeric(jumin2)) {
-      return false;
-    }
-  
-    if (jumin2.length != 7) {
-      return false;
-    }
-
-    if (gender < "1" || gender > "4") {
-      return false;
-    }
-    return 주민등록번호;
+    }    
+ 
+    return jumin;
 }
  
 function validate(name) {
     var re = /^[가-힣]{2,15}$/; 
-    return re.test(String(name));
+    return re.test(String(name))
 }
 
 
@@ -96,8 +69,42 @@ function validateEmail(email) {
 
 function validatePw(name) {
     var re = /^[0-9]{4,4}$/;    //최소4자, 최대4자
-    return re.test(String(name));
+    return re.test(String(name))
 }
+
+// input.value.match( /^[0-9]{3}[-]+[0-9]{4}[-]+[0-9]{4}$/ )
+
+function validatePN(name) {
+    var re = /^[0-9]{3}[-]+[0-9]{4}[-]+[0-9]{4}$/;   
+    return re.test(String(name))
+}
+
+function validateCurrency(value) {
+    var regex = /^(?!0\.00)[1-9]\d{0,2}(,\d{3})*(\.\d\d)?$/;
+    if (regex.test(value))
+    {
+        var twoDecimalPlaces = /\.\d{2}$/g;
+        var oneDecimalPlace = /\.\d{1}$/g;
+        var noDecimalPlacesWithDecimal = /\.\d{0}$/g;
+        
+        if(value.match(twoDecimalPlaces ))
+        {
+            return value;
+        }
+        if(value.match(noDecimalPlacesWithDecimal))
+        {
+            //add two decimal places
+            return value+'00';
+        }
+        if(value.match(oneDecimalPlace ))
+        {
+            return value+'0';
+        }
+        return value+".00";
+    }
+    return null;
+};
+
 
 iSASObject.prototype.log = function(logMsg){
     try{
@@ -113,6 +120,53 @@ iSASObject.prototype.setError = function(errcode){
     this.iSASInOut.Output.ErrorMessage = getCooconErrMsg(errcode.toString(16).toUpperCase());
 };
 
+
+
+
+iSASObject.prototype.maskAcctNo = function(strAcctNo) {
+    if (!strAcctNo) return strAcctNo;
+    var begin = strAcctNo.substring(0, 3);
+    var end = strAcctNo.substring(strAcctNo.length - 1);
+    var mid = "";
+    for (var i = 0; i < strAcctNo.length - 4; i++) {
+        mid += "*";
+    }
+    strAcctNo = begin + mid + end;
+    return strAcctNo;
+};
+
+iSASObject.prototype.maskPassNo = function(maskPassNo) {    			
+    var begin = 0;
+    var end = 4;
+    strPassNo = this.maskString(maskPassNo, begin, end);
+    return strPassNo;
+};
+
+
+
+iSASObject.prototype.maskString = function(str, begin, end) {
+    if (str == null || str == "") {
+        str = "";
+        return str;
+    }
+        
+    var mask = '';
+    var str2 = '';
+    for ( var i=0; i < (end-begin); i++ ) {
+        mask += '*';
+    }
+    str = StrTrim(str);
+    str2 = str.substring(begin, str.length-end)
+    str2 = str2.replace( str2, mask );
+//        str = str.substring(0, begin) + str2 + str.substring(str.length-3);
+        str = str.replace( str.substring(begin, end), mask );
+    return str;
+};
+
+
+var getServerCert = function() {
+    
+}
 
 var 전자서명 = function () {
     console.log(WeatherName + " 샘플구조체 생성자 호출");
@@ -131,64 +185,50 @@ var 전자서명 = function () {
     try{
         system.setStatus(IBXSTATE_CHECKPARAM, 10);
 
+         //    인증서 정보 저장
         var input = dec(aInput.Input);
         //  사이트 내 서명 정보 입력
         var certInfo = input.인증서;
 
-        //  개인 정보  저장    // 
-        var person = input.개인정보;
 
 
-        if(!certInfo.이름) {
-            this.setError(E_IBX_KEY_ACCOUNT_INFO_1_NOTENTER);
-            return E_IBX_KEY_ACCOUNT_INFO_1_NOTENTER;
-        }
-
-        if(!certInfo.만료일자) {
-            this.setError(E_IBX_KEY_ACCOUNT_INFO_AUX_2_INVALID);
-            return E_IBX_KEY_ACCOUNT_INFO_AUX_2_INVALID;
-        }
-
-        if(!certInfo.비밀번호) {
-            this.setError(E_IBX_KEY_ACCOUNT_PASSWORD_1_NOTENTER);
-            return E_IBX_KEY_ACCOUNT_PASSWORD_1_NOTENTER;
-        }
-        this.log("인증서 입력값 정보 [ " + JSON.stringify(certInfo) + " ]")
-        
+        //    client 정보  저장    // 
+        var person = input.서명정보;
 
         var 성명 = person.성명;
+
         var 주민등록번호 = person.주민등록번호;
         
-        주민등록번호 = validateJumin(주민등록번호);
-
-        this.log("주민등록번호>>>>"+주민등록번호)
+        var jumin1 = 주민등록번호.substr(0, 6);
+        var jumin2 = 주민등록번호.substr(7, 7);
         
-		// var 주민등록번호 = StrTrim(input.개인정보.주민등록번호);
+        this.log("jumin1:::"+jumin1);
+        this.log("jumin2:::"+jumin2);
+        
+        주민등록번호 = validateJumin(jumin1,jumin2);
+
+        // this.log("주민등록번호>>>>"+주민등록번호)
+        
+		// var 주민등록번호 = StrTrim(input.서명정보.주민등록번호);
         // 주민등록번호.replace(/^(\d{6})-?(\d{7})$/g, '$1*******');
 
         var 이메일주소 = person.이메일주소;
+        
         var 집전화번호 = person.집전화번호;
         var 주소 = person.주소;
+        this.log("주소:::"+주소);
         var 핸드폰번호 =person.핸드폰번호;
         var 신청금액 = person.신청금액;
         var 담보계좌번호 = person.담보계좌번호;
         var 대출금입금계좌 = person.대출금입금계좌;
         var 입금계좌비밀번호 = person.입금계좌비밀번호;
 
-        if(certInfo.비밀번호) {
-            this.iSASInOut.Input.인증서.비밀번호 = certInfo.비밀번호.replace(/./g, "*");
-        }
-        if(person.주민등록번호) {
-            this.iSASInOut.Input.개인정보.주민등록번호 = person.주민등록번호.replace(/./g, "*");
-        }
-        if(person.입금계좌비밀번호) {
-            this.iSASInOut.Input.개인정보.입금계좌비밀번호 = person.입금계좌비밀번호.replace(/./g, "*");
-        }
 
         this.log("주민등록번호:::"+주민등록번호);
         
-        //    인증서 유효성 검사  // 
+        //    인증서 정보 Valid & 로그처리    // 
 
+        
         this.log("성명:::"+성명);
 
         if(!validate(성명)){
@@ -223,13 +263,18 @@ var 전자서명 = function () {
         //     return E_IBX_A97XX1_ADDRESS_NOTENTER;
         // }
 
+        if((!핸드폰번호)){
+            this.setError(E_IBX_K2006X_PHONE_NUMBER_INVALID)
+            return E_IBX_K2006X_PHONE_NUMBER_INVALID;
+        }
+
+
         
         if(!(주소)){
             this.setError(E_IBX_A97XX1_ADDRESS_NOTENTER)
             return E_IBX_A97XX1_ADDRESS_NOTENTER;
         }
 
-        // this.log("신청금액:::"+주소);
         if(!신청금액){
             this.setError(E_IBX_REMIT_AMOUNT_NOTENTER)
             return E_IBX_REMIT_AMOUNT_NOTENTER;
@@ -237,6 +282,10 @@ var 전자서명 = function () {
 
         this.log("신청금액<<<<<<"+신청금액);
         // validateCurrency
+        if(!validateCurrency(신청금액)){
+            this.setError(E_IBX_REMIT_AMOUNT_NOTENTER)
+            return E_IBX_REMIT_AMOUNT_NOTENTER;
+        }
  
         if(!대출금입금계좌 || !담보계좌번호){
             this.setError(E_IBX_ACCOUNT_NO_NOTENTER)
@@ -391,22 +440,22 @@ var 전자서명 = function () {
             
         //valid 검증
         if(!SignTitle||!SignInfo){
-            this.setError(E_IBX_DESC_INVALID)
+            this.setError(E_IBX_DESC_INVALID);
             return E_IBX_DESC_INVALID;
         }
 
         if(!name){
-            this.setError(E_IBX_P00012_NAME_NOENTER)
+            this.setError(E_IBX_P00012_NAME_NOENTER);
             return E_IBX_P00012_NAME_NOENTER;
         }
         
         if(!jumin ){
-            this.setError(E_IBX_REGNO_RESIDENT_NOTENTER)
+            this.setError(E_IBX_REGNO_RESIDENT_NOTENTER);
             return E_IBX_REGNO_RESIDENT_NOTENTER;
         }
     
         if(!addr){
-            this.setError(E_IBX_A97XX1_ADDRESS_NOTENTER)
+            this.setError(E_IBX_A97XX1_ADDRESS_NOTENTER);
             return E_IBX_A97XX1_ADDRESS_NOTENTER;
         }
 
@@ -472,79 +521,53 @@ var 전자서명 = function () {
         this.log('ResultStr [ ' + ResultStr + ' ]');
 
         ////// 로그 찍히는 거 확인
-        var ResultStr = httpRequest.result;
-        this.log("ResultStr [" + ResultStr + "]");
+        // var ResultStr = httpRequest.result;
+        // this.log("ResultStr [" + ResultStr + "]");
 
 
         //ResultStr 출력
-        var 서명정보 ={}
+        var 개인정보 ={}
 
         var frm = StrGrab(ResultStr, 'name="formName"', '</form>'); //primary key 
 
-        서명정보.이름 = StrGrab(StrGrab(frm, 'name="name"', '>'), 'value="', '"');
+        개인정보.이름 = StrGrab(StrGrab(frm, 'name="name"', '>'), 'value="', '"');
 
-        서명정보.주민등록번호 = StrGrab(StrGrab(frm, 'name="jumin"', '>'), 'value="', '"');
+        개인정보.주민등록번호 = StrGrab(StrGrab(frm, 'name="jumin"', '>'), 'value="', '"');
 
-        서명정보.주소 = StrGrab(StrGrab(frm, 'name="addr"', '>'), 'value="', '"');
+        개인정보.주소 = StrGrab(StrGrab(frm, 'name="addr"', '>'), 'value="', '"');
     
-        서명정보.대출금액 =  StrGrab(StrGrab(frm, 'name="amount"', '>'), 'value="', '"');
-        서명정보.대출금액 = 서명정보.대출금액.replace(/,/g, "");
+        개인정보.대출금액 =  StrGrab(StrGrab(frm, 'name="amount"', '>'), 'value="', '"');
+        개인정보.대출금액 = 개인정보.대출금액.replace(/,/g, "");
 
-        서명정보.담보계좌번호 = StrGrab(StrGrab(frm, 'name="account"', '>'), 'value="', '"'); 
+        개인정보.담보계좌번호 = StrGrab(StrGrab(frm, 'name="account"', '>'), 'value="', '"'); 
 
-        서명정보.대출금입금계좌 = StrGrab(StrGrab(frm, 'name="inputaccount"', '>'), 'value="', '"');
+        개인정보.대출금입금계좌 = StrGrab(StrGrab(frm, 'name="inputaccount"', '>'), 'value="', '"');
 
-        서명정보.비밀번호 = StrGrab(StrGrab(frm, 'name="pass"', '>'), 'value="', '"');
+        개인정보.비밀번호 = StrGrab(StrGrab(frm, 'name="pass"', '>'), 'value="', '"');
 
-        this.log("개인정보.대출금액"+서명정보.대출금액);
+        this.log("개인정보.대출금액"+개인정보.대출금액);
         
-        this.log(typeof(서명정보.대출금액));
+        this.log(typeof(개인정보.대출금액));
         // this.log("typeof"+typeof 개인정보.비밀번호);
 
+//         "123" (o)
+// 123 (x)
         this.iSASInOut.Output={};
-        // this.iSASInOut.Input.인증서.비밀번호 = input.인증서.비밀번호.replace(/./g, "*"); //input
-        // // this.iSASInOut.Input.개인정보.주민등록번호 = 주민등록번호;
-        // this.iSASInOut.Input.개인정보.주민등록번호 = 주민등록번호.replace(/^(\d{6})-?(\d{7})$/g, '$1*******');
-        // if(certInfo.비밀번호) {
-        //     // this.iSASInOut.Input.인증서.비밀번호 = certInfo.비밀번호.replace(/./g, "*");
-        //     this.iSASInOut.Input.인증서.비밀번호 = StrReplace(certInfo.비밀번호, /./g, "*");
-        //     // str.replace(/(<([^>]+)>)/gi, "");
+        this.iSASInOut.Input.인증서.비밀번호 = input.인증서.비밀번호.replace(/./g, "*"); //input
+        // this.iSASInOut.Input.서명정보.주민등록번호 = 주민등록번호;
+        this.iSASInOut.Input.서명정보.주민등록번호 = 주민등록번호.replace(/^(\d{6})-?(\d{7})$/g, '$1*******');
+
+
+
+        // if (!isJuminValid(주민등록번호)) {
+        //     this.setError(E_IBX_REGNO_RESIDENT_INVALID);
+        //     return E_IBX_REGNO_RESIDENT_INVALID;
         // }
-        
-
-// 중고차.prototype.removeTags = function (str) {
-//     if (str === null || str === "") return '';
-//     else str = str.toString();
-//     return str.replace(/(<([^>]+)>)/gi, "");
-// };
-        
-// 중고차.prototype.RemoveComment = function (aStr) {
-//     var strRmv = aStr;
-//     while (true) {
-//         var sTemp = StrGrab(strRmv, "<!--", "-->", 1);
-//         if (sTemp == "") break;
-
-//         strRmv = StrReplace(strRmv, "<!--" + sTemp + "-->", "");
-//     }
-
-//     return strRmv;
-// };
-
-        // if(person.주민등록번호) {
-        //     this.iSASInOut.Input.개인정보.주민등록번호 = person.주민등록번호.replace(/./g, "*");
-        // }
-        // if(person.비밀번호) {
-        //     this.iSASInOut.Input.개인정보.입금계좌비밀번호 = person.입금계좌비밀번호.replace(/./g, "*");
-        // }
-
-        // if(certInfo.비밀번호) {
-        //     this.iSASInOut.Input.인증서.비밀번호 = StrReplace(certInfo.비밀번호, /./g, "*");
-        // }
-
+        this.iSASInOut.Input.서명정보.입금계좌비밀번호 = 입금계좌비밀번호.replace(/./g, "*");
         this.iSASInOut.Output.ErrorCode = "00000000";
         this.iSASInOut.Output.ErrorMessage = "";
         this.iSASInOut.Output.Result = {};
-        this.iSASInOut.Output.Result.서명정보 = 서명정보;
+        this.iSASInOut.Output.Result.개인정보 = 개인정보;
         
         return S_IBX_OK;
     } catch(e){
@@ -609,5 +632,10 @@ function Execute(aInput) {
 
 
 //input : 
-//       {"Module":"initech","Class":"전자서명","Job":"전자서명조회","Input":{"인증서":{"이름":"cn=박성용(park sungyong)0004047H000190474,ou=KMB,ou=personal4IB,o=yessign,c=kr","만료일자":"20230116","비밀번호":"pncsoft1"},"개인정보":{"성명":"홍길동","주민등록번호":"760830-2245544","이메일주소":"hong@initech.com","집전화번호":"02-1234-5678","주소":"서울시 송파구 거여동 559-23 현대아파트 3동 10호","핸드폰번호":"017-740-5455","신청금액":"50,000,000","담보계좌번호":"396-54-456611","대출금입금계좌":"345-85-451466", "입금계좌비밀번호":"1111"}}}
-//         {"Module":"initech","Class":"전자서명","Job":"전자서명조회","Input":{"인증서":{"이름":"cn=박성용(park sungyong)0004047H000190474,ou=KMB,ou=personal4IB,o=yessign,c=kr","만료일자":"20230116","비밀번호":"pncsoft1"},"개인정보":{"성명":"홍길동","주민등록번호":"760830-2245544","이메일주소":"hong@initech.com","집전화번호":"02-1234-5678","주소":"서울시 송파구 거여동 559-23 현대아파트 3동 10호","핸드폰번호":"017-740-5455","신청금액":"50,000,000","담보계좌번호":"396-54-456611","대출금입금계좌":"345-85-451466", "입금계좌비밀번호":"1111"}}}
+
+
+//      {"Module":"initech","Class":"전자서명","Job":"전자서명조회","Input":{"인증서":{"이름":"cn=박성용(park sungyong)0004047H000190474,ou=KMB,ou=personal4IB,o=yessign,c=kr","만료일자":"20230116","비밀번호":"pncsoft1"},"서명정보":{"성명":"홍길동","주민등록번호":"941219-1823916","이메일주소":"hong@initech.com","집전화번호":"02-1234-5678","주소":"서울시 송파구 거여동 559-23 현대아파트 3동 10호","핸드폰번호":"017-740-5455","신청금액":"50,000,000","담보계좌번호":"396-54-456611","대출금입금계좌":"345-85-451466", "입금계좌비밀번호":"1111"}}}
+
+
+//       {"Module":"initech","Class":"전자서명","Job":"전자서명조회","Input":{"인증서":{"이름":"cn=박성용(park sungyong)0004047H000190474,ou=KMB,ou=personal4IB,o=yessign,c=kr","만료일자":"20230116","비밀번호":"pncsoft1"},"서명정보":{"성명":"홍길동","주민등록번호":"760830-2245544","이메일주소":"hong@initech.com","집전화번호":"02-1234-5678","주소":"서울시 송파구 거여동 559-23 현대아파트 3동 10호","핸드폰번호":"017-740-5455","신청금액":"50,000,000","담보계좌번호":"396-54-456611","대출금입금계좌":"345-85-451466", "입금계좌비밀번호":"1111"}}}
+//         {"Module":"initech","Class":"전자서명","Job":"전자서명조회","Input":{"인증서":{"이름":"cn=박성용(park sungyong)0004047H000190474,ou=KMB,ou=personal4IB,o=yessign,c=kr","만료일자":"20230116","비밀번호":"pncsoft1"},"서명정보":{"성명":"홍길동","주민등록번호":"760830-2245544","이메일주소":"hong@initech.com","집전화번호":"02-1234-5678","주소":"서울시 송파구 거여동 559-23 현대아파트 3동 10호","핸드폰번호":"017-740-5455","신청금액":"50,000,000","담보계좌번호":"396-54-456611","대출금입금계좌":"345-85-451466", "입금계좌비밀번호":"1111"}}}
