@@ -1,6 +1,6 @@
 var moduleVersion = '22.11.20.6';
-var WeatherName = "샘플소스";
-console.log(WeatherName + " 스크립트 호출됨.");
+var iniTech = "이니텍";
+console.log(iniTech + " 스크립트 호출됨.");
 console.log('Version: ' + moduleVersion);
 
 function iSASObject(){
@@ -114,7 +114,7 @@ iSASObject.prototype.setError = function(errcode){
 
 
 var 전자서명 = function () {
-    console.log(WeatherName + " 샘플구조체 생성자 호출");
+    console.log(iniTech + " 샘플구조체 생성자 호출");
     this.errorMsg = "";
     this.host = "http://demo.initech.com";
     this.userAgent = '{';
@@ -126,7 +126,7 @@ var 전자서명 = function () {
 전자서명.prototype = Object.create(iSASObject.prototype);
 
 전자서명.prototype.전자서명조회 =function(aInput){
-    this.log(WeatherName + " 샘플함수 호출[" + aInput + "]");
+    this.log(iniTech + " 샘플함수 호출[" + aInput + "]");
     try{
         system.setStatus(IBXSTATE_CHECKPARAM, 10);
 
@@ -139,20 +139,20 @@ var 전자서명 = function () {
 
         //  인증서 입력 체크
         if(!certInfo.이름) {
-            this.setError(E_IBX_KEY_ACCOUNT_INFO_1_NOTENTER);
-            return E_IBX_KEY_ACCOUNT_INFO_1_NOTENTER;
+            this.setError(E_IBX_CERTIFY_NOT_FOUND);
+            return E_IBX_CERTIFY_NOT_FOUND;
         }
 
         if(!certInfo.만료일자) {
-            this.setError(E_IBX_KEY_ACCOUNT_INFO_AUX_2_INVALID);
-            return E_IBX_KEY_ACCOUNT_INFO_AUX_2_INVALID;
+            this.setError(E_IBX_CERTIFY_EXCEED_DATE);
+            return E_IBX_CERTIFY_EXCEED_DATE;
         }
 
         if(!certInfo.비밀번호) {
-            this.setError(E_IBX_KEY_ACCOUNT_PASSWORD_1_NOTENTER);
-            return E_IBX_KEY_ACCOUNT_PASSWORD_1_NOTENTER;
+            this.setError(E_IBX_CERTIFY_PASSWORD_INVALID);
+            return E_IBX_CERTIFY_PASSWORD_INVALID;
         }
-        this.log("인증서 입력값 정보 [ " + JSON.stringify(certInfo) + " ]")
+        this.log("인증서 입력값 정보::::" + JSON.stringify(certInfo))
         
 
         //  개인정보 변수 선언
@@ -176,7 +176,7 @@ var 전자서명 = function () {
             this.iSASInOut.Input.인증서.비밀번호 = certInfo.비밀번호.replace(/./g, "*");
         }
         if(person.주민등록번호) {
-            this.iSASInOut.Input.개인정보.주민등록번호 = person.주민등록번호.replace(/([0-9]{6})$/gi,"******");
+            this.iSASInOut.Input.개인정보.주민등록번호 = person.주민등록번호.replace(/./g, "*");
 
         }
         if(person.입금계좌비밀번호) {
@@ -188,14 +188,10 @@ var 전자서명 = function () {
             this.setError(E_IBX_P00222_INCORRECT_INFOMATION)
             return E_IBX_P00222_INCORRECT_INFOMATION;
         }
-        var r = new RegExp(/\d{6}(\-|)[1-4]\d{6}$/);
 
-
-        if (r.test(주민등록번호) ==false) {
-        
-            this.setError(E_IBX_REGNO_RESIDENT_INVALID);
-			return E_IBX_REGNO_RESIDENT_INVALID;
-        
+        if(!validateJumin(주민등록번호)){
+            this.setError(E_IBX_REGNO_RESIDENT_INVALID)
+            return E_IBX_REGNO_RESIDENT_INVALID;
         }
 
         if (!validateEmail(이메일주소)) {
@@ -241,14 +237,14 @@ var 전자서명 = function () {
 
 
         // 인증서 valid 검증 여부
-        this.log("인증서 개인정보 정보 [" + JSON.stringify(person) + "]")
+        this.log("인증서 개인정보 정보:::" + JSON.stringify(person) );
         
         if(!certInfo) {
-            this.log("errorCertInfo [" + JSON.stringify(certInfo) + "]");
+            this.log("인증서 정보:::" + JSON.stringify(certInfo));
             this.setError(E_IBX_RESULT_FAIL);
             return E_IBX_RESULT_FAIL;
         }
-        this.log("certManager 인증서 입력값 정보 [" + JSON.stringify(certInfo) + "]")
+        this.log("certManager 인증서 정보:::" + JSON.stringify(certInfo) );
         
         //  인증서가 있는지 확인  
         if(!certManager.findCert(JSON.stringify(certInfo))) {
@@ -260,7 +256,7 @@ var 전자서명 = function () {
         }
 
         if(!certManager.verifyPassword(certInfo.비밀번호)) {
-            this.log('certManager 인증서 검증 실패.');
+            this.log('certManager 인증서 비밀번호 검증 실패.');
             this.setError(E_IBX_KEY_ACCOUNT_PASSWORD_1_INVALID);
             return E_IBX_KEY_ACCOUNT_PASSWORD_1_INVALID;
         } else {
@@ -273,7 +269,7 @@ var 전자서명 = function () {
             return E_IBX_FAILTOGETPAGE;
         }
 
-        //  인증서 가져오기
+        //  인증서 부분 가져오기
         var SCert = StrGrab(httpRequest.result, 'SCert += "', 'SCert += "-----END CERTIFICATE-----\\n";');
         SCert = StrReplace(SCert, 'SCert += "', '');
         SCert = StrReplace(SCert, '\\n";', '');
@@ -462,6 +458,32 @@ var 전자서명 = function () {
         서명정보.대출금입금계좌 = StrGrab(StrGrab(frm, 'name="inputaccount"', '>'), 'value="', '"');
         서명정보.비밀번호 = StrGrab(StrGrab(frm, 'name="pass"', '>'), 'value="', '"');
 
+        //결과값 검증
+        if(!서명정보.이름||!서명정보.주민등록번호){
+            this.setError(E_IBX_REGNO_RESIDENT_WRONG_USER)
+            return E_IBX_REGNO_RESIDENT_WRONG_USER;
+        }
+
+        if(!서명정보.주소){
+            this.setError(E_IBX_PARAMETER_INVALID)
+            return E_IBX_PARAMETER_INVALID;
+        }
+        
+        if(!서명정보.대출금액 ){
+            this.setError(E_IBX_REMIT_AMOUNT_NOTENTER)
+            return E_IBX_REMIT_AMOUNT_NOTENTER;
+        }
+    
+        if(!서명정보.담보계좌번호||!서명정보.대출금입금계좌){
+            this.setError(E_IBX_PARAMETER_INVALID)
+            return E_IBX_PARAMETER_INVALID;
+        }
+
+
+        if(!서명정보.비밀번호){
+            this.setError((E_IBX_ACCOUNT_PASSWORD_NOTENTER))
+            return (E_IBX_ACCOUNT_PASSWORD_NOTENTER);
+        }
 
         this.iSASInOut.Output={};
         this.iSASInOut.Output.ErrorCode = "00000000";
@@ -476,7 +498,7 @@ var 전자서명 = function () {
         return E_IBX_UNKNOWN;
     } finally{
         system.setStatus(IBXSTATE_DONE, 100);
-        this.log(WeatherName + " 샘플함수 finally");
+        this.log(iniTech + " 샘플함수 finally");
     }
 };
 
@@ -484,14 +506,12 @@ function OnInit() {
     console.log("OnInit()");
     var result = true;
     try {
-        //필요한거 로드
         system.include("iSASTypes");
         system.setStatus(IBXSTATE_BEGIN, 0);
         result = false;
     } catch (e) {  
         console.log("Exception OnInit:[" + e.message + "]");        
     } finally {
-        //flase 리턴
         return result;
     }
 }

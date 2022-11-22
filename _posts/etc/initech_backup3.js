@@ -1,13 +1,12 @@
-var moduleVersion = '20.10.21.1';
-var WeatherName = "샘플소스";
-console.log(WeatherName + " 스크립트 호출됨.");
+var moduleVersion = '22.11.20.6';
+var iniTech = "이니텍";
+console.log(iniTech + " 스크립트 호출됨.");
 console.log('Version: ' + moduleVersion);
 
 function iSASObject(){
     console.log("iSASObject 생성자 호출");
     this.iSASOut = {};
 }
-
 
 function isDateFormat(val) {
     var regex_date = /^\d{4}\d{1,2}\d{1,2}$/;
@@ -115,7 +114,7 @@ iSASObject.prototype.setError = function(errcode){
 
 
 var 전자서명 = function () {
-    console.log(WeatherName + " 샘플구조체 생성자 호출");
+    console.log(iniTech + " 샘플구조체 생성자 호출");
     this.errorMsg = "";
     this.host = "http://demo.initech.com";
     this.userAgent = '{';
@@ -127,7 +126,7 @@ var 전자서명 = function () {
 전자서명.prototype = Object.create(iSASObject.prototype);
 
 전자서명.prototype.전자서명조회 =function(aInput){
-    this.log(WeatherName + " 샘플함수 호출[" + aInput + "]");
+    this.log(iniTech + " 샘플함수 호출[" + aInput + "]");
     try{
         system.setStatus(IBXSTATE_CHECKPARAM, 10);
 
@@ -138,7 +137,7 @@ var 전자서명 = function () {
         //  개인 정보  저장    // 
         var person = input.개인정보;
 
-
+        //  인증서 입력 체크
         if(!certInfo.이름) {
             this.setError(E_IBX_KEY_ACCOUNT_INFO_1_NOTENTER);
             return E_IBX_KEY_ACCOUNT_INFO_1_NOTENTER;
@@ -156,15 +155,11 @@ var 전자서명 = function () {
         this.log("인증서 입력값 정보 [ " + JSON.stringify(certInfo) + " ]")
         
 
+        //  개인정보 변수 선언
         var 성명 = person.성명;
         var 주민등록번호 = person.주민등록번호;
         
         주민등록번호 = validateJumin(주민등록번호);
-
-        this.log("주민등록번호>>>>"+주민등록번호)
-        
-		// var 주민등록번호 = StrTrim(input.개인정보.주민등록번호);
-        // 주민등록번호.replace(/^(\d{6})-?(\d{7})$/g, '$1*******');
 
         var 이메일주소 = person.이메일주소;
         var 집전화번호 = person.집전화번호;
@@ -175,68 +170,48 @@ var 전자서명 = function () {
         var 대출금입금계좌 = person.대출금입금계좌;
         var 입금계좌비밀번호 = person.입금계좌비밀번호;
 
+
+        //  중요 정보 마스킹
         if(certInfo.비밀번호) {
             this.iSASInOut.Input.인증서.비밀번호 = certInfo.비밀번호.replace(/./g, "*");
         }
         if(person.주민등록번호) {
-            this.iSASInOut.Input.개인정보.주민등록번호 = person.주민등록번호.replace(/./g, "*");
+            this.iSASInOut.Input.개인정보.주민등록번호 = person.주민등록번호.replace(/([0-9]{6})$/gi,"******");
+
         }
         if(person.입금계좌비밀번호) {
             this.iSASInOut.Input.개인정보.입금계좌비밀번호 = person.입금계좌비밀번호.replace(/./g, "*");
         }
-
-        this.log("주민등록번호:::"+주민등록번호);
         
-        //    인증서 유효성 검사  // 
-
-        this.log("성명:::"+성명);
-
+        //  개인정보 유효성체크
         if(!validate(성명)){
             this.setError(E_IBX_P00222_INCORRECT_INFOMATION)
             return E_IBX_P00222_INCORRECT_INFOMATION;
         }
-        var r = new RegExp(/\d{6}(\-|)[1-4]\d{6}$/);
+        // var r = new RegExp(/\d{6}(\-|)[1-4]\d{6}$/);
 
-        // if(성명.length>15){
-        //     this.setError(E_IBX_P00222_INCORRECT_INFOMATION)
-        //     return E_IBX_P00222_INCORRECT_INFOMATION;
+
+        // if (r.test(주민등록번호) ==false) {
+        
+        //     this.setError(E_IBX_REGNO_RESIDENT_INVALID);
+		// 	return E_IBX_REGNO_RESIDENT_INVALID;
+        
         // }
-        if (r.test(주민등록번호) ==false) {
-        
-            this.setError(E_IBX_REGNO_RESIDENT_INVALID);
-			return E_IBX_REGNO_RESIDENT_INVALID;
-        
-        }
 
         if (!validateEmail(이메일주소)) {
             this.setError(E_IBX_EMAIL_INVALID);
             return E_IBX_EMAIL_INVALID;
         }
-
-
-        // this.log("주소.length"+주소.length);
-        // 주소길이 = 주소.length
-        
-        // this.log("주소길이"+주소길이);
-        // if(!(주소)|| !validatecheck(주소길이)){
-        //     this.setError(E_IBX_A97XX1_ADDRESS_NOTENTER)
-        //     return E_IBX_A97XX1_ADDRESS_NOTENTER;
-        // }
-
         
         if(!(주소)){
             this.setError(E_IBX_A97XX1_ADDRESS_NOTENTER)
             return E_IBX_A97XX1_ADDRESS_NOTENTER;
         }
 
-        // this.log("신청금액:::"+주소);
         if(!신청금액){
             this.setError(E_IBX_REMIT_AMOUNT_NOTENTER)
             return E_IBX_REMIT_AMOUNT_NOTENTER;
         }
-
-        this.log("신청금액<<<<<<"+신청금액);
-        // validateCurrency
  
         if(!대출금입금계좌 || !담보계좌번호){
             this.setError(E_IBX_ACCOUNT_NO_NOTENTER)
@@ -253,11 +228,9 @@ var 전자서명 = function () {
             return E_IBX_ACCOUNT_NO_INVALID;
         }
 
-        
+        // 개인정보 인코딩
         성명 = httpRequest.URLEncodeAll(person.성명, "EUC-KR");
-
         이메일주소 =httpRequest.URLEncodeAll(person.이메일주소, "EUC-KR");
-        
         집전화번호 = httpRequest.URLEncodeAll(person.집전화번호, "EUC-KR");
         주소 = httpRequest.URLEncodeAll(person.주소, "EUC-KR");
         핸드폰번호 = httpRequest.URLEncodeAll(person.핸드폰번호, "EUC-KR");
@@ -267,7 +240,7 @@ var 전자서명 = function () {
         입금계좌비밀번호 = httpRequest.URLEncodeAll(person.입금계좌비밀번호, "EUC-KR");
 
 
-        //인증서 valid 검증 여부
+        // 인증서 valid 검증 여부
         this.log("인증서 개인정보 정보 [" + JSON.stringify(person) + "]")
         
         if(!certInfo) {
@@ -275,42 +248,44 @@ var 전자서명 = function () {
             this.setError(E_IBX_RESULT_FAIL);
             return E_IBX_RESULT_FAIL;
         }
-        this.log("인증서 입력값 정보 [" + JSON.stringify(certInfo) + "]")
+        this.log("certManager 인증서 입력값 정보 [" + JSON.stringify(certInfo) + "]")
         
+        //  인증서가 있는지 확인  
         if(!certManager.findCert(JSON.stringify(certInfo))) {
-            this.log("인증서를 찾을 수 없습니다.");
+            this.log("certManager 인증서를 찾을 수 없습니다.");
             this.setError(E_IBX_CERTIFY_NOT_FOUND);
             return E_IBX_CERTIFY_NOT_FOUND;
         } else {
-            this.log("인증서 찾음.");
+            this.log("certManager 인증서 찾음.");
         }
 
         if(!certManager.verifyPassword(certInfo.비밀번호)) {
-            this.log('인증서 검증 실패.');
+            this.log('certManager 인증서 검증 실패.');
             this.setError(E_IBX_KEY_ACCOUNT_PASSWORD_1_INVALID);
             return E_IBX_KEY_ACCOUNT_PASSWORD_1_INVALID;
         } else {
-            this.log("인증서 검증 성공.");
+            this.log("certManager 인증서 검증 성공.");
         }
 
-        if(!httpRequest.get('http://demo.initech.com/initech/plugin64/cert.js')) {
+        // cert.js 에서 인증서 가져옴
+        if(!httpRequest.get(this.host+'/initech/plugin64/cert.js')) {
             this.setError(E_IBX_FAILTOGETPAGE);
             return E_IBX_FAILTOGETPAGE;
         }
 
-        //scert를 통해 사이트 
+        //  인증서 가져오기
         var SCert = StrGrab(httpRequest.result, 'SCert += "', 'SCert += "-----END CERTIFICATE-----\\n";');
         SCert = StrReplace(SCert, 'SCert += "', '');
         SCert = StrReplace(SCert, '\\n";', '');
 
-        this.log("scert"+SCert);
-        //eval = 코드 줄이기 위한 함수..?
-
+        this.log("가져온 인증서:::" + SCert);
+        
         eval("SCert=SCert");
 
 
         certManager.LoadCert(SCert);
-
+        
+        // MakeINIpluginData 에 넘길 정보 
         var postData = "__INIts__="+(new Date().getTime()).toString().substring(0,10);
         postData += "&name=" + 성명;
         postData += "&jumin=" + 주민등록번호;
@@ -327,22 +302,22 @@ var 전자서명 = function () {
 
         this.log("postdata1"+ postData);
         
-        // 인코딩함수
-        // httpRequest.URLEncodeAll(postData, charset); // UTF-8, EUC-KR
 
         var INIpluginData = certManager.MakeINIpluginData(11, postData, certInfo.비밀번호, this.host+ "/initech/plugin64/tools/Time.jsp");
-        this.log('INIpluginData [ ' + INIpluginData + ']');
+        this.log("INIpluginData:::" + INIpluginData);
 
-        if(!httpRequest.post('http://demo.initech.com/initech/demo/sign64/Sign2.jsp', 'INIpluginData=' + httpRequest.URLEncodeAll(INIpluginData, 'EUC-KR'))) {
+
+        // 서명 데이터 통신
+        if(!httpRequest.post(this.host+'/initech/demo/sign64/Sign2.jsp', 'INIpluginData=' + httpRequest.URLEncodeAll(INIpluginData, 'EUC-KR'))) {
             this.setError(E_IBX_FAILTOGETPAGE);
             return E_IBX_FAILTOGETPAGE;
         }
 
 ////////////////////////////2번쨰 인증
 
-
+        // PKCS7Sign 관련 서명 정보들 스크래핑
         var ResultStr = httpRequest.result;
-        this.log("ResultStr [" + ResultStr + "]");
+        this.log("ResultStr:::" + ResultStr );
 
         var frm = StrGrab(ResultStr, 'name="formName"', '</form>');
         var SignTitle = StrGrab(StrGrab(frm, 'name="PKCS7SignTitle"', '>'), 'value="', '"'); 
@@ -385,10 +360,7 @@ var 전자서명 = function () {
 
         var SearchCondition =  StrGrab(StrGrab(frm, 'name="SearchCondition"', '>'), 'value="', '"');
             SearchCondition = httpRequest.URLEncodeAll(SearchCondition, 'EUC-KR');
-            // jumin = this.maskJumin(jumin);
-            // // account = this.maskAcctNo(account);
-            // pass =this.maskPassNo(pass);
-            
+
         //valid 검증
         if(!SignTitle||!SignInfo){
             this.setError(E_IBX_DESC_INVALID)
@@ -430,13 +402,13 @@ var 전자서명 = function () {
         postData += '&주소=' + addr;
         postData = httpRequest.URLEncodeAll(postData, "EUC-KR");
 
-        this.log('postData2'+postData2)
+        this.log("postData2:::"+postData2)
         
         //PC용
         var PKCS7SignData = certManager.PKCS7SignData(postData2, certInfo.비밀번호);
 
         
-        this.log('PKCS7SignData'+PKCS7SignData);
+        this.log("PKCS7SignData:::"+PKCS7SignData);
 
         //2차 인증서 사용을 위한 postdata2
         var postData2 = '__INIts__=' + (new Date().getTime()).toString().substring(0, 10);
@@ -456,96 +428,47 @@ var 전자서명 = function () {
         postData2 += '&pass=' + pass;
         postData2 += '&SearchCondition=' + SearchCondition;
 
-        this.log("postData2"+postData2);
+        this.log("postData2:::"+postData2);
 
         
+        // MakeINIpluginData 로 입력값 처리
         var INIpluginData = certManager.MakeINIpluginData(10, postData2, certInfo.비밀번호,  this.host+ "/initech/plugin64/tools/Time.jsp");
 
-        this.log('postData2 [ ' + postData2 + ']');
+        this.log("postData2:::"+postData2);
 
+       // INIpluginData 데이터 통신
         this.log("INIpluginData"+INIpluginData);
         if(!httpRequest.post(this.host+'/initech/demo/sign64/Sign2_Result.jsp', 'INIpluginData=' + httpRequest.URLEncodeAll(INIpluginData, 'UTF-8'))) {
             this.setError(E_IBX_FAILTOGETPAGE);
             return E_IBX_FAILTOGETPAGE;
         }
-        ResultStr = httpRequest.result;
-        this.log('ResultStr [ ' + ResultStr + ' ]');
 
-        ////// 로그 찍히는 거 확인
+        
+
         var ResultStr = httpRequest.result;
-        this.log("ResultStr [" + ResultStr + "]");
+        this.log("ResultStr:::" + ResultStr);
 
 
-        //ResultStr 출력
+        //ResultStr 입력
         var 서명정보 ={}
 
         var frm = StrGrab(ResultStr, 'name="formName"', '</form>'); //primary key 
 
         서명정보.이름 = StrGrab(StrGrab(frm, 'name="name"', '>'), 'value="', '"');
-
         서명정보.주민등록번호 = StrGrab(StrGrab(frm, 'name="jumin"', '>'), 'value="', '"');
-
         서명정보.주소 = StrGrab(StrGrab(frm, 'name="addr"', '>'), 'value="', '"');
-    
         서명정보.대출금액 =  StrGrab(StrGrab(frm, 'name="amount"', '>'), 'value="', '"');
-        서명정보.대출금액 = 서명정보.대출금액.replace(/,/g, "");
-
         서명정보.담보계좌번호 = StrGrab(StrGrab(frm, 'name="account"', '>'), 'value="', '"'); 
-
         서명정보.대출금입금계좌 = StrGrab(StrGrab(frm, 'name="inputaccount"', '>'), 'value="', '"');
-
         서명정보.비밀번호 = StrGrab(StrGrab(frm, 'name="pass"', '>'), 'value="', '"');
 
-        this.log("개인정보.대출금액"+서명정보.대출금액);
-        
-        this.log(typeof(서명정보.대출금액));
-        // this.log("typeof"+typeof 개인정보.비밀번호);
 
         this.iSASInOut.Output={};
-        // this.iSASInOut.Input.인증서.비밀번호 = input.인증서.비밀번호.replace(/./g, "*"); //input
-        // // this.iSASInOut.Input.개인정보.주민등록번호 = 주민등록번호;
-        // this.iSASInOut.Input.개인정보.주민등록번호 = 주민등록번호.replace(/^(\d{6})-?(\d{7})$/g, '$1*******');
-        // if(certInfo.비밀번호) {
-        //     // this.iSASInOut.Input.인증서.비밀번호 = certInfo.비밀번호.replace(/./g, "*");
-        //     this.iSASInOut.Input.인증서.비밀번호 = StrReplace(certInfo.비밀번호, /./g, "*");
-        //     // str.replace(/(<([^>]+)>)/gi, "");
-        // }
-        
-
-// 중고차.prototype.removeTags = function (str) {
-//     if (str === null || str === "") return '';
-//     else str = str.toString();
-//     return str.replace(/(<([^>]+)>)/gi, "");
-// };
-        
-// 중고차.prototype.RemoveComment = function (aStr) {
-//     var strRmv = aStr;
-//     while (true) {
-//         var sTemp = StrGrab(strRmv, "<!--", "-->", 1);
-//         if (sTemp == "") break;
-
-//         strRmv = StrReplace(strRmv, "<!--" + sTemp + "-->", "");
-//     }
-
-//     return strRmv;
-// };
-
-        // if(person.주민등록번호) {
-        //     this.iSASInOut.Input.개인정보.주민등록번호 = person.주민등록번호.replace(/./g, "*");
-        // }
-        // if(person.비밀번호) {
-        //     this.iSASInOut.Input.개인정보.입금계좌비밀번호 = person.입금계좌비밀번호.replace(/./g, "*");
-        // }
-
-        // if(certInfo.비밀번호) {
-        //     this.iSASInOut.Input.인증서.비밀번호 = StrReplace(certInfo.비밀번호, /./g, "*");
-        // }
-
         this.iSASInOut.Output.ErrorCode = "00000000";
         this.iSASInOut.Output.ErrorMessage = "";
         this.iSASInOut.Output.Result = {};
         this.iSASInOut.Output.Result.서명정보 = 서명정보;
-        
+
         return S_IBX_OK;
     } catch(e){
         this.log("Exception " + e.message);
@@ -553,7 +476,7 @@ var 전자서명 = function () {
         return E_IBX_UNKNOWN;
     } finally{
         system.setStatus(IBXSTATE_DONE, 100);
-        this.log(WeatherName + " 샘플함수 finally");
+        this.log(iniTech + " 샘플함수 finally");
     }
 };
 
@@ -611,3 +534,4 @@ function Execute(aInput) {
 //input : 
 //       {"Module":"initech","Class":"전자서명","Job":"전자서명조회","Input":{"인증서":{"이름":"cn=박성용(park sungyong)0004047H000190474,ou=KMB,ou=personal4IB,o=yessign,c=kr","만료일자":"20230116","비밀번호":"pncsoft1"},"개인정보":{"성명":"홍길동","주민등록번호":"760830-2245544","이메일주소":"hong@initech.com","집전화번호":"02-1234-5678","주소":"서울시 송파구 거여동 559-23 현대아파트 3동 10호","핸드폰번호":"017-740-5455","신청금액":"50,000,000","담보계좌번호":"396-54-456611","대출금입금계좌":"345-85-451466", "입금계좌비밀번호":"1111"}}}
 //         {"Module":"initech","Class":"전자서명","Job":"전자서명조회","Input":{"인증서":{"이름":"cn=박성용(park sungyong)0004047H000190474,ou=KMB,ou=personal4IB,o=yessign,c=kr","만료일자":"20230116","비밀번호":"pncsoft1"},"개인정보":{"성명":"홍길동","주민등록번호":"760830-2245544","이메일주소":"hong@initech.com","집전화번호":"02-1234-5678","주소":"서울시 송파구 거여동 559-23 현대아파트 3동 10호","핸드폰번호":"017-740-5455","신청금액":"50,000,000","담보계좌번호":"396-54-456611","대출금입금계좌":"345-85-451466", "입금계좌비밀번호":"1111"}}}
+//       {"Module": "iniTech","Class": "전자서명","Job": "전자서명조회","Input": {"인증서": {"이름": "cn=박성용(park sungyong)0004047H000190474,ou=KMB,ou=personal4IB,o=yessign,c=kr","만료일자": "20710116","비밀번호": "pncsoft1"},"개인정보": {"성명": "홍길동","주민등록번호": "941219-1823916", "이메일주소":"hong@initech.com", "집전화번호":"02-1234-5647",  "주소": "서울시 송파구 거여동 559-23 현대아파트 3동 10호",  "핸드폰번호":"017-740-5455", "신청금액": "50,000,000","담보계좌번호": "396-54-456611","대출금입금계좌": "345-85-451466","입금계좌비밀번호": "1111"}}}
