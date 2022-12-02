@@ -59,3 +59,256 @@ F. 코드 조각이 교착 상태에 빠질 수 있는 경우 Thread.yield() 호
 
    class Employee extends Person {
 이기 떄문 extends하면 부모 꺼를 따라가게 됨.
+
+
+
+class Atom {
+
+Atom() { 
+    System.out.print("atom "); }
+
+}
+
+ 
+
+class Rock extends Atom {
+
+Rock(String type) {
+    System.out.print(type); }
+
+}
+
+ 
+
+ class Mountain extends Rock {
+     Mountain() {
+
+super("granite ");
+
+new Rock("granite ");
+
+}
+
+}
+public  class Main{
+
+public static void main(String[] a) { 
+    new Mountain(); }
+
+}
+
+ 
+ atom granite atom granite 나오는데 이는 부모 클래스를 상속받았으므로 위로 쭉 타고 올라가서 부모요소들 출력하기 떄문
+
+ -------
+
+
+ 5.    class Building { }
+
+6.    public class Barn extends Building {
+
+7.        public static void main(String[] args) {
+
+8.             Building build1 = new Building();
+
+9.             Barn barn1 = new Barn();
+
+10.            Barn barn2 = (Barn) build1;
+
+11.            Object obj1 = (Object) build1;
+
+12.            String str1 = (String) build1;
+
+13.            Building build2 = (Building) barn1;
+
+14.   }
+
+15. }
+
+ 
+
+Which is true?
+
+ 
+
+A.   If line 10 is removed, the compilation succeeds.
+
+B.   If line 11 is removed, the compilation succeeds.
+
+C.   If line 12 is removed, the compilation succeeds.
+
+D.   If line 13 is removed, the compilation succeeds.
+
+E.   More than one line must be removed for compilation to succeed.
+
+ 
+
+Correct Answer: C Section: All Explanation
+ 
+
+Explanation/Reference:
+
+
+ 
+
+Cannot cast from Building to String
+
+그 외 거들은 부모나 자식꺼로 캐스팅한거들 (다운캐스팅,업캐스팅)
+
+-----
+
+
+
+A team of programmers is reviewing a proposed API for a new utility class. After some discussion, they realize that they can reduce the number of methods in the API without losing any functionality. If they implement the new design, which two OO principles will they be promoting?
+
+ 
+
+A.   Looser coupling
+
+B.   Tighter coupling
+
+C.   Lower cohesion
+
+D.   Higher cohesion
+
+E.   Weaker encapsulation
+
+F.   Stronger encapsulation
+
+프로그래머 팀이 새로운 유틸리티 클래스에 대해 제안된 API를 검토하고 있습니다. 약간의 토론 후, 그들은 기능 손실 없이 API의 메서드 수를 줄일 수 있다는 것을 깨달았습니다. 새로운 디자인을 구현한다면 어떤 두 가지 OO 원칙을 홍보하게 될까요?
+
+ 
+
+A.   느슨한 결합
+
+B.   더 긴밀한 결합
+
+C.   낮은 응집력
+
+D.   더 높은 응집력
+
+E.   약한 캡슐화
+
+F.   더 강력한 캡슐화
+
+
+Correct Answer: A Section: All Explanation
+
+
+---------
+
+
+QUESTION 23
+
+Given:
+
+ 
+
+21.  class Money {
+
+22.       private String country = "Canada";
+
+23.       public String getC() { return country; }
+
+24. }
+
+25.  class Yen extends Money {
+
+26.       public String getC() { return super.country; }
+
+27. }
+
+28.  public class Euro extends Money {
+
+29.       public String getC(int x) { return super.getC(); }
+
+30.       public static void main(String[] args) {
+
+31.             System.out.print(new Yen().getC() + " " + new Euro().getC());
+
+32.    }
+
+33. }
+
+ 
+
+What is the result?
+
+ 
+
+A.   Canada
+
+B.   null Canada
+
+C.   Canada null
+
+D.   Canada Canada
+
+E.   Compilation fails due to an error on line 26.
+
+F.   Compilation fails due to an error on line 29.
+
+ 
+
+Correct Answer: E Section: All Explanation
+ 
+
+Explanation/Reference:
+
+The field Money.country is not visible
+
+
+
+이유는 Money의 String country 가 private이기 떄문
+
+
+---------
+
+QUESTION 24
+Assuming that the serializeBanana() and the deserializeBanana() methods will correctly use Java serialization and given:
+
+ 
+
+13.  import java.io.*;
+
+14.  class Food implements Serializable {int good = 3;}
+
+15.  class Fruit extends Food {int juice = 5;}
+
+16.  public class Banana extends Fruit {
+
+17.       int yellow = 4;
+
+18.       public static void main(String [] args) {
+
+19.             Banana b = new Banana(); Banana b2 = new Banana();
+
+20.             b.serializeBanana(b); // assume correct serialization
+
+21.             b2 = b.deserializeBanana(); // assume correct
+
+22.             System.out.println("restore "+b2.yellow+ b2.juice+b2.good);
+
+24.    }
+
+25.    // more Banana methods go here
+
+50. }
+
+ 
+
+What is the result?
+
+ 
+
+A.   restore 400
+
+B.   restore 403
+
+C.   restore 453
+
+D.   Compilation fails.
+
+E.   An exception is thrown at runtime.
+
+위 문제는 위 내용이 (지문이) 다 옳다고 가정하고 실행할 시 뭐 가져오는지 물어봤던거
