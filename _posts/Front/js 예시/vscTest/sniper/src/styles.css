@@ -1,30 +1,87 @@
+/* body 요소에 스타일을 적용합니다. */
 body {
-    overflow: hidden;
-    height: 100vh;
-    margin: 0;
-}
-
-.game{
-    height: 100%;
-}
-
-.hide {
-    display: none;
-}
-
-.gameArea {
-    width: 100%;
-    height: 100%;
-    background: skyblue;
-}
-
-.startBtn {
-    position: absolute;
-    background: red;
-    width : 50%;
-    left: 25%;
-    top: 100px;
-    color: wheat;
-    border : 1px solid black;
-    padding : 10px;
-}
+    overflow: hidden; /* 화면 밖으로 스크롤바를 숨깁니다. */
+    height: 100vh; /* 화면 높이의 100%로 설정합니다. */
+    margin: 0; /* 바디의 마진을 제거합니다. */
+  }
+  
+  /* .game 클래스에 스타일을 적용합니다. */
+  .game {
+    height: 100%; /* 게임 영역의 높이를 화면 높이의 100%로 설정합니다. */
+  }
+  
+  /* .hide 클래스에 스타일을 적용합니다. */
+  .hide {
+    display: none; /* 요소를 숨깁니다. */
+  }
+  
+  /* .gameArea 클래스에 스타일을 적용합니다. */
+  .gameArea {
+    width: 100%; /* 게임 영역의 너비를 화면 너비의 100%로 설정합니다. */
+    height: 100%; /* 게임 영역의 높이를 화면 높이의 100%로 설정합니다. */
+    background: skyblue; /* 배경색을 하늘색으로 설정합니다. */
+  }
+  
+  /* .startBtn 클래스에 스타일을 적용합니다. */
+  .startBtn {
+    position: absolute; /* 절대 위치로 설정합니다. */
+    background: red; /* 배경색을 빨간색으로 설정합니다. */
+    width: 50%; /* 너비를 부모 요소의 50%로 설정합니다. */
+    left: 25%; /* 왼쪽 여백을 부모 요소의 25%로 설정합니다. */
+    top: 100px; /* 상단 여백을 100px로 설정합니다. */
+    color: wheat; /* 텍스트 색상을 밀색으로 설정합니다. */
+    border: 1px solid black; /* 테두리를 추가합니다. */
+    padding: 10px; /* 내부 여백을 설정합니다. */
+  }
+  
+  /* .bird 클래스에 스타일을 적용합니다. */
+  .bird {
+    position: absolute; /* 절대 위치로 설정합니다. */
+    top: 100px; /* 상단 위치를 100px로 설정합니다. */
+    left: 50px; /* 왼쪽 위치를 50px로 설정합니다. */
+    background-image: url("images/bird.png"); /* 배경 이미지를 설정합니다. */
+    width: 58px; /* 너비를 설정합니다. */
+    height: 40px; /* 높이를 설정합니다. */
+    background-size: cover; /* 배경 이미지를 커버 모드로 설정합니다. */
+  }
+  
+  /* .wing 클래스에 스타일을 적용합니다. */
+  .wing {
+    position: absolute; /* 절대 위치로 설정합니다. */
+    top: 10px; /* 상단 위치를 10px로 설정합니다. */
+    left: 0; /* 왼쪽 위치를 0으로 설정합니다. */
+    background-image: url("images/wing.png"); /* 배경 이미지를 설정합니다. */
+    width: 25px; /* 너비를 설정합니다. */
+    height: 14px; /* 높이를 설정합니다. */
+    background-size: cover; /* 배경 이미지를 커버 모드로 설정합니다. */
+  }
+  
+  /* .score 클래스에 스타일을 적용합니다. */
+  .score {
+    position: fixed; /* 고정 위치로 설정합니다. */
+    top: 0; /* 상단 위치를 0으로 설정합니다. */
+    left: 0; /* 왼쪽 위치를 0으로 설정합니다. */
+    right: 0; /* 오른쪽 위치를 0으로 설정합니다. */
+    color: gold; /* 텍스트 색상을 금색으로 설정합니다. */
+    text-align: center; /* 텍스트 가운데 정렬을 설정합니다. */
+    height: 50px; /* 높이를 설정합니다. */
+    font-size: 1.5em; /* 폰트 크기를 설정합니다. */
+  }
+  
+  /* .gameMessage 클래스에 스타일을 적용합니다. */
+  .gameMessage {
+    position: fixed; /* 고정 위치로 설정합니다. */
+    top: 50px; /* 상단 위치를 50px로 설정합니다. */
+    left: 0; /* 왼쪽 위치를 0으로 설정합니다. */
+    right: 0; /* 오른쪽 위치를 0으로 설정합니다. */
+    padding: 20px; /* 내부 여백을 설정합니다. */
+    text-align: center; /* 텍스트 가운데 정렬을 설정합니다. */
+    background: royalblue; /* 배경색을 로얄 블루로 설정합니다. */
+  }
+  
+  /* .pipe 클래스에 스타일을 적용합니다. */
+  .pipe {
+    position: absolute; /* 절대 위치로 설정합니다. */
+    width: 100px; /* 너비를 설정합니다. */
+  }
+  
