@@ -33,12 +33,11 @@ font-weight:bold">
 
 ## Education
 ---
-> Mar.2018 ~ Feb.2020 삼육머학교
->
+> Mar.2018 ~ 
+
 > 컴퓨터학부
 >
 > Feb.2021 ~ 현재 : 42 seoul 3th Cadet, Ssafy 5th hitchhiker  
-> Webcash Corporation staff
 
 ## Research Interest
 ---
@@ -62,8 +61,6 @@ font-weight:bold">
 - 42 seoul 2020.09.15 ~
 
 - Ssafy 2021.01.08 ~
-
-- COOCON Corporation 2022.09 ~
 
 ---
 
