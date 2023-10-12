@@ -39,6 +39,8 @@ font-weight:bold">
 >
 > Feb.2021 ~ 현재 : 42 seoul 3th Cadet, Ssafy 5th hitchhiker  
 
+> Webcash Corporation staff
+
 ## Research Interest
 ---
 
@@ -62,6 +64,7 @@ font-weight:bold">
 
 - Ssafy 2021.01.08 ~
 
+- COOCON Corporation 2022.09 ~
 ---
 
 ## Skills and Certification
