@@ -9,11 +9,9 @@ tags: etc
 comments: true
 ---
 
-
-
 ## 1. 프로젝트 설계 및 환경 구성
 
-### 프로젝트 설계 및 목적 
+### 프로젝트 설계 및 목적
 
 - 리액트 스프링부트 테스트용 프로젝트
 - 기본적인 게시판 형태의 사이트 구현 목표
@@ -24,14 +22,12 @@ comments: true
 - bootstrap
 - jwt
 
-### Backend 
+### Backend
 
 - java 17
 - springboot 2.1.1
-- mybatis 
+- mybatis
 - jpa
-
-
 
 ## 2. Design
 
@@ -48,6 +44,4 @@ comments: true
 - 작성 글 crud
 - etc.. 차후 추가 예정
 
-
 ## 4. ERD
-
