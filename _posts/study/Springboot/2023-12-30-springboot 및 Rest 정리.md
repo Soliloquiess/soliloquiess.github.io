@@ -28,7 +28,8 @@ REST는 다음과 같은 주요 개념을 포함합니다:
 
 이러한 원칙을 준수하여 RESTful한 시스템을 구축하면, 서로 다른 시스템 간의 통합이 용이해지고, 확장성과 유지보수성이 높아지는 등 여러 이점을 얻을 수 있습니다. REST는 주로 HTTP 프로토콜을 기반으로 동작하며, HTTP 메서드(GET, POST, PUT, DELETE 등)를 사용하여 자원을 조작합니다.
 
-![image](https://github.com/Soliloquiess/springboot-blog-rest-api/assets/37941513/11480f38-e18e-4e28-868b-ee2de909329b)
+![image](https://github.com/Soliloquiess/soliloquiess.github.io/assets/37941513/611d6679-4845-43d6-bd05-664086b82e3c)
+
 
 ### REST - REpresentational State Transfer
 
@@ -88,7 +89,8 @@ REST 기반 시스템의 기본 개념은 자원(Resource)입니다. 자원은 �
 
 REST는 이러한 자원을 중심으로 시스템을 구성하며, 자원을 나타내고 조작하기 위한 일관된 인터페이스를 제공하여 클라이언트와 서버 간의 효율적인 통신을 지원합니다. 이를 통해 유연하고 확장 가능한 웹 서비스를 개발할 수 있게 됩니다.
 
-![image](https://github.com/Soliloquiess/springboot-blog-rest-api/assets/37941513/7839d766-1bf1-48ed-b68a-a2a1e7c900ff)
+
+![image](https://github.com/Soliloquiess/soliloquiess.github.io/assets/37941513/3f6da552-5ef7-47cb-8911-0be13059b057)
 
 ---
 
@@ -101,7 +103,7 @@ URI (Uniform Resource Identifier)
 
 URI는 RESTful API에서 자원을 식별하고 접근하는 데 사용되며, 각각의 URI는 특정 자원을 가리키는 경로를 제공하여 클라이언트와 서버 간의 효율적인 통신을 지원합니다. URI는 시스템 내의 자원을 고유하게 식별하여 요청 및 응답 과정에서 정확한 자원을 찾고 조작하는 데 중요한 역할을 합니다.
 
-![image](https://github.com/Soliloquiess/springboot-blog-rest-api/assets/37941513/4be36be4-a146-44d8-a459-f3edd688d005)
+![image](https://github.com/Soliloquiess/soliloquiess.github.io/assets/37941513/fbe1ee4d-6121-4032-b454-09ee5902f082)
 
 ---
 
@@ -109,7 +111,7 @@ URI는 RESTful API에서 자원을 식별하고 접근하는 데 사용되며, �
 
 • REST에서는 관계를 종종 하위 자원(sub resource)으로 모델링합니다. 하위 자원을 나타내는 데 다음과 같은 패턴을 사용합니다.
 
-![image](https://github.com/Soliloquiess/springboot-blog-rest-api/assets/37941513/c145deb3-fee3-48ae-b607-6a957f2ef6f6)
+![image](https://github.com/Soliloquiess/soliloquiess.github.io/assets/37941513/1a48d42b-7ea4-46aa-b397-390eec6196ab)
 
 • 하위 자원을 사용할 때, 자식 객체는 부모 객체 없이 존재할 수 없습니다.
 
@@ -119,7 +121,9 @@ URI는 RESTful API에서 자원을 식별하고 접근하는 데 사용되며, �
 
 #### HTTP Methods
 
-![image](https://github.com/Soliloquiess/springboot-blog-rest-api/assets/37941513/e9b9fafc-1212-4dd3-a976-8cb2381ccb5d)
+
+
+![image](https://github.com/Soliloquiess/soliloquiess.github.io/assets/37941513/e15542b0-fd2a-426e-acba-530081f0df67)
 
 참고 : https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods
 
