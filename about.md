@@ -23,7 +23,6 @@ font-weight:bold">
 
 ## Personal Data
 ---
-> 1994.12.19 대한민국
 >
 >
 > 연락처: cyh1219@naver.com
