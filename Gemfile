@@ -7,6 +7,9 @@ gem "jekyll-sitemap", "~> 1.0"
 gem "jekyll-redirect-from", "~> 0.12"
 gem "classifier-reborn"
 
+# kramdown 2.x는 GFM 입력 파서가 별도 gem으로 분리됨 (Jekyll 기본 입력이 GFM)
+gem "kramdown-parser-gfm"
+
 # Windows 전용 파일 감시 라이브러리 — Linux CI(GitHub Actions)에서는 설치 제외
 gem 'wdm', '>= 0.1.0', platforms: [:mingw, :x64_mingw, :mswin]
 
