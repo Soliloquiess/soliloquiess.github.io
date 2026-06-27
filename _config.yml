@@ -111,6 +111,8 @@ exclude:
   - package-lock.json
   - Gemfile
   - Gemfile.lock
+  - vendor          # CI에서 bundle install이 gem을 vendor/bundle에 설치 → Jekyll이 스캔하지 않도록 제외
+  - .github
   - _posts/study/2020-12-26-making-blog04.md
 
 
