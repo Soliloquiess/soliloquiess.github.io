@@ -29,11 +29,11 @@ author:
 image:               /assets/img/main_left.jpg
 color:               '#4f86aa'
 
-# The font used for headings. Expects a string that is a valid CSS font-family value.
-font_heading:        "'Merriweather-Light','Lato','-apple-system','Verdana','PingFang SC','Helvetica Neue','Arial','Hiragino Sans GB','Microsoft YaHei','WenQuanYi Micro Hei','sans-serif'"
+# The font used for headings. (첫 항목은 Google Fonts용으로 소비되므로 Lato를 둠)
+font_heading:        "'Lato','Pretendard','-apple-system','BlinkMacSystemFont','Segoe UI','Apple SD Gothic Neo','Malgun Gothic','sans-serif'"
 
-# The text font. Expects a string that is a valid CSS font-family value.
-font:                "'Merriweather-Light','Lato','-apple-system','Verdana','PingFang SC','Helvetica Neue','Arial','Hiragino Sans GB','Microsoft YaHei','WenQuanYi Micro Hei','sans-serif'"
+# The text font.
+font:                "'Lato','Pretendard','-apple-system','BlinkMacSystemFont','Segoe UI','Apple SD Gothic Neo','Malgun Gothic','sans-serif'"
 
 # The string encoding what fonts to fetch from Google Fonts.
 # See: https://qwtel.com/hydejack/docs/configuration/
@@ -132,22 +132,17 @@ sass:
   style:             compressed
 
 
-tipue_search:
-     include:
-         pages: false
-         collections: []
-     exclude:
-         files: [search.html, index.html, tags.html]
-         categories: []
-         tags: []
+# (검색은 Pagefind로 교체됨 — 빌드 후 /pagefind/ 인덱스 자동 생성. tipue_search 설정 제거)
 
-
-         # 3rd Party Integrations
+# 3rd Party Integrations
 # ----------------------------------------------------------------------------------------
 
 # Set your Google Analytics id to receive `pageview` events.
 # To remove Google Anaylics from your page, remove the line below.
 google_analytics:      G-4MPZ2SP20B
+
+# 방문자 카운터: 사이드바에 hits.sh 무가입 배지 사용 (가입/설정 불필요).
+# 실제 상세 통계는 위 Google Analytics로 확인. (기존 seeyoufarm hits 대체)
 
 
 # Set which comment system to use.

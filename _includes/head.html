@@ -60,12 +60,13 @@
   <meta name="keywords" content="{{ site.keywords | default: page.keywords | join:',' }}">
 {% endif %}
 
- <!-- tipuesearch -->
- <link rel="stylesheet" href="/assets/tipuesearch/css/tipuesearch.css">
- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
- <script src="/assets/tipuesearch/tipuesearch_content.js"></script>
- <script src="/assets/tipuesearch/tipuesearch_set.js"></script>
- <script src="/assets/tipuesearch/tipuesearch.min.js"></script>
+ <!-- 한글 웹폰트 (Pretendard) -->
+ <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+ <link rel="stylesheet" crossorigin
+   href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+ <!-- 검색은 Pagefind 사용 — 무거운 검색 스크립트는 /search 페이지에서만 로드 (search.html) -->
+ <!-- 기존 Tipue Search + jQuery 전역 로드 제거: 전 페이지 성능 개선 -->
+
 
 <!-- =============== -->
 <!-- LINKS           -->

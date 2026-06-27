@@ -1,46 +1,38 @@
 <div id="_yDrawer">
   <div id="_sidebar" class="sidebar">
     <div class="sidebar-bg" style="background-color:{{ color }};background-image:url({{ image }})"></div>
+
     <header class="sidebar-sticky" role="banner">
-      <br/>
+      {% assign author = site.data.authors.first[1] %}
 
       <div class="sidebar-about">
-
-        
-        
         <h1><a id="_title" href="{{ '/' | relative_url }}">{{ site.title }}</a></h1>
-        {{ site.tagline | truncatewords:50 | markdownify }}
+        {{ site.tagline | markdownify }}
       </div>
-      {{ site.description | truncatewords:50 | markdownify }}
-      {% assign author = site.data.authors.first[1] %}
-      {% if author.social %}
 
-      <br/>
-      <br/>
       <nav class="sidebar-nav heading" role="navigation">
         {% include nav.html %}
       </nav>
-    <br/>
 
-    <br/>
-    
-    <form action="/search">
-      <div class="tipue_search_left">
-        <img src="/assets/tipuesearch/search.png" class="tipue_search_icon">
+      <!-- 검색: 입력 후 Pagefind 검색 페이지로 이동 -->
+      <form class="sidebar-search" action="{{ '/search/' | relative_url }}" method="get" role="search">
+        <input type="search" name="q" placeholder="검색…" aria-label="사이트 검색" required>
+        <button type="submit" aria-label="검색">⌕</button>
+      </form>
+
+      {% if author.social %}
+      <div class="sidebar-social">
+        {% include social.html social=author.social %}
       </div>
-      <div class="tipue_search_right">
-        <input type="text" name="q" id="tipue_search_input" pattern=".{1,}" title="At least 1 characters" required></div>
-      <div style="clear: both;"></div>
-    </form>
-
-    <br>
-
-    <a href="https://hits.seeyoufarm.com"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fsoliloquiess.github.io%2Fhit-counter&count_bg=%23CD00F9&title_bg=%23555555&icon=twitch.svg&icon_color=%23E7E7E7&title=%EC%8B%9C%EC%B2%AD%EC%9E%90&edge_flat=false"/></a>
-    
-    <div class="sidebar-social">
-          {% include social.html social=author.social %}
-        </div>
       {% endif %}
+
+      <!-- 방문자 카운터 (hits.sh, 무가입 / 사이트 누적). 죽은 seeyoufarm 대체 -->
+      {% assign hits_key = site.url | remove_first: 'https://' | remove_first: 'http://' %}
+      <a class="sidebar-hits" href="https://hits.sh/{{ hits_key }}/"
+         title="방문 통계" rel="noopener" target="_blank">
+        <img src="https://hits.sh/{{ hits_key }}.svg?style=flat-square&label=%EB%B0%A9%EB%AC%B8%EC%9E%90&color=4f86aa&labelColor=555555"
+             alt="누적 방문수" loading="lazy">
+      </a>
     </header>
   </div>
 </div>
