@@ -605,6 +605,8 @@ specific, actionable feedback on quality, security, and best practices.
 ## 11. Rewind & Resume (세션 되감기 / 재개)
 
 > 출처: code.claude.com/docs/en/checkpointing, /en/sessions
+
+
 > 목적이 다름: **Rewind = 한 세션 안에서 과거로 되감기 / Resume = 종료한 세션 다시 열기**
 
 ### A. Rewind (체크포인트 되감기) — "로컬 undo"
