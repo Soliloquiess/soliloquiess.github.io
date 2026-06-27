@@ -25,14 +25,6 @@
         {% include social.html social=author.social %}
       </div>
       {% endif %}
-
-      <!-- 방문자 카운터 (hits.sh, 무가입 / 사이트 누적). 죽은 seeyoufarm 대체 -->
-      {% assign hits_key = site.url | remove_first: 'https://' | remove_first: 'http://' %}
-      <a class="sidebar-hits" href="https://hits.sh/{{ hits_key }}/"
-         title="방문 통계" rel="noopener" target="_blank">
-        <img src="https://hits.sh/{{ hits_key }}.svg?style=flat-square&label=%EB%B0%A9%EB%AC%B8%EC%9E%90&color=4f86aa&labelColor=555555"
-             alt="누적 방문수" loading="lazy">
-      </a>
     </header>
   </div>
 </div>

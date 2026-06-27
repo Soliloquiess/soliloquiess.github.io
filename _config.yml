@@ -143,8 +143,7 @@ sass:
 # To remove Google Anaylics from your page, remove the line below.
 google_analytics:      G-4MPZ2SP20B
 
-# 방문자 카운터: 사이드바에 hits.sh 무가입 배지 사용 (가입/설정 불필요).
-# 실제 상세 통계는 위 Google Analytics로 확인. (기존 seeyoufarm hits 대체)
+# 방문자 통계는 Google Analytics로만 확인 (사이드바 hits 배지는 제거함).
 
 
 # Set which comment system to use.
