@@ -1,0 +1,31 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PostItem from '../components/PostItem.astro';
+import { getPublishedPosts } from '../lib/posts';
+import { SITE } from '../lib/site';
+
+const posts = await getPublishedPosts();
+const pageSize = SITE.postsPerPage;
+const pagePosts = posts.slice(0, pageSize);
+const lastPage = Math.max(1, Math.ceil(posts.length / pageSize));
+---
+<BaseLayout>
+  <div class="container">
+    <header>
+      <h1 class="page-title">{SITE.title}</h1>
+      <p class="page-sub">{SITE.tagline}</p>
+    </header>
+
+    <div class="post-list">
+      {pagePosts.map((post) => <PostItem post={post} />)}
+    </div>
+
+    <nav class="pagination" aria-label="페이지 이동">
+      <span class="pg-btn" aria-disabled="true">← 이전</span>
+      <span class="pg-info">1 / {lastPage}</span>
+      {lastPage > 1
+        ? <a class="pg-btn" href="/page/2.html">다음 →</a>
+        : <span class="pg-btn" aria-disabled="true">다음 →</span>}
+    </nav>
+  </div>
+</BaseLayout>

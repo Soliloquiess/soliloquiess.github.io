@@ -1,0 +1,16 @@
+---
+import { SITE } from '../lib/site';
+const year = new Date().getFullYear();
+---
+<footer class="site-footer">
+  <div class="bar">
+    <span>© {year} {SITE.author} · {SITE.title}</span>
+    <span>
+      <a href={SITE.social.github} rel="noopener" target="_blank">GitHub</a>
+      &nbsp;·&nbsp;
+      <a href="/feed.xml">RSS</a>
+      &nbsp;·&nbsp;
+      <span>Built with Astro</span>
+    </span>
+  </div>
+</footer>

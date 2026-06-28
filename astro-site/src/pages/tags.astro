@@ -1,0 +1,16 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getTags } from '../lib/posts';
+const tags = await getTags();
+---
+<BaseLayout title="Tags" description="태그 모음">
+  <div class="container">
+    <h1 class="page-title">Tags</h1>
+    <p class="page-sub">전체 {tags.length}개 태그</p>
+    <div class="chip-cloud">
+      {tags.map((t) => (
+        <a href={`/tags/${encodeURIComponent(t.name)}.html`}>#{t.name}<span class="count">{t.count}</span></a>
+      ))}
+    </div>
+  </div>
+</BaseLayout>

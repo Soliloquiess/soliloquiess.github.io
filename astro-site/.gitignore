@@ -1,0 +1,22 @@
+# build output
+dist/
+.astro/
+
+# deps
+node_modules/
+
+# 마이그레이션으로 생성되는 콘텐츠/에셋 (소스는 저장소 루트의 _posts, /assets)
+# 배포 워크플로에서 migrate 실행으로 재생성됨
+src/content/blog/
+public/assets/
+public/favicon.ico
+public/robots.txt
+public/ads.txt
+
+# misc
+.DS_Store
+*.log
+.env
+
+# omc state
+.omc/

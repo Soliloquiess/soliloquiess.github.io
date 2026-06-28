@@ -1,0 +1,60 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { render } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Giscus from '../components/Giscus.astro';
+import AdSlot from '../components/AdSlot.astro';
+import { getPublishedPosts, formatDate, type Post } from '../lib/posts';
+import { postUrl } from '../lib/site';
+
+export const getStaticPaths = (async () => {
+  const posts = await getPublishedPosts();
+  return posts.map((post, i) => ({
+    params: { slug: post.data.permalink },
+    props: {
+      post,
+      newer: i > 0 ? posts[i - 1] : null,
+      older: i < posts.length - 1 ? posts[i + 1] : null,
+    },
+  }));
+}) satisfies GetStaticPaths;
+
+const { post, newer, older } = Astro.props as { post: Post; newer: Post | null; older: Post | null };
+const { Content } = await render(post);
+const { data } = post;
+---
+<BaseLayout title={data.title} description={data.description} type="article">
+  <div class="container">
+    <article>
+      <header class="article-header">
+        <div class="meta">
+          <span class="cat">in {data.category}</span>
+          <time datetime={data.date.toISOString()}>{formatDate(data.date)}</time>
+        </div>
+        <h1>{data.title}</h1>
+        {data.tags.length > 0 && (
+          <div class="tags">
+            {data.tags.map((t) => <a class="tag-chip" href={`/tags/${encodeURIComponent(t)}.html`}>#{t}</a>)}
+          </div>
+        )}
+      </header>
+
+      <div class="prose" data-pagefind-body>
+        <Content />
+      </div>
+
+      <AdSlot />
+
+      <nav class="post-nav">
+        {older
+          ? <a href={postUrl(older.data.permalink)}><span class="dir">← 이전 글</span><span class="t">{older.data.title}</span></a>
+          : <span></span>}
+        {newer
+          ? <a class="next" href={postUrl(newer.data.permalink)}><span class="dir">다음 글 →</span><span class="t">{newer.data.title}</span></a>
+          : <span></span>}
+      </nav>
+
+      <Giscus />
+    </article>
+  </div>
+</BaseLayout>

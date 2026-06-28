@@ -1,0 +1,25 @@
+---
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostItem from '../../components/PostItem.astro';
+import { getPublishedPosts, getCategories, type Post } from '../../lib/posts';
+
+export const getStaticPaths = (async () => {
+  const [posts, categories] = [await getPublishedPosts(), await getCategories()];
+  return categories.map((c) => ({
+    params: { category: c.name },
+    props: { category: c.name, posts: posts.filter((p) => p.data.category === c.name) },
+  }));
+}) satisfies GetStaticPaths;
+
+const { category, posts } = Astro.props as { category: string; posts: Post[] };
+---
+<BaseLayout title={`${category} 카테고리`} description={`${category} 카테고리의 글`}>
+  <div class="container">
+    <h1 class="page-title">{category}</h1>
+    <p class="page-sub">{posts.length}개의 글 · <a href="/categories.html">모든 카테고리</a></p>
+    <div class="post-list">
+      {posts.map((post) => <PostItem post={post} />)}
+    </div>
+  </div>
+</BaseLayout>

@@ -1,0 +1,40 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../lib/site';
+---
+<BaseLayout title="About" description="블로그 운영자 소개">
+  <div class="container">
+    <article class="prose">
+      <h1>About</h1>
+      <p>{SITE.tagline}</p>
+
+      <h2>Personal</h2>
+      <ul>
+        <li>연락처: <a href={`mailto:${SITE.email}`}>{SITE.email}</a></li>
+        <li>GitHub: <a href={SITE.social.github} rel="noopener" target="_blank">{SITE.social.github}</a></li>
+      </ul>
+
+      <h2>Education &amp; Experience</h2>
+      <ul>
+        <li>컴퓨터학부</li>
+        <li>42 Seoul 3기 Cadet · SSAFY 5기</li>
+        <li>Webcash / Coocon Corporation</li>
+      </ul>
+
+      <h2>Interests</h2>
+      <ul>
+        <li>Spring, Modern Java</li>
+        <li>Algorithm — <em>don't panic, hate recursion</em></li>
+      </ul>
+
+      <h2>Skills</h2>
+      <ul>
+        <li>Language: Python, C/C++, Java, JavaScript</li>
+        <li>Framework: Spring, Flask, Django, Node.js</li>
+      </ul>
+
+      <h2>42 Honor Code</h2>
+      <p><img src="/assets/42%20SEOUL%20Honor%20Code.jpg" alt="42 SEOUL Honor Code" loading="lazy" /></p>
+    </article>
+  </div>
+</BaseLayout>

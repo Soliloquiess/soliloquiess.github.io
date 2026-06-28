@@ -1,0 +1,20 @@
+---
+import { postUrl } from '../lib/site';
+import { formatDate, type Post } from '../lib/posts';
+interface Props { post: Post }
+const { post } = Astro.props;
+const { data } = post;
+---
+<a class="post-item" href={postUrl(data.permalink)}>
+  <div class="meta">
+    <span class="cat">{data.category}</span>
+    <time datetime={data.date.toISOString()}>{formatDate(data.date)}</time>
+  </div>
+  <h2>{data.title}</h2>
+  {data.description && <p>{data.description}</p>}
+  {data.tags.length > 0 && (
+    <div class="tags">
+      {data.tags.slice(0, 4).map((t) => <span class="tag-chip">#{t}</span>)}
+    </div>
+  )}
+</a>
