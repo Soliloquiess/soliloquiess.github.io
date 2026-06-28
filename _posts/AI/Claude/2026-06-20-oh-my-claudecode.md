@@ -298,3 +298,154 @@ Deep-Interview → OMC-Plan      → Ultrawork → UltraQA  → ai-slop-cleaner
 
 > 한 줄 요약: **파이프라인(12번)이 "일을 진행"한다면, 유틸리티 스킬은 "외부 의견(ask/ccg)·시각 검증(visual-verdict)·지식 축적(wiki/writer-memory)"으로 옆에서 보조**한다.
 > 🔗 ask/ccg는 메인 노트의 멀티모델 협업, wiki는 자동 메모리(메인 5번)와 같은 "세션 넘는 기억" 계보.
+
+---
+
+## 14. Deep-Interview 파라미터 (quick · standard · deep · autoresearch)
+
+> 호출 형식: `/deep-interview [--quick|--standard|--deep] [--autoresearch] <아이디어>`
+> deep-interview = Socratic 질문 + **수학적 모호함 게이팅**으로 명세를 결정화 (메인 노트 12·13번)
+
+### 파라미터 두 종류 구분
+
+플래그는 **성격이 다른 두 묶음**이다:
+- **깊이 프리셋** (`--quick` / `--standard` / `--deep`) — 인터뷰를 *얼마나 철저히* 할지
+- **모드 전환** (`--autoresearch`) — deep-interview를 *autoresearch 셋업 차선*으로 바꿈
+
+### ① 깊이 프리셋 — `--quick` / `--standard` / `--deep`
+
+인터뷰의 **엄격도(라운드 수·모호함 임계값 등 rigor)**를 정하는 프리셋.
+
+| 프리셋 | 성격 | 적합 |
+|--------|------|------|
+| **--quick** | 가볍게 — 적은 라운드, 핵심 모호함만 빠르게 제거 | 작고 비교적 명확한 작업, 빠른 확인 |
+| **--standard** | 기본 — 균형 잡힌 라운드 (지정 안 하면 기본값) | 일반적인 기능 개발 |
+| **--deep** | 철저히 — 더 많은 라운드·엄격한 게이트로 끝까지 파고듦 | 크고 모호하고 위험한 작업 |
+
+> 공통 동작(프리셋 무관): 라운드마다 **한 질문씩**, 가장 약한 차원을 겨냥, 답변 후 **모호함 점수** 표시.
+> 기본 모호함 임계값 **0.2** (= 명확도 80%) 이하가 돼야 실행 단계로. `omc.deepInterview.ambiguityThreshold`로 조정 가능.
+> 라운드 한계: 소프트 경고 10라운드 / 하드캡 20라운드 / 3라운드부터 조기 종료 허용.
+> 챌린지 에이전트: 4R Contrarian(가정 반박) · 6R Simplifier(단순화) · 8R Ontologist(본질 재정의).
+
+### ② 모드 전환 — `--autoresearch`
+
+deep-interview를 **autoresearch 스킬의 "학습 곡선 0" 셋업 차선**으로 전환.
+
+| 단계 | 동작 |
+|------|------|
+| 1. 미션 질문 | **"이 레포에서 autoresearch가 무엇을 개선·증명해야 하나?"**부터 물음 |
+| 2. 평가자 수집 | **evaluator(평가) 명령**을 받음 (비우면 레포 근거 강할 때만 추론, 아니면 계속 질문) |
+| 3. 하드 게이트 | 일반 모호함 임계값 + **미션 명확도·평가자 명확도**를 추가 필수 게이트로 |
+| 4. 핸드오프 | 준비되면 omc-plan/autopilot/ralph로 안 넘기고 **`Skill("oh-my-claudecode:autoresearch")`** 로 직행 |
+
+> ⚠️ `omc autoresearch` CLI는 **하드 deprecated** — 실행은 스킬 핸드오프로만. 핸드오프 후 미션 슬러그·평가 명령·최대 실행시간·아티팩트 위치를 알려줌.
+> autoresearch 자체 = "엄격한 평가자 계약으로 단일 미션을 반복 개선하는 stateful 루프" (11번 참조).
+
+### 흐름 요약
+```
+일반:        /deep-interview [--quick|--standard|--deep] "아이디어"
+              → 질문 게이트(≤0.2) → 명세(.omc/specs/) → 실행 승인(omc-plan/autopilot/ralph/team)
+
+autoresearch: /deep-interview --autoresearch "미션"
+              → 미션·평가자 게이트 → Skill(autoresearch)로 핸드오프 → 평가 충족까지 자율 개선
+```
+
+> 한 줄 요약: **quick/standard/deep = 인터뷰를 얼마나 깊게 할지(rigor) 프리셋**, **--autoresearch = deep-interview를 autoresearch 셋업 차선으로 전환하는 모드 플래그**. 앞 셋은 "깊이", 뒤 하나는 "목적지"가 다름.
+
+---
+
+## 15. 플랜 접근법 선택 가이드 (계획 도구 고르기)
+
+> 계획·요구 명확화 단계에서 무엇으로 시작할지 고르는 기준. OMC 스킬 + Claude/외부 도구를 한 표로.
+
+### 한눈 선택표
+
+| 접근법 | 정체 | 언제 쓰나 |
+|--------|------|-----------|
+| **기본 플랜모드** | Claude Code 표준 플랜 모드 | 일반적인 계획 (수정 전 계획 승인) |
+| **울트라플랜** | ultrathink(최대 사고) / ralplan(합의) | **초기 큰 작업**, 위험·복잡한 설계 |
+| **우로보로스** | 외부 MCP "Agent OS" (`ooo interview`) | **완전히 빈 상태 / 첫 프로젝트 세팅**(greenfield) — 바닥부터 명세 |
+| **deep-interview** | OMC 내장 Socratic 인터뷰 (우로보로스 **경량판**) | 가벼운 요구 명확화. **조절은 OMC 딥인터뷰**(`--quick/--standard/--deep`, 14번) |
+| **deep-dive** | trace(원인 조사) → deep-interview 2단계 | 딥인터뷰인데 **내용·기존 코드를 더 깊이** 살펴야 할 때 |
+| **visual-companion** | 인터뷰의 **시각 인터페이스** | 시안·선택지를 눈으로 비교 (⚠️ 인터뷰 자체 아님, 13번 유틸리티와 별개 레이어) |
+
+### 핵심 메모
+- **우로보로스 = 0→1**: 아무것도 없는 빈 상태·첫 세팅에 최강. 외부 MCP라 별도 설치(`ooo`)
+- **deep-interview = 우로보로스 약소(경량) 버전**: OMC에 내장돼 바로 쓰고, **세부 조절도 OMC 딥인터뷰가 담당** (깊이 프리셋·모호함 임계값 — 14번)
+- **deep-dive > deep-interview**: 더 꼼꼼히 파야 하면 trace로 원인·코드부터 조사 후 인터뷰
+- **visual-companion은 "인터뷰"가 아니라 "인터뷰 인터페이스"**: 인터뷰/계획 내용을 시각적으로 비교·선택하게 얹는 레이어 (메인 노트 11번 Visual Companion)
+
+### 고르는 흐름
+```
+빈 상태·첫 프로젝트 세팅?     → 우로보로스(ooo interview)
+초기 큰 작업?                → 울트라플랜(ultrathink / ralplan)
+가볍게 요구만 명확히?         → deep-interview (조절도 OMC 딥인터뷰)
+내용·코드 더 깊이 살펴야?      → deep-dive (trace+interview)
+시각적으로 보며 고르고 싶다?  → visual-companion (인터페이스로 얹기)
+그 외 일반 계획?             → 기본 플랜모드
+```
+
+> 한 줄 요약: **빈 상태=우로보로스, 큰 초기작업=울트라플랜, 가벼운 명확화=deep-interview(조절도 OMC), 더 깊게=deep-dive, 시각화=visual-companion(인터뷰 아님·인터페이스), 일반=기본 플랜모드.**
+> 🔗 12번 R&D 파이프라인의 "① 명확화" 단계를 무엇으로 채울지에 대한 선택 가이드.
+
+---
+
+## 16. Ralplan (합의 계획 게이트)
+
+> 출처: github.com/Yeachan-Heo/oh-my-claudecode (skills/ralplan/SKILL.md)
+> 한마디로: **Ralplan = Ralph(실행)를 수행하기 전의 Planning.** 모호한 ralph/autopilot/team 요청을 실행 전에 가로채(gate), 합의(consensus) 계획을 먼저 세우게 하는 진입점.
+> 정체: `/oh-my-claudecode:plan --consensus`의 **별칭(alias)**.
+
+### 왜 있나
+- ralph·autopilot·team은 **곧장 실행에 들어가는** 모드라, 요청이 모호하면 엉뚱한 걸 만들 위험(goal drift)·재작업
+- ralplan은 그 앞단 게이트 — 요청이 너무 막연하면(≤15단어 + 파일/함수/이슈 등 구체 단서 없음) **계획 단계로 먼저 돌림**
+- 통과(패스) 조건: 파일경로·이슈번호·함수명(camel/Pascal/snake)·테스트러너·번호단계·인수기준·에러참조 중 **하나라도** 있으면 게이트 안 걸림. `force:` / `!` 접두사로 강제 우회
+
+### 에이전트 3종 (역할 분담)
+
+| 에이전트 | 역할 | 하는 일 |
+|----------|------|---------|
+| **Planner** | 계획 전담 | 초기 계획 + RALPLAN-DR 요약(원칙 3~5 · 결정동인 top3 · 옵션 ≥2) 작성 |
+| **Architect** | 기술 분석 | 아키텍처 타당성 검토 — 최강 반론(steelman)·트레이드오프 긴장·종합 제시 |
+| **Critic** | 최종 품질 검문 전담 | 품질 기준 평가 — 원칙-옵션 일관성, 테스트 가능한 인수기준, 검증 단계. `APPROVE`/`ITERATE`/`REJECT` 판정 |
+
+> ⚠️ Architect → Critic은 **반드시 순차** (Architect 끝난 뒤 Critic). 동시 실행 금지.
+
+### 종료(합의) 기준 — ★정정 포인트
+- **Critic가 `APPROVE`를 내면 합의 완료** (= "한 번" 승인으로 종료)
+- Critic가 `ITERATE`/`REJECT`(비-APPROVE)면 **재검토 루프**: Architect+Critic 피드백 수집 → Planner 수정 → Architect 재검토 → Critic 재평가
+- 이 루프는 **최대 5회(iterations)**. 5회 안에 `APPROVE`가 안 나오면 **최선안(best version)을 사용자에게 제시**하고 종료
+- 즉 **"Critic 승인 5번 반복"이 아니라 "최대 5회 루프 안에 Critic이 한 번 APPROVE"** 가 정확한 기준
+
+### interactive 모드 (`--interactive`)
+- **있으면**: 사람이 직접 승인 — 2단계(초안+Principles/Drivers/Options 검토: 진행/수정요청/검토생략), 6단계(최종 승인: team으로 실행/ralph로 실행/압축 후 승인대기/수정요청/거절)
+- **없으면(기본)**: 완전 자동(Planner→Architect→Critic 루프) → 최종안을 `pending approval`로 출력하고 **멈춤** (실행·수정 안 함)
+- 기타 플래그: `--deliberate`(고위험용 — 사전부검 3시나리오 + 확장 테스트계획), `--architect codex` / `--critic codex`(해당 패스를 Codex로)
+
+### 결과물 & 위치
+- 산출: `.omc/plans/`에 합의 계획 — **RALPLAN-DR 요약 + ADR**(결정·동인·대안·선택이유·결과·후속) + 테스트 가능 인수기준 + 구현 단계
+- `pending approval` 상태 → **별도 명시 승인**이 있어야 실행(team/ralph)으로. ralplan 자체는 코드 수정·커밋·실행 안 함
+
+```
+모호한 프롬프트
+   → ralplan 게이트 → (계획 가능) Planner→Architect→Critic 합의(≤5회)
+                    → (극도로 모호) deep-interview로 더 내려보냄
+   → pending approval → 명시 승인 → 실행(team 권장 / ralph)
+```
+> 🖼️ 참고 그림(사용자 제공, 구글드라이브 — 접근 권한 필요): https://drive.google.com/file/d/1tIg_Pp9YrqkYz9y8M7P30xWP45xrhH3Q/view
+
+### 호출
+- 매직 키워드 `ralplan:` / `/oh-my-claudecode:ralplan "작업"` (interactive는 `--interactive`)
+- 또는 모호한 `ralph/autopilot/team` 요청이 게이트에 걸려 자동 redirect
+
+### 다른 것과의 구분
+
+| | 하는 일 | 결과 |
+|---|---------|------|
+| **ralplan** | 모호 요청을 **Planner·Architect·Critic 합의 계획으로 게이팅** | `.omc/plans/` 합의안(pending approval) |
+| **deep-interview** | Socratic **질문으로 요구 명확화** | `.omc/specs/` 명세 (14번) |
+| **ralph** | **될 때까지** 실행·검증 반복 | 완성된 코드 (11번) |
+| **울트라플랜** | 최대 사고/멀티에이전트 계획 | 깊은 계획 (15번) |
+
+> 한 줄 요약: **Ralplan = Ralph 실행 전 Planning.** Planner(계획)·Architect(기술분석)·Critic(품질검문) 합의 루프를 **최대 5회** 돌려 Critic이 `APPROVE`하면 종료, `--interactive`면 사용자가 승인. omc-plan `--consensus`의 별칭.
+> 🔗 12번 파이프라인의 "② 계획" 안전장치 / 15번 선택 가이드와 함께 볼 것.
