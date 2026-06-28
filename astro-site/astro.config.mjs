@@ -1,8 +1,6 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
-import remarkMath from 'remark-math';
-import rehypeKatex from 'rehype-katex';
 
 // https://astro.build/config
 export default defineConfig({
@@ -19,8 +17,7 @@ export default defineConfig({
       themes: { light: 'github-light', dark: 'github-dark' },
       wrap: true,
     },
-    remarkPlugins: [remarkMath],
-    rehypePlugins: [rehypeKatex],
+    // 수식($) 처리는 끔 — 셸 프롬프트($)·SQL($$ 구분자) 등이 깨지지 않도록
     gfm: true,
   },
 });
