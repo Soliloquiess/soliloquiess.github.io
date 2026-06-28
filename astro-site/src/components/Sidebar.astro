@@ -1,0 +1,40 @@
+---
+import { SITE } from '../lib/site';
+import { getCategories } from '../lib/posts';
+const categories = await getCategories();
+const path = Astro.url.pathname;
+const isHome = path === '/' || path === '/index.html' || /^\/page\//.test(path);
+const here = (href: string) => path === href;
+---
+<aside class="sidebar" id="sidebar" aria-label="사이드 메뉴">
+  <div class="sidebar-inner">
+    <p class="s-tagline">{SITE.tagline}</p>
+
+    <nav class="s-nav" aria-label="주 메뉴">
+      <a href="/" class={isHome ? 'active' : ''}>홈</a>
+      <a href="/about.html" class={here('/about.html') ? 'active' : ''}>About</a>
+      <a href="/tags.html" class={here('/tags.html') ? 'active' : ''}>태그</a>
+      <a href="/search.html" class={here('/search.html') ? 'active' : ''}>검색</a>
+    </nav>
+
+    <details class="s-group" open>
+      <summary>
+        카테고리 <span class="s-count">{categories.length}</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </summary>
+      <div class="s-cats">
+        {categories.map((c) => (
+          <a href={`/categories/${encodeURIComponent(c.name)}.html`} class={here(`/categories/${encodeURIComponent(c.name)}.html`) ? 'active' : ''}>
+            <span>{c.name}</span><span class="n">{c.count}</span>
+          </a>
+        ))}
+      </div>
+    </details>
+
+    <div class="s-foot">
+      <a href={SITE.social.github} rel="noopener" target="_blank">GitHub</a>
+      <a href="/feed.xml">RSS</a>
+    </div>
+  </div>
+</aside>
+<div class="scrim" id="scrim" hidden></div>

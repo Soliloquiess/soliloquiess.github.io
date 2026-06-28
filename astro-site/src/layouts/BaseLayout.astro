@@ -1,5 +1,6 @@
 ---
-import Header from '../components/Header.astro';
+import Topbar from '../components/Topbar.astro';
+import Sidebar from '../components/Sidebar.astro';
 import Footer from '../components/Footer.astro';
 import { SITE } from '../lib/site';
 import '../styles/global.css';
@@ -47,14 +48,20 @@ const ogImage = new URL('/assets/img/logo.png', SITE.url).href;
     <meta property="og:site_name" content={SITE.title} />
     <meta name="twitter:card" content="summary" />
 
-    <!-- 테마 무플래시 (렌더 전 적용) -->
+    <!-- 테마/사이드바 무플래시 (렌더 전 적용) -->
     <script is:inline>
       (function () {
+        var el = document.documentElement;
         try {
           var t = localStorage.getItem('theme');
           if (!t) t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-          document.documentElement.setAttribute('data-theme', t);
+          el.setAttribute('data-theme', t);
         } catch (e) {}
+        try {
+          var s = localStorage.getItem('sidebar');
+          if (!s) s = window.innerWidth > 900 ? 'open' : 'closed';
+          el.setAttribute('data-sidebar', s);
+        } catch (e) { el.setAttribute('data-sidebar', 'open'); }
       })();
     </script>
 
@@ -75,10 +82,61 @@ const ogImage = new URL('/assets/img/logo.png', SITE.url).href;
     )}
   </head>
   <body>
-    <Header />
-    <main>
-      <slot />
-    </main>
-    <Footer />
+    <Topbar />
+    <Sidebar />
+    <div class="app-main">
+      <main>
+        <slot />
+      </main>
+      <Footer />
+    </div>
+
+    <script is:inline>
+      (function () {
+        var el = document.documentElement;
+        var scrim = document.getElementById('scrim');
+        var sidebar = document.getElementById('sidebar');
+
+        function setSidebar(state) {
+          el.setAttribute('data-sidebar', state);
+          try { localStorage.setItem('sidebar', state); } catch (e) {}
+          var open = state === 'open';
+          if (scrim) scrim.hidden = !open;
+          if (sidebar) sidebar.setAttribute('aria-hidden', String(!open));
+        }
+        function isOpen() { return el.getAttribute('data-sidebar') === 'open'; }
+
+        var toggle = document.getElementById('sidebar-toggle');
+        if (toggle) toggle.addEventListener('click', function () { setSidebar(isOpen() ? 'closed' : 'open'); });
+        if (scrim) scrim.addEventListener('click', function () { setSidebar('closed'); });
+        document.addEventListener('keydown', function (e) {
+          if (e.key === 'Escape' && isOpen() && window.innerWidth <= 900) setSidebar('closed');
+        });
+        // 모바일에서 사이드바 링크 클릭 시 닫기
+        if (sidebar) sidebar.addEventListener('click', function (e) {
+          if (e.target.closest('a') && window.innerWidth <= 900) setSidebar('closed');
+        });
+        // 초기 scrim/aria 동기화
+        if (scrim) scrim.hidden = !isOpen();
+
+        // 테마 토글
+        var tbtn = document.getElementById('theme-toggle');
+        if (tbtn) {
+          var sun = tbtn.querySelector('.sun'), moon = tbtn.querySelector('.moon');
+          var sync = function () {
+            var dark = el.getAttribute('data-theme') === 'dark';
+            if (sun) sun.style.display = dark ? 'none' : '';
+            if (moon) moon.style.display = dark ? '' : 'none';
+          };
+          sync();
+          tbtn.addEventListener('click', function () {
+            var next = el.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            el.setAttribute('data-theme', next);
+            try { localStorage.setItem('theme', next); } catch (e) {}
+            sync();
+          });
+        }
+      })();
+    </script>
   </body>
 </html>
