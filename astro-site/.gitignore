@@ -5,9 +5,8 @@ dist/
 # deps
 node_modules/
 
-# 마이그레이션으로 생성되는 콘텐츠/에셋 (소스는 저장소 루트의 _posts, /assets)
-# 배포 워크플로에서 migrate 실행으로 재생성됨
-src/content/blog/
+# 변환된 콘텐츠(src/content/blog)는 URL 고정을 위해 저장소에 커밋함.
+# 이미지/정적 자산은 루트 /assets 가 원본이라 빌드 시 prebuild로 복사 (커밋 제외)
 public/assets/
 public/favicon.ico
 public/robots.txt
