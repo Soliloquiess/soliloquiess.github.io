@@ -60,6 +60,9 @@ permalink:
 paginate:            3
 paginate_path:       '/page-:num/'
 
+# 글 클릭 시 본문이 안 뜨고 무한 로딩되던 문제(Hydejack AJAX 전환 버그) 차단 → 일반 페이지 이동
+disable_push_state:  true
+
 # If you are upgrading form a v5 verison of Hydejack, uncomment the two lines below,
 # so that the location of the feed XML stays the same.
 # feed:
