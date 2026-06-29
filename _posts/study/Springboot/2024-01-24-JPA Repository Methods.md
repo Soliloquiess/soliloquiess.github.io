@@ -15,8 +15,14 @@ comments: true
 
 ### JPA란
 
-Spring Data JPA는 Java Persistence API (JPA)를 기반으로 하는 데이터 액세스를 지원하는 Spring 프레임워크의 일부입니다. JPA Repository는 데이터베이스와 상호 작용하기 위한 메서드를 정의하는 인터페이스입니다. 이를 통해 개발자는 데이터베이스 조작을 위한 쿼리를 명시적으로 작성하지 않고도 데이터를 조회, 삽입, 갱신, 삭제할 수 있습니다.
-Spring Data JPA는 Java Persistence API (JPA)를 기반으로 하는 데이터 액세스를 지원하는 Spring 프레임워크의 일부입니다. JPA Repository는 데이터베이스와 상호 작용하기 위한 메서드를 정의하는 인터페이스입니다. 이를 통해 개발자는 데이터베이스 조작을 위한 쿼리를 명시적으로 작성하지 않고도 데이터를 조회, 삽입, 갱신, 삭제할 수 있습니다.
+Spring Data JPA는 Java Persistence API (JPA)를 기반으로 하는 데이터 액세스를 지원하는 Spring 프레임워크의 일부입니다. 
+
+JPA Repository는 데이터베이스와 상호 작용하기 위한 메서드를 정의하는 인터페이스입니다. 이를 통해 개발자는 데이터베이스 조작을 위한 쿼리를 명시적으로 작성하지 않고도 데이터를 조회, 삽입, 갱신, 삭제할 수 있습니다.
+
+Spring Data JPA는 Java Persistence API (JPA)를 기반으로 하는 데이터 액세스를 지원하는 Spring 프레임워크의 일부입니다. JPA Repository는 데이터베이스와 상호 작용하기 위한 메서드를 정의하는 인터페이스입니다. 
+
+
+이를 통해 개발자는 데이터베이스 조작을 위한 쿼리를 명시적으로 작성하지 않고도 데이터를 조회, 삽입, 갱신, 삭제할 수 있습니다.
 
 JPA Repository에서 사용할 수 있는 메서드들은 다양하며, 일반적으로 다음과 같은 패턴을 따릅니다:
 
