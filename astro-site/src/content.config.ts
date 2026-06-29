@@ -2,7 +2,8 @@ import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
 const blog = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/blog' }),
+  // _private/** 는 비공개/보관함 암호화 소스·로컬 메모라 블로그 글로 잡지 않음
+  loader: glob({ pattern: ['**/*.md', '!**/_private/**'], base: './src/content/blog' }),
   schema: z.object({
     title: z.string(),
     date: z.coerce.date(),
