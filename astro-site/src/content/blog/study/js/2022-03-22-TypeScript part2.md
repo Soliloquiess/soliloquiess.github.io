@@ -1,7 +1,7 @@
 ---
 title: "[js] TypeScript part2"
 date: 2022-03-22
-category: "js"
+category: "JS"
 tags: []
 description: "python 이렇게 수정해도 되지만 class가 멀리 떨어져있거나 다른 파일에 있을 경우 귀찮습니다. 다행히 static 키워드로 만들어놨기 때문에 그걸 수정해버려도 됩니다. User.skill을 저렇게 수정해버리면"
 permalink: "2022/03/22/TypeScript-part2"

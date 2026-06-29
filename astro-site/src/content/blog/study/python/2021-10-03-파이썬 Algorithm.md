@@ -1,7 +1,7 @@
 ---
 title: "[python] python Algorithm"
 date: 2021-06-03
-category: "python"
+category: "Python"
 tags: ["Python"]
 description: "공간 복잡도 알고리즘 계산 복잡도는 다음 두 가지 척도로 표현될 수 있음 시간 복잡도: 얼마나 빠르게 실행되는지 공간 복잡도: 얼마나 많은 저장 공간이 필요한지 좋은 알고리즘은 실행 시간도 짧고, 저장 공간도 적게…"
 permalink: "study/2021/06/03/파이썬-Algorithm"

@@ -1,7 +1,7 @@
 ---
 title: "kafka,blockchian confer"
 date: 2022-11-19
-category: "etc"
+category: "Etc"
 tags: []
 description: "Apache Kafka 이벤트 브로커 pub/sub모델을 구현한 분산 메시징 플랫폼 어플리케이션간 이벤트(메시지 교환하기 위해 사용) 소스 어플리케이션과 타겟 어플리케이션의 결합도 낮추기 위함 메시지 그룹과 비교됨 "
 permalink: "2022/11/19/kafka,blockchian-confer"

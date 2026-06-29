@@ -1,7 +1,7 @@
 ---
 title: "[js] Javascript, Jquery part2"
 date: 2021-08-16
-category: "js"
+category: "JS"
 tags: []
 description: "안에 \"5초 이내 구매시 사은품 증정\" 이라는 문자가 있습니다. 1초마다 5라는 문자를 1씩 감소시켜봅시다. 0이 되면 를 안보이게 처리합시다. 기본 함수 중에 setTimeout() 이런게 있는데 자바스크립트 기본"
 permalink: "2021/08/16/Javascript-Jquery-part2"

@@ -1,8 +1,8 @@
 ---
 title: "[backend] SpringWeb MVC 만들기"
 date: 2021-06-21
-category: "backend"
-tags: ["backend"]
+category: "Backend"
+tags: ["Backend"]
 description: "MVC에서 C인 컨트롤러 부분이 FrontConotroller+Pojo로 이루어져 있었다. 이 서블릿도 클래스. 그리고 이 프론트 컨트롤러가 핸들러매핑과 연결되어있었는데 클라이언트 요청에 대한 pojo가 누구인지…"
 permalink: "study/2021/06/21/SpringWEB-MVC만들기"
 ---

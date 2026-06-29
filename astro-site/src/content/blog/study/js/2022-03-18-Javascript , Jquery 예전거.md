@@ -1,7 +1,7 @@
 ---
 title: "[js] Javascript, ES6 이전 내용"
 date: 2022-03-18
-category: "js"
+category: "JS"
 tags: []
 description: "태그 안에 작성하시면 됩니다.) 해석하는 법은 이렇습니다. 영어책읽듯 해석하면 이해할 수 있습니다. document : 그냥 웹문서 (HTML문서)를 뜻합니다. 마침표 : 의 getElementById('어쩌구') "
 permalink: "2022/03/18/Javascript-,-Jquery-예전거"

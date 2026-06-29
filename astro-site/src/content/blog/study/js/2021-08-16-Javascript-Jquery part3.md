@@ -1,7 +1,7 @@
 ---
 title: "[js] Javascript, Jquery part3"
 date: 2021-08-16
-category: "js"
+category: "JS"
 tags: []
 description: "태그를 생성해줘야 좋을듯요 그래서 html을 생성하는 법을 알아봅시다. html 생성하는 법 1 div 안에 p 태그를 생성하려면 이러면 생성됩니다. 개발자도구 까보면 div 안에 p태그가 생성되어있습니다. docu"
 permalink: "2021/08/16/Javascript-Jquery-part3"

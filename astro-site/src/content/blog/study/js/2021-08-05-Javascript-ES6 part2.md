@@ -1,7 +1,7 @@
 ---
 title: "[js] Javascript, ES6 part2"
 date: 2021-08-05
-category: "js"
+category: "JS"
 tags: []
 description: ""
 permalink: "2021/08/05/Javascript-ES6-part2"

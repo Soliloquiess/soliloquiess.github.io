@@ -1,8 +1,8 @@
 ---
 title: "VirtualBox Centos8 설치"
 date: 2022-04-08
-category: "etc"
-tags: ["etc"]
+category: "Etc"
+tags: ["Etc"]
 description: "Centos8 설치 여기서 dvd1.iso를 다운받는다.(10GB) 다운 받은 후 원하는 폴더 저장후 설치 아까 받은 iso 파일을 넣어주고 실행하면 된다. 설정 위 체크 부분들을 체크하고 실행해야 한다…"
 permalink: "etc/2022/04/08/Centos8-java설치"
 ---

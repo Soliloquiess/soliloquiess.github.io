@@ -1,7 +1,7 @@
 ---
 title: "블로그 대개편 — Jekyll(Hydejack)에서 Astro로"
 date: 2026-06-28
-category: "etc"
+category: "Etc"
 tags: ["Astro", "Jekyll", "블로그", "회고"]
 description: "검색·댓글·방문자 정리에서 시작해 엔진과 디자인까지 통째로 갈아엎은 블로그 리뉴얼 기록. 무엇이 왜 어떻게 바뀌었는지 정리한다."
 permalink: "2026/06/28/블로그-개편-jekyll에서-astro로"

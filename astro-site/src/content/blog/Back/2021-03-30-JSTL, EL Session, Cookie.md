@@ -1,8 +1,8 @@
 ---
 title: "[Backend] JSTL, EL Session, Cookie"
 date: 2021-03-29
-category: "backend"
-tags: ["backend"]
+category: "Backend"
+tags: ["Backend"]
 description: "참고로 나중에 뷰 쓰면 제이쿼리는 전혀 안 쓴다.(이건 걍 그렇다고) rs pstmt.executeQuery(); //리턴타입 먼저 설정하면 이클립스가 메서드 알아서 자동추가란에 올려주니 리턴타입을 먼저 주고…"
 permalink: "class/2021/03/29/JSTL,-EL-Session,-Cookie"
 ---

@@ -1,7 +1,7 @@
 ---
 title: "[js] Javascript, Jquery"
 date: 2021-08-15
-category: "js"
+category: "JS"
 tags: []
 description: "문서인데 여기선 html 웹문서겠죠 마침표 의 getElementById('어쩌구') 아이디가 '어쩌구'인 html 요소 (일명 element) 를 찾으셈 innerHTML 딱봐도 그냥 내부 HTML이라는 뜻인듯 ="
 permalink: "2021/08/15/Javascript-Jquery"

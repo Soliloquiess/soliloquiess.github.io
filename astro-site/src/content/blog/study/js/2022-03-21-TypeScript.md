@@ -1,7 +1,7 @@
 ---
 title: "[js] TypeScript"
 date: 2022-03-21
-category: "js"
+category: "JS"
 tags: []
 description: "그리고 type 키워드 이런게 등장하는데 지금은 그렇구나 까지만 느끼면 되고 나중가면 알게될 것입니다. (숙제 전 참고사항 : console.log() 하는 법) 코드짜다가 콘솔창에 변수를 출력해보려면 console"
 permalink: "2022/03/21/TypeScript"

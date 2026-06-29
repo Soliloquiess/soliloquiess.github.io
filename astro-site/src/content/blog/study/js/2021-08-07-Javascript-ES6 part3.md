@@ -1,7 +1,7 @@
 ---
 title: "[js] Javascript, ES6 part3"
 date: 2021-08-07
-category: "js"
+category: "JS"
 tags: []
 description: "태그 내에서 가져다 쓰도록 하겠습니다. (이거 말고도 당연히 .js 파일 간에도 가능합니다.) (index.html) ▲HTML 파일 안에서 ES6 import 문법을 쓰시려면 저렇게 script 태그 안에 type"
 permalink: "2021/08/07/Javascript-ES6-part3"
