@@ -21,6 +21,7 @@ tags: JS
 # tags: java
 comments: true
 ---
+-->
 
 
 ### 함수 rest 파라미터, destructuring 할 때 타입지정
@@ -4863,4 +4864,4 @@ type a = 타입뽑기<(x :number) => void>
 
 참고로 함수만 들어올 수 있게 제한을 두고 싶으면
 
-언제나 T 라는 함수 파라미터 만들 때 extends로 제한을 두면 됩니다. -->
+언제나 T 라는 함수 파라미터 만들 때 extends로 제한을 두면 됩니다.

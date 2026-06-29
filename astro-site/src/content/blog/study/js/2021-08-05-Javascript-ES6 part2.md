@@ -21,6 +21,7 @@ tags: JS
 # tags: java
 comments: true
 ---
+-->
 
 ES6부터 업그레이드된 함수의 default 파라미터 기능과
 
@@ -3201,4 +3202,4 @@ console.log(data.getter함수);
 숫자정렬하는 법은 구글에 찾아서 한번 적용해보시길 바랍니다.
 
 
------- -->
+------

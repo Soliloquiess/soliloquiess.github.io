@@ -21,6 +21,7 @@ tags: JS
 # tags: java
 comments: true
 ---
+-->
 
 ### 자바스크립트의 목적과 셀렉터 (Selector)
 
@@ -6918,4 +6919,4 @@ var 제이슨 = JSON.stringify(여러분의 오브젝트데이터)
 ```
 JSON.stringify()라는 함수에 담으면 object 자료형에 따옴표를 예쁘게 쳐서 JSON을 만들어줍니다.
 
-하지만 아까처럼 jQuery ajax 함수를 쓰면 JSON을 가져와도 지가 알아서 쓰기좋게 object로 변환해주기 때문에 따로 신경쓸 필요는 없습니다. -->
+하지만 아까처럼 jQuery ajax 함수를 쓰면 JSON을 가져와도 지가 알아서 쓰기좋게 object로 변환해주기 때문에 따로 신경쓸 필요는 없습니다.
