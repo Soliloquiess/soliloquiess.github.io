@@ -1,5 +1,5 @@
 ---
-title: "http, https과 fiddler, 개발자도구 사용 개념."
+title: "http, https과 fiddler, 개발자도구 사용 개념"
 date: 2022-10-20
 category: "Etc"
 tags: ["Etc"]

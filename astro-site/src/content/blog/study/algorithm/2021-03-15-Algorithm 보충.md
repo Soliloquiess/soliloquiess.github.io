@@ -1,5 +1,5 @@
 ---
-title: "[Algorithm]] Algorithm Learn"
+title: "[Algorithm] Algorithm Learn"
 date: 2021-03-14
 category: "Algorithm"
 tags: ["Algorithm"]
