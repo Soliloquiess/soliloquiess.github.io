@@ -2,7 +2,7 @@
 title: "[Backend] JDBC"
 date: 2021-03-29
 category: "backend"
-tags: ["Backend"]
+tags: ["backend"]
 description: "Web Back-End : Servlet/JSP 연동 서버단에서 실행하는 가장 대표적인 디비를 http프로토콜로 이용하는건 불가능하죠 자바와 디비 프로토콜 연결하는 JDBC 사용 클라이언트가 서버에…"
 permalink: "class/2021/03/29/Servlet,JSP"
 ---
