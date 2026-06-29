@@ -12,6 +12,10 @@ public/favicon.ico
 public/robots.txt
 public/ads.txt
 
+# 나만 보는 비공개 글 — 로컬 `npm run dev`에선 보이지만
+# git에 안 올라가서 공개 repo·배포 사이트 어디에도 나타나지 않음 (사내 업무 글 등)
+src/content/blog/_private/
+
 # misc
 .DS_Store
 *.log
