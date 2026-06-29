@@ -1,7 +1,7 @@
 ---
 title: "[java] Spring(war)파일 배포하기 위한 war"
 date: 2022-05-01
-category: "Java"
+category: "java"
 tags: ["Java"]
 description: "스프링 프로젝트 war로 tomcat 배포 1. 완성된 폴더를 Export한다.(War file) 2. War파일 설정시 경로를 설정하고(빈 폴더면 좋다) 파일이름 뒤에 .war를 붙인다. 3. 그리고…"
 permalink: "class/2022/05/01/Spring(war)파일-배포하기-위한-war"
