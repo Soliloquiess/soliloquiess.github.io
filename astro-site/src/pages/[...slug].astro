@@ -47,7 +47,7 @@ const jsonLd = {
   keywords: data.tags.join(', '),
 };
 ---
-<BaseLayout title={data.title} description={data.description} type="article">
+<BaseLayout title={data.title} description={data.description} type="article" image={`/og/${data.permalink}.png`}>
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   <div class="container">
     <article>

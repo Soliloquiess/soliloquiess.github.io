@@ -10,17 +10,21 @@ interface Props {
   description?: string;
   type?: 'website' | 'article';
   noindex?: boolean;
+  image?: string;
 }
 const {
   title,
   description = SITE.description,
   type = 'website',
   noindex = false,
+  image,
 } = Astro.props;
 
 const pageTitle = title ? `${title} · ${SITE.title}` : `${SITE.title} · ${SITE.tagline}`;
 const canonical = new URL(Astro.url.pathname, SITE.url).href;
-const ogImage = new URL('/assets/img/main_left.jpg', SITE.url).href;
+// 글별 OG 이미지가 있으면 사용, 없으면 기본 이미지
+const ogImage = new URL(image ?? '/assets/img/main_left.jpg', SITE.url).href;
+const twitterCard = image ? 'summary_large_image' : 'summary';
 ---
 <!doctype html>
 <html lang="ko">
@@ -45,7 +49,10 @@ const ogImage = new URL('/assets/img/main_left.jpg', SITE.url).href;
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImage} />
     <meta property="og:site_name" content={SITE.title} />
-    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:card" content={twitterCard} />
+    <meta name="twitter:title" content={title ?? SITE.title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
 
     <!-- 테마/사이드바 무플래시 (렌더 전 적용) -->
     <script is:inline>
