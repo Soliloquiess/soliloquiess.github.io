@@ -13,8 +13,8 @@ export const SITE = {
   googleSiteVerification: 'KgNPGCtPAWwKe8OcTD3EgZf3bsRYD0hfKd5FXD8OlNU',
   naverSiteVerification: '99cfd5cbc988c45dceb7a82ae1f3571439894726',
 
-  // AdSense (기존 값 이식). 비우면 광고 비활성.
-  adsenseClient: 'ca-pub-1200017190012992',
+  // AdSense 게시자 ID. 비우면 광고 비활성.
+  adsenseClient: 'ca-pub-8069458034875048',
 
   // giscus 댓글 — GitHub Discussions(Soliloquiess/soliloquiess.github.io) 연동
   giscus: {
