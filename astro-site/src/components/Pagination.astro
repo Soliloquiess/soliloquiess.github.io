@@ -1,0 +1,36 @@
+---
+interface Props { current: number; last: number }
+const { current, last } = Astro.props;
+
+const href = (n: number) => (n === 1 ? '/' : `/page/${n}.html`);
+
+// 표시할 페이지 번호 목록: 1 · 끝 · 현재±2, 사이는 '…'
+const W = 2;
+const items: (number | '…')[] = [];
+for (let n = 1; n <= last; n++) {
+  if (n === 1 || n === last || (n >= current - W && n <= current + W)) {
+    items.push(n);
+  } else if (items[items.length - 1] !== '…') {
+    items.push('…');
+  }
+}
+---
+<nav class="pagination" aria-label="페이지 이동">
+  {current > 1
+    ? <a class="pg-btn" href={href(current - 1)} rel="prev" aria-label="이전 페이지">←</a>
+    : <span class="pg-btn" aria-disabled="true">←</span>}
+
+  <div class="pg-nums">
+    {items.map((it) =>
+      it === '…'
+        ? <span class="pg-ellipsis">…</span>
+        : it === current
+          ? <span class="pg-num active" aria-current="page">{it}</span>
+          : <a class="pg-num" href={href(it)}>{it}</a>
+    )}
+  </div>
+
+  {current < last
+    ? <a class="pg-btn" href={href(current + 1)} rel="next" aria-label="다음 페이지">→</a>
+    : <span class="pg-btn" aria-disabled="true">→</span>}
+</nav>

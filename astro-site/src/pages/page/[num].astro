@@ -2,6 +2,7 @@
 import type { GetStaticPaths } from 'astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PostItem from '../../components/PostItem.astro';
+import Pagination from '../../components/Pagination.astro';
 import { getPublishedPosts } from '../../lib/posts';
 import { SITE } from '../../lib/site';
 
@@ -32,12 +33,6 @@ const { pagePosts, currentPage, lastPage } = Astro.props;
       {pagePosts.map((post) => <PostItem post={post} />)}
     </div>
 
-    <nav class="pagination" aria-label="페이지 이동">
-      <a class="pg-btn" href={currentPage === 2 ? '/' : `/page/${currentPage - 1}.html`}>← 이전</a>
-      <span class="pg-info">{currentPage} / {lastPage}</span>
-      {currentPage < lastPage
-        ? <a class="pg-btn" href={`/page/${currentPage + 1}.html`}>다음 →</a>
-        : <span class="pg-btn" aria-disabled="true">다음 →</span>}
-    </nav>
+    <Pagination current={currentPage} last={lastPage} />
   </div>
 </BaseLayout>
