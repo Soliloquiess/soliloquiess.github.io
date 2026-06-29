@@ -220,6 +220,42 @@ main { min-height: 64vh; padding: 38px 0 60px; }
 .post-nav .next { text-align: right; align-items: flex-end; }
 @media (max-width: 560px) { .post-nav { grid-template-columns: 1fr; } .post-nav .next { text-align: left; align-items: flex-start; } }
 
+/* ============================================================
+   모션 / 인터랙션  (.anim = 움직임 줄이기 OFF 일 때만 활성)
+   ============================================================ */
+/* 페이지 진입 페이드 */
+.anim main { animation: page-enter .42s cubic-bezier(.22, .61, .36, 1) both; }
+@keyframes page-enter { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+/* 스크롤 등장 (첫 페인트부터 숨김 → 깜빡임 없음, JS는 .in-view만 추가) */
+.anim .reveal { opacity: 0; transform: translateY(20px); transition: opacity .6s ease, transform .6s cubic-bezier(.22, .61, .36, 1); will-change: opacity, transform; }
+.anim .reveal.in-view { opacity: 1; transform: none; }
+.anim .post-item, .anim .archive-list li, .anim .related li, .anim .chip-cloud a,
+.anim .toc, .anim .series, .anim .post-nav, .anim .share, .anim .article-header {
+  opacity: 0; transform: translateY(20px);
+  transition: opacity .6s ease, transform .6s cubic-bezier(.22, .61, .36, 1);
+}
+.anim .post-item.in-view, .anim .archive-list li.in-view, .anim .related li.in-view,
+.anim .chip-cloud a.in-view, .anim .toc.in-view, .anim .series.in-view,
+.anim .post-nav.in-view, .anim .share.in-view, .anim .article-header.in-view {
+  opacity: 1; transform: none;
+}
+
+/* 호버 마이크로 인터랙션 */
+.anim .post-item { transition: background .15s ease, border-color .15s ease, transform .18s ease, box-shadow .18s ease; }
+.anim .post-item:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+.anim .related a, .anim .post-nav a, .anim .chip-cloud a { transition: all .16s ease; }
+.anim .related a:hover, .anim .post-nav a:hover, .anim .chip-cloud a:hover { transform: translateY(-2px); }
+.anim .tag-chip { transition: all .15s ease; }
+.anim .tag-chip:hover { transform: translateY(-1px); }
+
+/* 커서 글로우 (마우스 기기에서만 JS가 생성) */
+.cursor-glow {
+  position: fixed; top: 0; left: 0; width: 320px; height: 320px; border-radius: 50%;
+  pointer-events: none; z-index: 1; opacity: 0; transition: opacity .35s ease;
+  background: radial-gradient(circle, color-mix(in srgb, var(--accent) 13%, transparent), transparent 62%);
+}
+
 /* ---- ad (자동광고/Auto Ads) ---- */
 /* 광고가 채워지지 않으면(미승인/노필) 빈 공간이 남지 않도록 접는다 */
 ins.adsbygoogle[data-ad-status="unfilled"] { display: none !important; }

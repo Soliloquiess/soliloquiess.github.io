@@ -72,6 +72,8 @@ const twitterCard = image ? 'summary_large_image' : 'summary';
           if (!s) s = window.innerWidth > 900 ? 'open' : 'closed';
           el.setAttribute('data-sidebar', s);
         } catch (e) { el.setAttribute('data-sidebar', 'open'); }
+        // 애니메이션 활성 (움직임 줄이기 설정이면 끔)
+        try { if (!matchMedia('(prefers-reduced-motion: reduce)').matches) el.classList.add('anim'); } catch (e) {}
       })();
     </script>
 
@@ -123,6 +125,48 @@ const twitterCard = image ? 'summary_large_image' : 'summary';
           e.preventDefault();
           location.href = '/search.html';
         });
+      })();
+    </script>
+
+    <!-- 스크롤 등장 애니메이션 + 커서 글로우 -->
+    <script is:inline>
+      (function () {
+        var root = document.documentElement;
+        if (!root.classList.contains('anim')) return;
+
+        // 1) 스크롤 등장
+        var sel = '.post-item, .archive-list li, .related li, .chip-cloud a, .toc, .series, .post-nav, .share, .article-header';
+        var targets = Array.prototype.slice.call(document.querySelectorAll(sel));
+        if (targets.length && 'IntersectionObserver' in window) {
+          var io = new IntersectionObserver(function (entries) {
+            entries.forEach(function (en) {
+              if (en.isIntersecting) { en.target.classList.add('in-view'); io.unobserve(en.target); }
+            });
+          }, { rootMargin: '0px 0px -6% 0px' });
+          targets.forEach(function (t, i) {
+            t.classList.add('reveal');
+            t.style.transitionDelay = Math.min(i % 8 * 35, 245) + 'ms';
+            io.observe(t);
+          });
+        }
+
+        // 2) 커서 글로우 (마우스 있는 기기만)
+        try {
+          if (matchMedia('(pointer: fine)').matches) {
+            var glow = document.createElement('div');
+            glow.className = 'cursor-glow';
+            document.body.appendChild(glow);
+            var x = 0, y = 0, raf = null;
+            document.addEventListener('mousemove', function (e) {
+              x = e.clientX; y = e.clientY; glow.style.opacity = '1';
+              if (!raf) raf = requestAnimationFrame(function () {
+                glow.style.transform = 'translate(' + (x - 160) + 'px,' + (y - 160) + 'px)';
+                raf = null;
+              });
+            }, { passive: true });
+            document.addEventListener('mouseleave', function () { glow.style.opacity = '0'; });
+          }
+        } catch (e) {}
       })();
     </script>
 
