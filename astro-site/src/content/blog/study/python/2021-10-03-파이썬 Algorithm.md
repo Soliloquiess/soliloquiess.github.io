@@ -1353,7 +1353,7 @@ def min_coin_count(value, coin_list):
     return total_coin_count, details
 ```
 
-#####: 부분 배낭 문제 (Fractional Knapsack Problem)
+##### : 부분 배낭 문제 (Fractional Knapsack Problem)
   - 무게 제한이 k인 배낭에 최대 가치를 가지도록 물건을 넣는 문제
     - 각 물건은 무게(w)와 가치(v)로 표현될 수 있음
     - 물건은 쪼갤 수 있으므로 물건의 일부분이 배낭에 넣어질 수 있음, 그래서 Fractional Knapsack Problem 으로 부름

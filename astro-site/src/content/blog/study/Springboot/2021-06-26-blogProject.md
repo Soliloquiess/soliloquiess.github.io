@@ -394,7 +394,7 @@ public String home(@RequestBody User user){
 --------
 
 
-###회원 가입시 Ajax를 쓰는 이유 2가지
+### 회원 가입시 Ajax를 쓰는 이유 2가지
 
 1. 요청에 대한 응답을 html이 아닌 Data(Json)을 받기 위해
 

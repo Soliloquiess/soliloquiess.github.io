@@ -21,7 +21,7 @@ permalink: "study/2022/06/21/Springboot-AWS"
 - HTML과 CSS, JS, XML에 대한 강력한 기능 지원
 - 자바, 스프링 부트 버전업에 맞춘 빠른 업데이트
 
-######프로젝트 생성(build.gradle)
+###### 프로젝트 생성(build.gradle)
 
 
 ```
@@ -1035,7 +1035,7 @@ API 요청을 받을 Controller
 흔히 사용하는 @ Controller 와 JSP/Freemarker 등의 뷰 템플릿 영역입니다.
 이외에도 필터, 인터셉터, 컨트롤러 어드바이스등 외부 요청과 응답에 대한 전반적인 영역을 이야기합니다.
 
-######Service Layer
+###### Service Layer
 
 @ Service에 사용되는 서비스 영역입니다.
 일반적으로 Controller와 DAO의 중간 영역에서 사용된다.
