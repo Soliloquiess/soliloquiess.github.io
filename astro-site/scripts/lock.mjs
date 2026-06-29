@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // 비번 게이트용 글 암호화 도구
-// 사용법:  node scripts/lock.mjs <평문.md> [출력slug]
-//   - 평문 마크다운을 HTML로 렌더 → AES-256-GCM 암호화 → src/content/locked/<slug>.json 생성
+// 사용법:  node scripts/lock.mjs <평문.md> [출력slug] [컬렉션=locked|vault]
+//   - 평문 마크다운을 HTML로 렌더 → AES-256-GCM 암호화 → src/content/<컬렉션>/<slug>.json 생성
 //   - 비밀번호는 환경변수 LOCK_PW 또는 실행 중 입력
 //   - 평문은 절대 저장/커밋되지 않음. 암호문(JSON)만 커밋하면 됨.
 import fs from 'node:fs';
@@ -13,6 +13,7 @@ import { marked } from 'marked';
 const ITER = 150000;
 
 function parseFrontmatter(t) {
+  t = t.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
   const fm = {};
   let body = t;
   if (t.startsWith('---')) {
@@ -47,6 +48,7 @@ async function main() {
   const { fm, body } = parseFrontmatter(raw);
   const slug = (process.argv[3] || path.basename(input).replace(/\.md$/i, ''))
     .trim().replace(/\s+/g, '-');
+  const collection = (process.argv[4] || 'locked').replace(/[^a-z]/gi, '') || 'locked';
 
   const pw = await askPassword();
   if (!pw) { console.error('비밀번호가 비어 있습니다.'); process.exit(1); }
@@ -70,7 +72,7 @@ async function main() {
     ct: ct.toString('base64'),
   };
 
-  const dir = path.resolve('src/content/locked');
+  const dir = path.resolve('src/content/' + collection);
   fs.mkdirSync(dir, { recursive: true });
   const outPath = path.join(dir, slug + '.json');
   fs.writeFileSync(outPath, JSON.stringify(out, null, 2));

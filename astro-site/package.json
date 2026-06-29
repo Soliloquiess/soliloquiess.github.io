@@ -11,7 +11,8 @@
     "preview": "astro preview",
     "astro": "astro",
     "migrate": "node scripts/migrate.mjs",
-    "lock": "node scripts/lock.mjs"
+    "lock": "node scripts/lock.mjs",
+    "lock-batch": "node scripts/lock-batch.mjs"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.11",

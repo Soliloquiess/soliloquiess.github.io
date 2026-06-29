@@ -30,4 +30,17 @@ const locked = defineCollection({
   }),
 });
 
-export const collections = { blog, locked };
+// 보관함(📦) — 길어서 잘 안 보는 옛 글을 비번으로 묶어 따로 관리. locked과 동일 구조, 폴더만 분리.
+const vault = defineCollection({
+  loader: glob({ pattern: '*.json', base: './src/content/vault' }),
+  schema: z.object({
+    title: z.string(),
+    date: z.coerce.date(),
+    description: z.string().optional().default(''),
+    salt: z.string(),
+    iv: z.string(),
+    ct: z.string(),
+  }),
+});
+
+export const collections = { blog, locked, vault };
