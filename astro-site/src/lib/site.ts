@@ -4,7 +4,7 @@ export const SITE = {
   tagline: '갤럭시를 여행하는 히치하이커를 위한 안내서',
   description: '개발 학습 기록을 정리하고 공유하는 기술 블로그',
   url: 'https://soliloquiess.github.io',
-  author: '조양훈',
+  author: 'Soliloquiess',
   email: 'cyh1219@naver.com',
   postsPerPage: 8,
 
