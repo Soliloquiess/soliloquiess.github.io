@@ -16,4 +16,18 @@ const blog = defineCollection({
   }),
 });
 
-export const collections = { blog };
+// 비번 게이트(암호화) 글 — 평문 대신 AES 암호문(JSON)만 커밋·배포한다.
+const locked = defineCollection({
+  loader: glob({ pattern: '*.json', base: './src/content/locked' }),
+  schema: z.object({
+    title: z.string(),
+    date: z.coerce.date(),
+    description: z.string().optional().default(''),
+    // AES-GCM 암호화 결과 (base64)
+    salt: z.string(),
+    iv: z.string(),
+    ct: z.string(),
+  }),
+});
+
+export const collections = { blog, locked };
