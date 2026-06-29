@@ -221,7 +221,10 @@ main { min-height: 64vh; padding: 38px 0 60px; }
 @media (max-width: 560px) { .post-nav { grid-template-columns: 1fr; } .post-nav .next { text-align: left; align-items: flex-start; } }
 
 /* ---- ad ---- */
-.ad-slot { margin: 28px 0; text-align: center; min-height: 90px; }
+.ad-slot { margin: 28px 0; text-align: center; }
+/* 광고가 채워지지 않으면(미승인/노필) 빈 공간이 남지 않도록 영역 자체를 접는다 */
+.ad-slot:has(ins[data-ad-status="unfilled"]) { display: none; }
+ins.adsbygoogle[data-ad-status="unfilled"] { display: none !important; }
 
 /* ---- reading time ---- */
 .article-header .meta .reading { color: var(--faint); }
