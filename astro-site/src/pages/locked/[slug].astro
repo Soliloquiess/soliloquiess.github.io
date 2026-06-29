@@ -12,7 +12,7 @@ export const getStaticPaths = (async () => {
 const { e } = Astro.props as { e: any };
 const d = e.data;
 ---
-<BaseLayout title={`🔒 ${d.title}`} description="비밀번호로 보호된 글" noindex={true}>
+<BaseLayout title="🔒 비공개 글" description="비밀번호로 보호된 글" noindex={true}>
   <div class="container">
     <article>
       <header class="article-header">
@@ -20,12 +20,12 @@ const d = e.data;
           <span class="cat">🔒 비공개</span>
           <time datetime={new Date(d.date).toISOString()}>{formatDate(new Date(d.date))}</time>
         </div>
-        <h1>{d.title}</h1>
+        <h1 id="lock-title">🔒 비공개 글</h1>
       </header>
 
       <div class="lock-gate" id="lock-gate"
-        data-salt={d.salt} data-iv={d.iv} data-ct={d.ct}>
-        <p class="lock-msg">🔒 이 글은 비밀번호로 보호되어 있습니다.</p>
+        data-salt={d.salt} data-ivt={d.ivT} data-ctt={d.ctT} data-ivb={d.ivB} data-ctb={d.ctB}>
+        <p class="lock-msg">🔒 비밀번호를 입력하세요.</p>
         <form id="lock-form" class="lock-form">
           <input type="password" id="lock-pw" placeholder="비밀번호" aria-label="비밀번호" autocomplete="off" />
           <button type="submit" class="pg-btn">열기</button>
@@ -41,61 +41,44 @@ const d = e.data;
     (function () {
       var gate = document.getElementById('lock-gate');
       if (!gate) return;
-      var SALT = gate.dataset.salt, IV = gate.dataset.iv, CT = gate.dataset.ct;
+      var ds = gate.dataset;
       var form = document.getElementById('lock-form');
       var pwInput = document.getElementById('lock-pw');
       var errEl = document.getElementById('lock-err');
       var content = document.getElementById('lock-content');
+      var titleEl = document.getElementById('lock-title');
       var KEY = 'blogLockPw';
-
       function b64(s) { return Uint8Array.from(atob(s), function (c) { return c.charCodeAt(0); }); }
-
-      async function deriveKey(pw, salt) {
-        var enc = new TextEncoder();
-        var base = await crypto.subtle.importKey('raw', enc.encode(pw), 'PBKDF2', false, ['deriveKey']);
-        return crypto.subtle.deriveKey(
-          { name: 'PBKDF2', salt: salt, iterations: 150000, hash: 'SHA-256' },
+      async function deriveKey(pw) {
+        var base = await crypto.subtle.importKey('raw', new TextEncoder().encode(pw), 'PBKDF2', false, ['deriveKey']);
+        return crypto.subtle.deriveKey({ name: 'PBKDF2', salt: b64(ds.salt), iterations: 150000, hash: 'SHA-256' },
           base, { name: 'AES-GCM', length: 256 }, false, ['decrypt']);
       }
-
-      async function unlock(pw) {
-        var key = await deriveKey(pw, b64(SALT));
-        var buf = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: b64(IV) }, key, b64(CT));
+      async function dec(key, iv, ct) {
+        var buf = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: b64(iv) }, key, b64(ct));
         return new TextDecoder().decode(buf);
       }
-
-      function reveal(html) {
-        content.innerHTML = html;
-        content.hidden = false;
-        gate.hidden = true;
-        // 본문 이미지 lazy
-        content.querySelectorAll('img:not([loading])').forEach(function (img) {
-          img.setAttribute('loading', 'lazy'); img.setAttribute('decoding', 'async');
-        });
-      }
-
-      async function tryPw(pw, fromCache) {
+      async function unlock(pw, fromCache) {
         try {
-          var html = await unlock(pw);
-          reveal(html);
+          var key = await deriveKey(pw);
+          var meta = JSON.parse(await dec(key, ds.ivt, ds.ctt));
+          var html = await dec(key, ds.ivb, ds.ctb);
+          if (meta.title) { titleEl.textContent = meta.title; document.title = '🔒 ' + meta.title; }
+          content.innerHTML = html;
+          content.hidden = false; gate.hidden = true;
+          content.querySelectorAll('img:not([loading])').forEach(function (img) {
+            img.setAttribute('loading', 'lazy'); img.setAttribute('decoding', 'async');
+          });
           try { sessionStorage.setItem(KEY, pw); } catch (e) {}
-          return true;
         } catch (e) {
           if (!fromCache && errEl) errEl.hidden = false;
-          return false;
         }
       }
-
-      // 같은 세션에서 이미 푼 비번이면 자동 시도
-      try {
-        var cached = sessionStorage.getItem(KEY);
-        if (cached) tryPw(cached, true);
-      } catch (e) {}
-
+      try { var c = sessionStorage.getItem(KEY); if (c) unlock(c, true); } catch (e) {}
       form.addEventListener('submit', function (ev) {
         ev.preventDefault();
         if (errEl) errEl.hidden = true;
-        tryPw(pwInput.value, false);
+        unlock(pwInput.value, false);
       });
     })();
   </script>

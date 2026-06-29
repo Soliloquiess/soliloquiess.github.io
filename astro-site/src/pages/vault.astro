@@ -6,26 +6,75 @@ import { formatDate } from '../lib/posts';
 const entries = (await getCollection('vault'))
   .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
 ---
-<BaseLayout title="📦 보관함" description="비밀번호로 보호된 보관 글 목록" noindex={true}>
+<BaseLayout title="📦 보관함" description="비밀번호로 보호된 보관 글" noindex={true}>
   <div class="container">
     <h1 class="page-title">📦 보관함</h1>
-    <p class="page-sub">길어서 메인에서 내려둔 옛 글들 — 비밀번호로 보호됩니다.</p>
+    <p class="page-sub">{entries.length}개의 글 · 비밀번호를 입력하면 목록이 열립니다.</p>
 
     {entries.length === 0 ? (
       <p class="page-sub">아직 보관 글이 없습니다.</p>
     ) : (
-      <div class="post-list">
-        {entries.map((e) => (
-          <a class="post-item" href={`/vault/${e.id}.html`}>
-            <div class="meta">
-              <span class="cat">📦 보관함</span>
-              <time datetime={new Date(e.data.date).toISOString()}>{formatDate(new Date(e.data.date))}</time>
-            </div>
-            <h2>{e.data.title}</h2>
-            {e.data.description && <p>{e.data.description}</p>}
-          </a>
-        ))}
-      </div>
+      <>
+        <form id="gate-form" class="lock-form" style="margin:18px 0 8px;">
+          <input type="password" id="gate-pw" placeholder="비밀번호" aria-label="비밀번호" autocomplete="off" />
+          <button type="submit" class="pg-btn">목록 열기</button>
+        </form>
+        <p class="lock-err" id="gate-err" hidden>비밀번호가 올바르지 않습니다.</p>
+
+        <div class="post-list" id="locked-list" hidden>
+          {entries.map((e) => (
+            <a class="post-item locked-row" href={`/vault/${e.id}.html`}
+              data-salt={e.data.salt} data-ivt={e.data.ivT} data-ctt={e.data.ctT}>
+              <div class="meta">
+                <span class="cat">📦 보관함</span>
+                <time datetime={new Date(e.data.date).toISOString()}>{formatDate(new Date(e.data.date))}</time>
+              </div>
+              <h2 class="li-title">📦 잠긴 글</h2>
+            </a>
+          ))}
+        </div>
+      </>
     )}
   </div>
+
+  <script is:inline>
+    (function () {
+      var form = document.getElementById('gate-form');
+      if (!form) return;
+      var pwInput = document.getElementById('gate-pw');
+      var errEl = document.getElementById('gate-err');
+      var list = document.getElementById('locked-list');
+      var KEY = 'blogVaultPw';
+      function b64(s) { return Uint8Array.from(atob(s), function (c) { return c.charCodeAt(0); }); }
+      async function deriveKey(pw, salt) {
+        var base = await crypto.subtle.importKey('raw', new TextEncoder().encode(pw), 'PBKDF2', false, ['deriveKey']);
+        return crypto.subtle.deriveKey({ name: 'PBKDF2', salt: salt, iterations: 150000, hash: 'SHA-256' },
+          base, { name: 'AES-GCM', length: 256 }, false, ['decrypt']);
+      }
+      async function decTitle(pw, row) {
+        var key = await deriveKey(pw, b64(row.dataset.salt));
+        var buf = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: b64(row.dataset.ivt) }, key, b64(row.dataset.ctt));
+        return JSON.parse(new TextDecoder().decode(buf)).title;
+      }
+      async function openList(pw, fromCache) {
+        var rows = Array.prototype.slice.call(list.querySelectorAll('.locked-row'));
+        try {
+          for (var i = 0; i < rows.length; i++) {
+            var title = await decTitle(pw, rows[i]);
+            rows[i].querySelector('.li-title').textContent = title;
+          }
+          list.hidden = false; form.style.display = 'none';
+          try { sessionStorage.setItem(KEY, pw); } catch (e) {}
+        } catch (e) {
+          if (!fromCache && errEl) errEl.hidden = false;
+        }
+      }
+      try { var c = sessionStorage.getItem(KEY); if (c) openList(c, true); } catch (e) {}
+      form.addEventListener('submit', function (ev) {
+        ev.preventDefault();
+        if (errEl) errEl.hidden = true;
+        openList(pwInput.value, false);
+      });
+    })();
+  </script>
 </BaseLayout>

@@ -20,13 +20,13 @@ const blog = defineCollection({
 const locked = defineCollection({
   loader: glob({ pattern: '*.json', base: './src/content/locked' }),
   schema: z.object({
-    title: z.string(),
     date: z.coerce.date(),
-    description: z.string().optional().default(''),
-    // AES-GCM 암호화 결과 (base64)
+    // AES-GCM 암호화 (base64) — 제목/설명(ctT)·본문(ctB) 모두 암호화, 제목은 공개에 안 남음
     salt: z.string(),
-    iv: z.string(),
-    ct: z.string(),
+    ivT: z.string(),
+    ctT: z.string(),
+    ivB: z.string(),
+    ctB: z.string(),
   }),
 });
 
@@ -34,12 +34,12 @@ const locked = defineCollection({
 const vault = defineCollection({
   loader: glob({ pattern: '*.json', base: './src/content/vault' }),
   schema: z.object({
-    title: z.string(),
     date: z.coerce.date(),
-    description: z.string().optional().default(''),
     salt: z.string(),
-    iv: z.string(),
-    ct: z.string(),
+    ivT: z.string(),
+    ctT: z.string(),
+    ivB: z.string(),
+    ctB: z.string(),
   }),
 });
 

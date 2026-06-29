@@ -46,38 +46,36 @@ async function main() {
   }
   const raw = fs.readFileSync(input, 'utf8');
   const { fm, body } = parseFrontmatter(raw);
-  const slug = (process.argv[3] || path.basename(input).replace(/\.md$/i, ''))
-    .trim().replace(/\s+/g, '-');
   const collection = (process.argv[4] || 'locked').replace(/[^a-z]/gi, '') || 'locked';
 
   const pw = await askPassword();
   if (!pw) { console.error('비밀번호가 비어 있습니다.'); process.exit(1); }
 
+  const title = fm.title || path.basename(input).replace(/\.md$/i, '');
+  const date = fm.date || new Date().toISOString().slice(0, 10);
+  const description = fm.description || '';
   const html = marked.parse(body);
 
   const salt = crypto.randomBytes(16);
-  const iv = crypto.randomBytes(12);
   const key = crypto.pbkdf2Sync(pw, salt, ITER, 32, 'sha256');
-  const cipher = crypto.createCipheriv('aes-256-gcm', key, iv);
-  const enc = Buffer.concat([cipher.update(html, 'utf8'), cipher.final()]);
-  const tag = cipher.getAuthTag();
-  const ct = Buffer.concat([enc, tag]); // 브라우저 AES-GCM은 tag를 ct 뒤에 붙여 받음
-
-  const out = {
-    title: fm.title || slug,
-    date: fm.date || new Date().toISOString().slice(0, 10),
-    description: fm.description || '🔒 비밀번호로 보호된 글',
-    salt: salt.toString('base64'),
-    iv: iv.toString('base64'),
-    ct: ct.toString('base64'),
+  const enc = (plain) => {
+    const iv = crypto.randomBytes(12);
+    const c = crypto.createCipheriv('aes-256-gcm', key, iv);
+    const e = Buffer.concat([c.update(plain, 'utf8'), c.final()]);
+    return { iv: iv.toString('base64'), ct: Buffer.concat([e, c.getAuthTag()]).toString('base64') };
   };
+  const tEnc = enc(JSON.stringify({ title, description }));
+  const bEnc = enc(html);
+  const slug = (process.argv[3]) ? String(process.argv[3]).trim().replace(/\s+/g, '-')
+    : crypto.createHash('sha256').update(title + '|' + date).digest('hex').slice(0, 16);
+
+  const out = { date, salt: salt.toString('base64'), ivT: tEnc.iv, ctT: tEnc.ct, ivB: bEnc.iv, ctB: bEnc.ct };
 
   const dir = path.resolve('src/content/' + collection);
   fs.mkdirSync(dir, { recursive: true });
   const outPath = path.join(dir, slug + '.json');
   fs.writeFileSync(outPath, JSON.stringify(out, null, 2));
-  console.log('✓ 암호화 완료:', path.relative(process.cwd(), outPath));
-  console.log('  제목:', out.title);
-  console.log('  → 이 JSON(암호문)만 커밋하면 됩니다. 평문은 커밋하지 마세요.');
+  console.log('✓ 암호화 완료:', path.relative(process.cwd(), outPath), '(제목:', title + ')');
+  console.log('  → 이 JSON(암호문)만 커밋. 평문은 커밋 금지.');
 }
 main();
