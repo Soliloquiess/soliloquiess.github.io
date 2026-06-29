@@ -3,22 +3,28 @@ title: "[Springboot] Springboot AOP 정리"
 date: 2021-07-03
 category: "Springboot"
 tags: ["Springboot"]
-description: "중요하게 봐야 할 점 1. RestController 2. 기본적인 요청과 응답을 배울 것 3. validation 체크 4. 로그 남겨볼 예정 5. 문서로 만들기 6. CORS 개념 주소로 들어오는 모든건…"
+description: "RestController 기반의 요청/응답, PathVariable, ResponseEntity, MessageConverter, CORS, Validation 등 스프링부트 기초 개념을 정리한 학습 노트이다."
 permalink: "study/2021/07/03/Springboot-AOP정리"
 ---
-### 중요하게 봐야 할 점
+
+## 중요하게 봐야 할 점
 
 1. RestController
-2. 기본적인 요청과 응답을 배울 것
-3. validation 체크
-4. 로그 남겨볼 예정
+2. 기본적인 요청과 응답
+3. Validation 체크
+4. 로그 남기기
 5. 문서로 만들기
 6. CORS 개념
 
 ---
 
-주소로 들어오는 모든건 String인데 Pathvariable이 해주는 건 주소에 적힌 아이디를 저 부분의 값을 넣었을 떄 int로 바꿈.
+## 요청과 응답 기초
 
+### PathVariable
+
+주소로 들어오는 값은 모두 String이다. `@PathVariable`은 주소에 적힌 아이디 값을 해당 파라미터에 넣을 때, 예를 들어 `int`로 변환해주는 역할을 한다.
+
+```java
 @GetMapping("/user")
 public void findAll() {
 }
@@ -27,37 +33,44 @@ public void findAll() {
 public void save(String username, String password, String phone) {
 
 }
+```
 
-그리고 postmapping은 유저로부터 정보 받는거고
-
----
-
-final은 상수, 한번 만들어지면 변경 불각
-또 컴파일 할때 초기화가 되어있어야 한다! 안 그러면 에러남.
-
-(final은 null이면 안된다. 무조건 값이 있어야 한다.)
-![20210704_021853](/assets/20210704_021853.png)
-lombok중 requiredArgsConstructor가 있는데
-
-이 어노테이션을 쓰면 밑에 new 생성자 부분을 안 적어도 된다.
-
-초기화 된 생성자를 만들어준다.
+`@PostMapping`은 유저로부터 정보를 받는 역할을 한다.
 
 ---
 
-여기서 userRepository로 findAll을 하게 되고 이걸 List 형식으로 받게 된다. 그리고 MessageConverter로 인해 JavaObject를 Json 문자열 형태로 받게 된다.
+### final 키워드
+
+- `final`은 상수로, 한번 만들어지면 변경이 불가능하다.
+- 컴파일할 때 초기화가 되어 있어야 한다. 그렇지 않으면 에러가 난다.
+- `final`은 null이면 안 되고, 무조건 값이 있어야 한다.
+
+![lombok @RequiredArgsConstructor 예시](/assets/20210704_021853.png)
+
+Lombok의 `@RequiredArgsConstructor`를 쓰면 아래에 `new` 생성자 부분을 직접 적지 않아도 된다. 초기화된 생성자를 자동으로 만들어 준다.
 
 ---
 
-스프링은 데이터 응답할 메시지 컨버터가 응답하는데 기본 동작이 json이다.
+### MessageConverter
 
-legacy는 메시지 컨버터를 내가 직접 설정해줘야 한다.(옛날 방식)
+`userRepository`로 `findAll`을 하면 결과를 List 형식으로 받게 된다. 이후 MessageConverter에 의해 Java Object가 JSON 문자열 형태로 변환되어 전달된다.
 
----
+- 스프링은 데이터를 응답할 때 MessageConverter가 처리하며, 기본 동작이 JSON이다.
+- legacy(옛날 방식)는 MessageConverter를 직접 설정해 줘야 한다.
 
+### ResponseEntity
+
+```java
 public ResponseEntity<T> save(@RequestBody User user) {
+```
 
-이 부분은 우리가 지정해주는 ResponseEntity쓰라는 뜻.
+이 부분은 우리가 직접 지정해주는 `ResponseEntity`를 쓰라는 뜻이다.
+
+---
+
+## CORS
+
+아래와 같이 클라이언트 HTML을 만들어 요청을 보내본다.
 
 ```
 <!DOCTYPE html>
@@ -98,26 +111,21 @@ public ResponseEntity<T> save(@RequestBody User user) {
 
 ```
 
-로 만들어두고
+실행하면 콘솔에 CORS 정책 관련 오류가 나온다.
 
-실행하면 콘솔에 이런 CORS 정책 관련 오류가 나온다.
+- CORS는 서버 외부에서 들어오는 요청을 모두 막는 정책이다. (자바스크립트로 장난질하는 경우가 많아 생긴 보안 장치)
+- `@CrossOrigin`을 붙이면 해당 요청은 CORS 정책과 상관없이 허용된다.
 
-하도 자바스크립트로 장난질을 많이 해서
-
-서버 외부에서 하는 요청을 모두 막는게 CORS.
-
-@CrossOrigin은 CORS정책 상관 없다고 풀게 된다.
-
-![20210704_222621](/assets/20210704_222621.png)
+![CORS 정책 오류 콘솔 화면](/assets/20210704_222621.png)
 
 ---
 
-Validation 체크
+## Validation 체크
 
-request와서 검사 할떄 노가다다 4자 들어와야되는데 10자 들어와서 검사하거나 한글 들어와야되는데 영어가 들어오거나 이러넉도 다 노가다.
+요청이 들어왔을 때 값을 직접 검사하는 것은 번거로운 작업이다. 예를 들어 4자가 들어와야 하는데 10자가 들어오거나, 한글이 들어와야 하는데 영어가 들어오는 경우 등을 일일이 확인해야 한다.
 
-컨트롤러에서 받는게 아니라 컨트롤러 전에 필터가 받음.
+이런 검증은 컨트롤러에서 받기 전에 필터 단계에서 먼저 받는다.
 
-user->dispatcher->/user주소가 있는 함수 찾음.
-
-,
+```
+user -> dispatcher -> /user 주소가 있는 함수를 찾음
+```
