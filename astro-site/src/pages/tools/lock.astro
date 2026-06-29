@@ -1,0 +1,117 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+<BaseLayout title="🔧 비공개 글 암호화 도구" description="브라우저에서 비밀글/보관함 글을 암호화" noindex={true}>
+  <div class="container">
+    <h1 class="page-title">🔧 비공개 글 암호화 도구</h1>
+    <p class="page-sub">npm 없이 <strong>어떤 PC·폰 브라우저</strong>에서도 비밀글(🔒)·보관함(📦) 글을 암호화합니다.</p>
+
+    <div class="prose">
+      <ol>
+        <li>아래에 <strong>분류·비밀번호·글 내용</strong>을 입력하고 <strong>[암호화]</strong>를 누른다.</li>
+        <li>나온 <strong>JSON</strong>을 <strong>복사</strong>(또는 다운로드)한다.</li>
+        <li>GitHub 저장소에서 표시된 <strong>경로</strong>에 그 파일명으로 새 파일을 만들어 JSON을 붙여넣고 커밋한다.<br/>
+          (github.com → 저장소 → 해당 폴더 → <em>Add file ▸ Create new file</em> → 파일명 입력 → 붙여넣기 → Commit)</li>
+        <li>배포되면 사이트 🔒/📦 에서 비번 입력 후 열람.</li>
+      </ol>
+      <p>※ 평문·비번은 이 브라우저에서만 처리되고 어디에도 전송되지 않습니다. 비번을 잊으면 복구 불가.</p>
+    </div>
+
+    <div class="tool-form">
+      <div class="tool-row">
+        <label><input type="radio" name="col" value="vault" checked /> 📦 보관함</label>
+        <label><input type="radio" name="col" value="locked" /> 🔒 비밀글</label>
+      </div>
+      <input type="password" id="pw" placeholder="비밀번호" autocomplete="off" />
+      <textarea id="md" rows="14" placeholder={`---\ntitle: "글 제목"\ndate: 2026-06-29\ndescription: "한 줄 설명"\n---\n\n본문을 마크다운으로...`}></textarea>
+      <button type="button" class="pg-btn" id="enc">암호화</button>
+    </div>
+
+    <div id="result" hidden class="tool-result">
+      <p>저장 위치: <code id="path"></code></p>
+      <textarea id="out" rows="8" readonly></textarea>
+      <div class="tool-row">
+        <button type="button" class="pg-btn" id="copy">JSON 복사</button>
+        <button type="button" class="pg-btn" id="dl">JSON 다운로드</button>
+      </div>
+    </div>
+    <p class="lock-err" id="err" hidden></p>
+  </div>
+
+  <script>
+    import { marked } from 'marked';
+
+    const ITER = 150000;
+    const enc = new TextEncoder();
+    const b64 = (buf) => btoa(String.fromCharCode(...new Uint8Array(buf)));
+
+    function parseFm(t) {
+      t = t.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+      const fm = {}; let body = t;
+      if (t.startsWith('---')) {
+        const e = t.indexOf('\n---', 3);
+        if (e > 0) {
+          const block = t.slice(3, e); body = t.slice(e + 4);
+          for (const line of block.split('\n')) {
+            const m = line.match(/^([A-Za-z_]+):\s*(.*)$/);
+            if (m) fm[m[1]] = m[2].trim().replace(/^["']|["']$/g, '');
+          }
+        }
+      }
+      return { fm, body };
+    }
+
+    async function sha16(s) {
+      const h = await crypto.subtle.digest('SHA-256', enc.encode(s));
+      return Array.from(new Uint8Array(h)).map((b) => b.toString(16).padStart(2, '0')).join('').slice(0, 16);
+    }
+
+    async function run() {
+      const err = document.getElementById('err'); err.hidden = true;
+      const pw = document.getElementById('pw').value;
+      const md = document.getElementById('md').value;
+      const col = document.querySelector('input[name=col]:checked').value;
+      if (!pw) { err.textContent = '비밀번호를 입력하세요.'; err.hidden = false; return; }
+      if (!md.trim()) { err.textContent = '글 내용을 입력하세요.'; err.hidden = false; return; }
+
+      const { fm, body } = parseFm(md);
+      const title = fm.title || '제목 없음';
+      const date = fm.date || new Date().toISOString().slice(0, 10);
+      const description = fm.description || '';
+      const html = marked.parse(body);
+
+      const salt = crypto.getRandomValues(new Uint8Array(16));
+      const base = await crypto.subtle.importKey('raw', enc.encode(pw), 'PBKDF2', false, ['deriveKey']);
+      const key = await crypto.subtle.deriveKey(
+        { name: 'PBKDF2', salt, iterations: ITER, hash: 'SHA-256' },
+        base, { name: 'AES-GCM', length: 256 }, false, ['encrypt']);
+      async function E(plain) {
+        const iv = crypto.getRandomValues(new Uint8Array(12));
+        const ct = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, enc.encode(plain));
+        return { iv: b64(iv), ct: b64(ct) };
+      }
+      const t = await E(JSON.stringify({ title, description }));
+      const b = await E(html);
+      const out = { date, salt: b64(salt), ivT: t.iv, ctT: t.ct, ivB: b.iv, ctB: b.ct };
+      const slug = await sha16(title + '|' + date);
+      const json = JSON.stringify(out, null, 2);
+
+      document.getElementById('path').textContent = `astro-site/src/content/${col}/${slug}.json`;
+      document.getElementById('out').value = json;
+      document.getElementById('result').hidden = false;
+      document.getElementById('dl').onclick = () => {
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(new Blob([json], { type: 'application/json' }));
+        a.download = slug + '.json'; a.click();
+      };
+    }
+
+    document.getElementById('enc').addEventListener('click', run);
+    document.getElementById('copy').addEventListener('click', () => {
+      const o = document.getElementById('out');
+      navigator.clipboard.writeText(o.value);
+      const btn = document.getElementById('copy'); const old = btn.textContent;
+      btn.textContent = '복사됨!'; setTimeout(() => (btn.textContent = old), 1500);
+    });
+  </script>
+</BaseLayout>

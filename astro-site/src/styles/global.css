@@ -265,6 +265,19 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display: none !important; }
 .lock-form input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
 .lock-err { margin: 12px 0 0; color: #d9534f; font-size: 13.5px; }
 
+/* ---- 암호화 도구 ---- */
+.tool-form { display: flex; flex-direction: column; gap: 12px; margin: 18px 0; }
+.tool-row { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+.tool-form input[type="password"], .tool-form textarea, .tool-result textarea {
+  width: 100%; padding: 11px 14px; border: 1px solid var(--border); border-radius: 9px;
+  background: var(--surface); color: var(--text); font-size: 14.5px; font-family: var(--sans);
+}
+.tool-form textarea, .tool-result textarea { font-family: var(--mono); font-size: 13px; line-height: 1.5; resize: vertical; }
+.tool-form input:focus-visible, .tool-form textarea:focus-visible, .tool-result textarea:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.tool-result { margin: 20px 0; display: flex; flex-direction: column; gap: 12px; }
+.tool-result code { word-break: break-all; }
+.locked-add { display: inline-block; margin: 14px 0 4px; font-size: 14px; }
+
 /* ---- 404 검색 폼 ---- */
 .nf-search { margin: 26px auto 0; max-width: 440px; display: flex; gap: 8px; }
 .nf-search input { flex: 1 1 auto; padding: 10px 14px; border: 1px solid var(--border); border-radius: 9px; background: var(--surface); color: var(--text); font-size: 15px; font-family: var(--sans); }

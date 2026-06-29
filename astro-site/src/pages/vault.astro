@@ -10,6 +10,7 @@ const entries = (await getCollection('vault'))
   <div class="container">
     <h1 class="page-title">📦 보관함</h1>
     <p class="page-sub">{entries.length}개의 글 · 비밀번호를 입력하면 목록이 열립니다.</p>
+    <a class="locked-add" href="/tools/lock.html">🔧 새 글 암호화 도구 (npm 없이 브라우저에서)</a>
 
     {entries.length === 0 ? (
       <p class="page-sub">아직 보관 글이 없습니다.</p>
