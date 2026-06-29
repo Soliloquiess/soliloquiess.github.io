@@ -1,5 +1,5 @@
 ---
-title: "[Backend] JDBC"
+title: "[Backend] Servlet, JSP"
 date: 2021-03-29
 category: "Backend"
 tags: ["Backend"]
