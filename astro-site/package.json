@@ -12,7 +12,9 @@
     "astro": "astro",
     "migrate": "node scripts/migrate.mjs",
     "lock": "node scripts/lock.mjs",
-    "lock-batch": "node scripts/lock-batch.mjs"
+    "lock-batch": "node scripts/lock-batch.mjs",
+    "lock:vault": "node scripts/lock-batch.mjs src/content/blog/_private/_vault-src vault",
+    "lock:locked": "node scripts/lock-batch.mjs src/content/blog/_private/_locked-src locked"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.11",
