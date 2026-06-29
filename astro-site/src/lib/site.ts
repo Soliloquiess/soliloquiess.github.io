@@ -16,12 +16,12 @@ export const SITE = {
   // AdSense (기존 값 이식). 비우면 광고 비활성.
   adsenseClient: 'ca-pub-1200017190012992',
 
-  // giscus 댓글 — 아래는 placeholder. 설정 후 채우면 활성화됨.
+  // giscus 댓글 — GitHub Discussions(Soliloquiess/soliloquiess.github.io) 연동
   giscus: {
-    repo: '',            // 예: 'Soliloquiess/blog-comments'
-    repoId: '',
-    category: 'Comments',
-    categoryId: '',
+    repo: 'Soliloquiess/soliloquiess.github.io',
+    repoId: 'MDEwOlJlcG9zaXRvcnkzNDMzMjIxNTU=',
+    category: 'Announcements',
+    categoryId: 'DIC_kwDOFHauK84DAE2H',
   },
 
   social: {
