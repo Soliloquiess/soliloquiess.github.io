@@ -25,6 +25,50 @@ export function getReadingTime(body: string | undefined): number {
   return Math.max(1, Math.round(chars / 600));
 }
 
+/** 제목에서 시리즈 키와 회차(part N / N일차 / WeekN)를 추출. */
+function seriesInfo(title: string): { key: string; part: number } {
+  let m = title.match(/^(.*?)\s*part\s*(\d+)\s*$/i);
+  if (m) return { key: m[1].trim(), part: Number(m[2]) };
+  m = title.match(/^(.*?)\s*(\d+)\s*일차\s*$/);
+  if (m) return { key: m[1].trim(), part: Number(m[2]) };
+  m = title.match(/^(.*?)\s*Week\s*0*(\d+)\s*$/i);
+  if (m) return { key: m[1].trim() + ' Week', part: Number(m[2]) };
+  return { key: title.trim(), part: 1 };
+}
+
+export interface SeriesItem { title: string; permalink: string; part: number; current: boolean }
+
+/** 같은 시리즈(part N·N일차·WeekN) 글 목록. 회차가 2종류 이상일 때만 시리즈로 인정. */
+export function getSeries(post: Post, all: Post[]): SeriesItem[] {
+  const me = seriesInfo(post.data.title);
+  const members = all.filter(
+    (p) => p.data.category === post.data.category && seriesInfo(p.data.title).key === me.key,
+  );
+  const parts = new Set(members.map((p) => seriesInfo(p.data.title).part));
+  if (members.length < 2 || parts.size < 2) return [];
+  return members
+    .map((p) => ({
+      title: p.data.title,
+      permalink: p.data.permalink,
+      part: seriesInfo(p.data.title).part,
+      current: p.id === post.id,
+    }))
+    .sort((a, b) => a.part - b.part);
+}
+
+/** 발행 글을 연도별로 묶어 내림차순 반환. */
+export function getPostsByYear(posts: Post[]): { year: number; posts: Post[] }[] {
+  const map = new Map<number, Post[]>();
+  for (const p of posts) {
+    const y = p.data.date.getFullYear();
+    if (!map.has(y)) map.set(y, []);
+    map.get(y)!.push(p);
+  }
+  return [...map.entries()]
+    .map(([year, posts]) => ({ year, posts }))
+    .sort((a, b) => b.year - a.year);
+}
+
 /** 같은 카테고리(+2)·공유 태그(+1) 점수로 관련 글 추천. */
 export function getRelatedPosts(post: Post, all: Post[], n = 4): Post[] {
   const tags = new Set(post.data.tags);

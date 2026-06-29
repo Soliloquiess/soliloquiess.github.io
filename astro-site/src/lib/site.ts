@@ -34,6 +34,7 @@ export const NAV = [
   { label: 'Blog', href: '/' },
   { label: 'Categories', href: '/categories.html' },
   { label: 'Tags', href: '/tags.html' },
+  { label: 'Archive', href: '/archive.html' },
   { label: 'About', href: '/about.html' },
 ];
 

@@ -1,14 +1,29 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCategories } from '../lib/posts';
+
+const categories = (await getCategories()).slice(0, 8);
 ---
 <BaseLayout title="404" noindex={true}>
   <div class="container" style="text-align:center; padding: 60px 0;">
     <h1 class="page-title" style="font-size:64px; margin-bottom:8px;">404</h1>
     <p class="page-sub">페이지를 찾을 수 없습니다. <strong>Don't Panic.</strong></p>
-    <p style="margin-top:24px;">
+
+    <form action="/search.html" method="get" class="nf-search">
+      <input type="search" name="q" placeholder="찾는 내용을 검색해 보세요" aria-label="검색어" />
+      <button type="submit" class="pg-btn">검색</button>
+    </form>
+
+    <p style="margin-top:20px;">
       <a class="pg-btn" href="/">← 홈으로</a>
       &nbsp;
-      <a class="pg-btn" href="/search.html">검색하기</a>
+      <a class="pg-btn" href="/archive.html">전체 글 보기</a>
     </p>
+
+    <div class="chip-cloud" style="justify-content:center; margin-top:28px;">
+      {categories.map((c) => (
+        <a href={`/categories/${encodeURIComponent(c.name)}.html`}>{c.name}<span class="count">{c.count}</span></a>
+      ))}
+    </div>
   </div>
 </BaseLayout>

@@ -38,6 +38,10 @@ const twitterCard = image ? 'summary_large_image' : 'summary';
     <link rel="icon" href="/favicon.ico" />
     <link rel="alternate" type="application/rss+xml" title={SITE.title} href="/feed.xml" />
 
+    <!-- Pretendard 폰트 (render-blocking @import 대신 preconnect + link) -->
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+
     <!-- 검색엔진 사이트 인증 (기존 이식) -->
     <meta name="google-site-verification" content={SITE.googleSiteVerification} />
     <meta name="naver-site-verification" content={SITE.naverSiteVerification} />
@@ -96,6 +100,31 @@ const twitterCard = image ? 'summary_large_image' : 'summary';
       </main>
       <Footer />
     </div>
+
+    <button id="to-top" class="to-top" aria-label="맨 위로" title="맨 위로" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
+    </button>
+
+    <!-- 맨 위로 버튼 + 검색 단축키(/) -->
+    <script is:inline>
+      (function () {
+        var btn = document.getElementById('to-top');
+        if (btn) {
+          var toggle = function () { btn.hidden = window.scrollY < 600; };
+          document.addEventListener('scroll', toggle, { passive: true });
+          toggle();
+          btn.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+        }
+        document.addEventListener('keydown', function (e) {
+          if (e.key !== '/' || e.metaKey || e.ctrlKey || e.altKey) return;
+          var t = e.target;
+          var tag = t && t.tagName ? t.tagName.toLowerCase() : '';
+          if (tag === 'input' || tag === 'textarea' || (t && t.isContentEditable)) return;
+          e.preventDefault();
+          location.href = '/search.html';
+        });
+      })();
+    </script>
 
     <script is:inline>
       (function () {

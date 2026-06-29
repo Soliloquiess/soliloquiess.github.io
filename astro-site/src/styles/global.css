@@ -1,7 +1,7 @@
 /* ============================================================
    Don't Panic — 디자인 시스템 (라이트/다크)
+   Pretendard 폰트는 BaseLayout <head>의 <link>로 로드 (render-blocking @import 제거)
    ============================================================ */
-@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
 
 :root {
   --bg:        #ffffff;
@@ -223,6 +223,50 @@ main { min-height: 64vh; padding: 38px 0 60px; }
 /* ---- ad (자동광고/Auto Ads) ---- */
 /* 광고가 채워지지 않으면(미승인/노필) 빈 공간이 남지 않도록 접는다 */
 ins.adsbygoogle[data-ad-status="unfilled"] { display: none !important; }
+
+/* ---- 읽기 진행 바 ---- */
+.read-progress { position: fixed; top: var(--topbar-h); left: 0; right: 0; height: 3px; z-index: 59; background: transparent; pointer-events: none; }
+.read-progress span { display: block; height: 100%; width: 0; background: var(--accent); transition: width .08s linear; }
+
+/* ---- 시리즈 네비게이션 ---- */
+.series { margin: 0 0 26px; border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 0 var(--radius) var(--radius) 0; background: var(--surface-2); padding: 14px 18px; }
+.series-label { display: block; font-size: 12px; font-family: var(--mono); color: var(--accent-2); letter-spacing: .04em; margin-bottom: 8px; }
+.series ol { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 4px; }
+.series li { font-size: 14.5px; color: var(--muted); }
+.series li.current { color: var(--text); font-weight: 700; }
+.series a { color: var(--accent-2); }
+
+/* ---- 공유 버튼 ---- */
+.share { margin: 36px 0 8px; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; }
+.share-label { font-size: 13.5px; color: var(--faint); font-weight: 600; }
+.share-btns { display: flex; flex-wrap: wrap; gap: 8px; }
+.share-btn { font-size: 13px; font-family: var(--mono); padding: 7px 13px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); color: var(--muted); cursor: pointer; line-height: 1; }
+.share-btn:hover { border-color: var(--accent); color: var(--accent-2); text-decoration: none; }
+.share-btn.copied { color: #fff; background: var(--accent); border-color: var(--accent); }
+
+/* ---- Archive (연도별) ---- */
+.archive-year { margin-top: 30px; }
+.archive-year > h2 { font-size: 22px; font-weight: 800; letter-spacing: -.02em; margin: 0 0 10px; padding-bottom: 8px; border-bottom: 2px solid var(--border); display: flex; align-items: baseline; gap: 10px; }
+.archive-year > h2 .cnt { font-size: 13px; font-weight: 600; color: var(--faint); font-family: var(--mono); }
+.archive-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.archive-list a { display: flex; align-items: baseline; gap: 12px; padding: 8px 10px; border-radius: 8px; }
+.archive-list a:hover { background: var(--surface-2); text-decoration: none; }
+.archive-list time { flex: 0 0 auto; font-size: 12.5px; color: var(--faint); font-family: var(--mono); width: 84px; }
+.archive-list .t { flex: 1 1 auto; color: var(--text); font-size: 15px; font-weight: 600; }
+.archive-list a:hover .t { color: var(--accent-2); }
+.archive-list .c { flex: 0 0 auto; font-size: 11.5px; color: var(--accent-2); background: var(--accent-bg); padding: 1px 8px; border-radius: 999px; }
+@media (max-width: 560px) { .archive-list .c { display: none; } .archive-list time { width: 72px; } }
+
+/* ---- 404 검색 폼 ---- */
+.nf-search { margin: 26px auto 0; max-width: 440px; display: flex; gap: 8px; }
+.nf-search input { flex: 1 1 auto; padding: 10px 14px; border: 1px solid var(--border); border-radius: 9px; background: var(--surface); color: var(--text); font-size: 15px; font-family: var(--sans); }
+.nf-search input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+/* ---- 맨 위로 버튼 ---- */
+.to-top { position: fixed; right: 20px; bottom: 22px; z-index: 58; width: 42px; height: 42px; border-radius: 50%; border: 1px solid var(--border); background: var(--surface); color: var(--muted); cursor: pointer; box-shadow: var(--shadow); display: inline-flex; align-items: center; justify-content: center; transition: color .15s ease, border-color .15s ease, transform .15s ease; }
+.to-top:hover { color: var(--accent-2); border-color: var(--accent); transform: translateY(-2px); }
+.to-top svg { width: 20px; height: 20px; }
+.to-top[hidden] { display: none; }
 
 /* ---- reading time ---- */
 .article-header .meta .reading { color: var(--faint); }

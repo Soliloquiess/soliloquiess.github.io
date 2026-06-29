@@ -3,7 +3,7 @@ import type { GetStaticPaths } from 'astro';
 import { render } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Giscus from '../components/Giscus.astro';
-import { getPublishedPosts, getRelatedPosts, getReadingTime, formatDate, type Post } from '../lib/posts';
+import { getPublishedPosts, getRelatedPosts, getReadingTime, getSeries, formatDate, type Post, type SeriesItem } from '../lib/posts';
 import { SITE, postUrl } from '../lib/site';
 
 export const getStaticPaths = (async () => {
@@ -15,12 +15,13 @@ export const getStaticPaths = (async () => {
       newer: i > 0 ? posts[i - 1] : null,
       older: i < posts.length - 1 ? posts[i + 1] : null,
       related: getRelatedPosts(post, posts, 4),
+      series: getSeries(post, posts),
     },
   }));
 }) satisfies GetStaticPaths;
 
-const { post, newer, older, related } = Astro.props as {
-  post: Post; newer: Post | null; older: Post | null; related: Post[];
+const { post, newer, older, related, series } = Astro.props as {
+  post: Post; newer: Post | null; older: Post | null; related: Post[]; series: SeriesItem[];
 };
 const { Content, headings } = await render(post);
 const { data } = post;
@@ -48,6 +49,7 @@ const jsonLd = {
 ---
 <BaseLayout title={data.title} description={data.description} type="article" image={`/og/${data.permalink}.png`}>
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  <div class="read-progress" aria-hidden="true"><span id="read-progress-bar"></span></div>
   <div class="container">
     <article>
       <header class="article-header">
@@ -64,6 +66,21 @@ const jsonLd = {
         )}
       </header>
 
+      {series.length > 1 && (
+        <nav class="series" aria-label="시리즈">
+          <span class="series-label">📚 시리즈</span>
+          <ol>
+            {series.map((s) => (
+              <li class={s.current ? 'current' : ''}>
+                {s.current
+                  ? <span>{s.part}. {s.title}</span>
+                  : <a href={postUrl(s.permalink)}>{s.part}. {s.title}</a>}
+              </li>
+            ))}
+          </ol>
+        </nav>
+      )}
+
       {showToc && (
         <details class="toc" open>
           <summary>목차</summary>
@@ -79,6 +96,16 @@ const jsonLd = {
 
       <div class="prose" data-pagefind-body>
         <Content />
+      </div>
+
+      <div class="share" data-url={canonical} data-title={data.title}>
+        <span class="share-label">이 글 공유하기</span>
+        <div class="share-btns">
+          <button type="button" class="share-btn" data-act="native" hidden>공유</button>
+          <a class="share-btn" data-act="x" href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(data.title)}&url=${encodeURIComponent(canonical)}`} rel="noopener" target="_blank">X</a>
+          <a class="share-btn" data-act="fb" href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(canonical)}`} rel="noopener" target="_blank">Facebook</a>
+          <button type="button" class="share-btn" data-act="copy">링크 복사</button>
+        </div>
       </div>
 
       <nav class="post-nav">
@@ -144,6 +171,50 @@ const jsonLd = {
         a.textContent = '#';
         h.appendChild(a);
       });
+
+      // 2-1) 본문 이미지 lazy 보강 (raw HTML <img> 포함)
+      document.querySelectorAll('.prose img:not([loading])').forEach(function (img) {
+        img.setAttribute('loading', 'lazy');
+        img.setAttribute('decoding', 'async');
+      });
+
+      // 3) 읽기 진행 바
+      var bar = document.getElementById('read-progress-bar');
+      var article = document.querySelector('article');
+      if (bar && article) {
+        var onScroll = function () {
+          var top = article.offsetTop;
+          var total = article.offsetHeight - window.innerHeight;
+          var p = total > 0 ? (window.scrollY - top) / total : 0;
+          bar.style.width = Math.max(0, Math.min(1, p)) * 100 + '%';
+        };
+        document.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('resize', onScroll, { passive: true });
+        onScroll();
+      }
+
+      // 4) 공유 버튼
+      var share = document.querySelector('.share');
+      if (share) {
+        var url = share.getAttribute('data-url');
+        var title = share.getAttribute('data-title');
+        var nativeBtn = share.querySelector('[data-act="native"]');
+        if (navigator.share && nativeBtn) {
+          nativeBtn.hidden = false;
+          nativeBtn.addEventListener('click', function () {
+            navigator.share({ title: title, url: url }).catch(function () {});
+          });
+        }
+        var copyBtn = share.querySelector('[data-act="copy"]');
+        if (copyBtn) copyBtn.addEventListener('click', function () {
+          navigator.clipboard.writeText(url).then(function () {
+            var old = copyBtn.textContent;
+            copyBtn.textContent = '복사됨!';
+            copyBtn.classList.add('copied');
+            setTimeout(function () { copyBtn.textContent = old; copyBtn.classList.remove('copied'); }, 1500);
+          }).catch(function () {});
+        });
+      }
     })();
   </script>
 </BaseLayout>
