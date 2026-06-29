@@ -3,7 +3,7 @@ title: "[Springboot] blogProject"
 date: 2021-06-26
 category: "Springboot"
 tags: ["Springboot"]
-description: "Springboot"
+description: "패키지 스캔 : 필요한 것들을 메모리 로드 IOC 싱글턴. 해당 패키지 이하로 만들어야 new 해서 만들어진다. 스프링은 properties도 되지만 yml에도 설정이 가능한데 스프링의 모든 파일의 설정을 yml에…"
 permalink: "study/2021/06/26/blogProject"
 ---
 패키지 스캔 : 필요한 것들을 메모리 로드 IOC 싱글턴.

@@ -3,7 +3,7 @@ title: "[Spring] springboot 보충"
 date: 2021-05-06
 category: "Spring"
 tags: ["Spring"]
-description: "Spring"
+description: "스웨거 대신 포스트맨 써도 되긴함. 1. 프로젝트 생성(starter project) package name: com.TODO 2. pom.xml-swagger dependency 추가 3. mvc 보조를 위한…"
 permalink: "class/2021/05/06/springboot보충"
 ---
 스웨거 대신 포스트맨 써도 되긴함.

@@ -3,7 +3,7 @@ title: "[Spring] SpringStudy-8일차"
 date: 2021-05-11
 category: "Spring"
 tags: ["Spring"]
-description: "Spring"
+description: "메이븐과 사용 라이브러리 Maven: 아파치 앤트의 대안으로 만들어짐. 아파치 라이센스로 배포되는 오픈 소스 소프트웨어 프로젝트를 진행하면서 사용하는 수 많은 라이브러리들을 관리해주는 도구. Gradle:…"
 permalink: "study/2021/05/11/SpringStudy-8일차"
 ---
 ### 메이븐과 사용 라이브러리

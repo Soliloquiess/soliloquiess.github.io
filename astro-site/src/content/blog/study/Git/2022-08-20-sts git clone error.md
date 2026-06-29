@@ -3,7 +3,7 @@ title: "[Git] Git Clone 에러"
 date: 2022-08-20
 category: "Git"
 tags: ["Git"]
-description: "Git"
+description: "Git Clone 에러 sts나 인텔리제이 쓰다 보면 아이디 패스워드 입력하는 란들이 있게 된다 근데 깃허브 21년 8월 30일 더 이상 일반 아이디 패스워드 형식이 지원이 끝났다고 뜬다. sts 경우 그런 에러를…"
 permalink: "study/2022/08/20/sts-git-clone-error"
 ---
 #### Git Clone 에러

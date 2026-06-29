@@ -3,7 +3,7 @@ title: "[Spring] SpringStudy-6일차"
 date: 2021-05-11
 category: "Spring"
 tags: ["Spring"]
-description: "Spring"
+description: "JPQL을 이용할 떄의 검색 단일 엔티티가 아니라 QueryDSL에서 필요한 쿼리를 직접 실행할 구조가 필요 Repository를 확장해서 JPQLQuery를 이용해 직접 JPQL을 생성해서 처리…"
 permalink: "study/2021/05/11/SpringStudy-6일차"
 ---
 ### JPQL을 이용할 떄의 검색

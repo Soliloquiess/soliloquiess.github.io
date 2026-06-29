@@ -3,7 +3,7 @@ title: "[Springboot] Springboot JWT"
 date: 2021-07-18
 category: "Springboot"
 tags: ["Springboot"]
-description: "Springboot"
+description: "JWT RFC를 사용.(시큐리티에서 다룸) JSON 객체를 사용해서 토큰 자체에 정보들을 저장하고 있는 WEB Token 이라고 정의할 수 있음. 특히 JWT를 이용하는 건 헤비하지 않고 간편하게 진행할 수 있음…"
 permalink: "study/2021/07/18/SpringBoot-JWT"
 ---
 ### JWT

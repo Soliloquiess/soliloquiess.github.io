@@ -3,7 +3,7 @@ title: "[Spring] SpringMVC DI~AOP"
 date: 2021-06-23
 category: "Spring"
 tags: ["Spring"]
-description: "Spring"
+description: "스프링 프레임워크 기업형 응용 프로그램을 보조하기 위한 쉬운 프레임워크 Spring : 분산형, 기업형 응용 프로그램, 개발을 위한 API, 결합력을 낮추는 DI, DB Transaction 처리, 로그처리 코드…"
 permalink: "study/2021/06/23/Spring-프레임워크-DI~AOP"
 ---
 #### 스프링 프레임워크

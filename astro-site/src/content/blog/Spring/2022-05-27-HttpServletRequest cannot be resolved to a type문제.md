@@ -3,7 +3,7 @@ title: "[Maven] HttpServletRequest cannot be resolved to a type 해결"
 date: 2022-05-25
 category: "Spring"
 tags: ["Spring"]
-description: "Spring"
+description: "Maven 프로젝트를 만드는 데 이클립스에서 HttpServlet이나 javax.servlet 패키지에 속해있는 클래스들을 못 찾았다. 이 경우 설정을 확인하기 위해 프로젝트를 클릭하고 또는 마우스 우클릭…"
 permalink: "class/2022/05/25/HttpServletRequest-cannot-be-resolved-to-a-type문제"
 ---
 Maven 프로젝트를 만드는 데

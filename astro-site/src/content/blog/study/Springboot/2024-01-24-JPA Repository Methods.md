@@ -3,7 +3,7 @@ title: "[Springboot] JPA Repository Methods"
 date: 2024-01-23
 category: "Springboot"
 tags: ["Spring"]
-description: "Spring"
+description: "JPA란 Spring Data JPA는 Java Persistence API (JPA)를 기반으로 하는 데이터 액세스를 지원하는 Spring 프레임워크의 일부입니다. JPA Repository는 데이터베이스와 상호…"
 permalink: "study/2024/01/23/JPA-Repository-Methods"
 ---
 ### JPA란

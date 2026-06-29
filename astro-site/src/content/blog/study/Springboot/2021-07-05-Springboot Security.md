@@ -3,7 +3,7 @@ title: "[Springboot] Springboot Security"
 date: 2021-07-05
 category: "Springboot"
 tags: ["Springboot"]
-description: "Springboot"
+description: "로 그냥 /info로 들어가면 아무나 들어가 졌지면 위의 securedEnabled true) // 특정 주소 접근시 권한 및 인증을 위한 어노테이션 활성화를 시키면 이제 아무나 못 들어 가게 막는다. 이제…"
 permalink: "study/2021/07/05/Springboot-Security"
 ---
 ```

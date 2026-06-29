@@ -3,7 +3,7 @@ title: "[Springboot] Springboot-AWS 정리"
 date: 2022-06-21
 category: "Springboot"
 tags: ["Springboot"]
-description: "Springboot"
+description: "Springboot & AWS 이용해서 배포하는 서비스까지 정리 환경설정 IntelliJ 인텔리제이 장점 강력한 추천 기능 훨씬 더 다양한 리팩토링 디버깅 기능 이클립스의 깃(Git)에 비해 훨씬 높은 자유도…"
 permalink: "study/2022/06/21/Springboot-AWS"
 ---
 #### Springboot & AWS 이용해서 배포하는 서비스까지 정리

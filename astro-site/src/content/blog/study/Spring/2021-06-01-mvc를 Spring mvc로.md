@@ -3,7 +3,7 @@ title: "[Spring] mvc를 Spring mvc로"
 date: 2021-06-01
 category: "Spring"
 tags: ["Spring"]
-description: "Spring"
+description: "일반 mvc로 구현하면 생산성이 떨어진다. 그래서 Spring mvc를 사용한다. 서블릿도 클래스. 프론트 컨트롤러와 핵심적으로 연결된 핸들러 매핑이란게 있었다. 클라이언트 요청에 대한 pojo를 찾아줌…"
 permalink: "study/2021/06/01/mvc를-Spring-mvc로"
 ---
 ![20210602_130416](/assets/20210602_130416.png)

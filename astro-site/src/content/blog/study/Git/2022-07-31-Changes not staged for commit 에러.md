@@ -3,7 +3,7 @@ title: "[Git] Git Changes not staged for commit 에러"
 date: 2022-07-31
 category: "Git"
 tags: ["Git"]
-description: "Git"
+description: "Git Changes not staged for commit 에러 종종 깃 커밋하다보면 저런 에러가 뜬다. (너무 화남) 그래서 이 기회에 그냥 적어두려고 한다. 다양한 에러가 있겠지만 일단 나같은 경우 이런식으로…"
 permalink: "study/2022/07/31/Changes-not-staged-for-commit-에러"
 ---
 #### Git Changes not staged for commit 에러

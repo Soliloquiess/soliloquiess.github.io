@@ -3,7 +3,7 @@ title: "[AWS]http를 https로 (SSL)"
 date: 2022-08-23
 category: "Docker"
 tags: ["AWS&Docker"]
-description: "AWS&Docker"
+description: "HTTP를 HTTPS로 리다이렉션 기본적으로 SSL같은 인증서를 설정해 주지 않으면 HTTP로 리다이렉트 되게 되고 주의 요함 같은 경고문을 띄우게 된다. 보안적인 측면에서도 HTTPS가 유리한 점이 많으므로…"
 permalink: "study/2022/08/23/http를-https로-(SSL)"
 ---
 #### HTTP를 HTTPS로 리다이렉션

@@ -3,7 +3,7 @@ title: "[Vue] Vue Router 실습"
 date: 2021-05-13
 category: "React-Vue"
 tags: ["Vue"]
-description: "Vue"
+description: "public 밑에 index.html 가 있었고 build하면 필요한 라이브러리와 css,html등 묶어서 배포할 파일 그걸 sts에 넣음. main.js 프로젝트 전체에서 가장 상위에 있는 스크립트 파일이라…"
 permalink: "class/2021/05/13/Vue-Router정리"
 ---
 public 밑에 index.html 가 있었고 build하면 필요한 라이브러리와 css,html등 묶어서 배포할 파일 그걸 sts에 넣음.

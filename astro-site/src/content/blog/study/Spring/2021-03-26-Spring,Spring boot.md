@@ -3,7 +3,7 @@ title: "[Spring] LOMBOK과 JPA"
 date: 2021-03-26
 category: "Spring"
 tags: ["Spring"]
-description: "Spring"
+description: "LOMBOK이란 자바 코딩할 때 힘든건 변수 선언하고 생성자라던지 각 변수마다 get,set이나 서브제너레이션 했는데 생성자에 대해서는 인텔리제이가 생성 안해주는데 그걸 한번에 해결해주는 게 롬복. 어노테이션…"
 permalink: "study/2021/03/26/Spring,Spring-boot"
 ---
 ### LOMBOK이란

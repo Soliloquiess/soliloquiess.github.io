@@ -1,5 +1,5 @@
 ---
-title: "layout: post"
+title: "[js] Javascript, Jquery part2"
 date: 2021-08-16
 category: "js"
 tags: []

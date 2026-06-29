@@ -3,7 +3,7 @@ title: "[React] React 기본정리 part3"
 date: 2021-10-04
 category: "React-Vue"
 tags: ["React-Vue"]
-description: "React-Vue"
+description: "이미지 넣는 법 & public 폴더 이용하기 리액트는 원래 좀 자유롭습니다. 이미지 넣는 법도 서너개 있습니다. 강의에서 사용하는 신발 이미지 URL 이거 붙여넣으면 가로로 균일하게 3개로 쪼개줍니다 모바일…"
 permalink: "study/2021/10/04/React-정리-part(Refactoring)"
 ---
 ### 이미지 넣는 법 & public 폴더 이용하기

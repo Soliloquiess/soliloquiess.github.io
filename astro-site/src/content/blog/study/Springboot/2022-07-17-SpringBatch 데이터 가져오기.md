@@ -3,7 +3,7 @@ title: "[Springboot] Spring Batch  데이터 가져오기"
 date: 2022-07-17
 category: "Springboot"
 tags: ["Springboot"]
-description: "Springboot"
+description: "Task 기반 배치와 Chunk 기반 배치 배치를 처리할 수 있는 방법은 크게 2가지 Tasklet을 사용한 Task 기반 처리 배치 처리 과정이 비교적 쉬운 경우 쉽게 사용 대량 처리를 하는 경우 더 복잡 하나의…"
 permalink: "study/2022/07/17/SpringBatch-데이터-가져오기"
 ---
 #### Task 기반 배치와 Chunk 기반 배치

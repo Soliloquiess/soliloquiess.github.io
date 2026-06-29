@@ -3,7 +3,7 @@ title: "[Spring] spring 스터디 3일차 자료"
 date: 2021-04-27
 category: "Spring"
 tags: ["Spring"]
-description: "Spring"
+description: "Mybatis 는 객체를 실제로 파라미터로 전달하고 sql로 사용하고 jdbc로 사용하고 끝남. 디비에서 조회하면 sql이 조회되고 그걸 객체화 해서 전달. jpa는 마이바티스는 1,3의 전달되는게 같지 않음…"
 permalink: "study/2021/04/27/SpringStudy-3일차"
 ---
 Mybatis 는 객체를 실제로 파라미터로 전달하고 sql로 사용하고  jdbc로 사용하고 끝남.

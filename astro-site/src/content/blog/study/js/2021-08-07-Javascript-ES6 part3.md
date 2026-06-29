@@ -1,5 +1,5 @@
 ---
-title: "layout: post"
+title: "[js] Javascript, ES6 part3"
 date: 2021-08-07
 category: "js"
 tags: []

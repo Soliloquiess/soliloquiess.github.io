@@ -3,7 +3,7 @@ title: "[Springboot] thymeleaf 게시물 번호 역순"
 date: 2022-08-01
 category: "Springboot"
 tags: ["Springboot"]
-description: "Springboot"
+description: "번호 전체 게시물 개수 (현재 페이지 페이지당 게시물 개수) 나열 인덱스 항목 설명 --- 번호 최종 표시될 게시물 번호 전체 게시물 개수 데이터베이스에 저장된 게시물 전체 개수 현재 페이지 페이징에서 현재 선택한…"
 permalink: "study/2022/08/01/thymeleaf-게시물-번호-역순"
 ---
 ***번호 = 전체 게시물 개수 - (현재 페이지 * 페이지당 게시물 개수) - 나열 인덱스***

@@ -3,7 +3,7 @@ title: "[Spring] SpringStudy-5일차"
 date: 2021-05-08
 category: "Spring"
 tags: ["Spring"]
-description: "Spring"
+description: "fetch는 필요하지 않으면 로딩하지 않는다.. 그냥 @ManyToOne쓰면 회원까지 같이 가져오는데 fetch lazy로 회원까지 같이 가져오지는 않게 한다. 두 엔티티각의 연관관계를 맺으면 쿼리를 실행하는…"
 permalink: "study/2021/05/08/SpringStudy-5일차"
 ---
 fetch는 필요하지 않으면 로딩하지 않는다..

@@ -3,7 +3,7 @@ title: "[Spring] springframework 적용 구현"
 date: 2021-04-30
 category: "Spring"
 tags: ["Spring"]
-description: "Spring"
+description: "Spring MVC 스프링이 제공하는 서블릿 기반의 MVC req 받으면 디스패쳐 서블릿이 받고 어떤 컨트롤러가 받는지 보고 그 매핑 과정이 대체 되었는지 보고 디스패쳐 서블릿이 받아서 그거가지고 체크한다. 쿼리…"
 permalink: "class/2021/04/30/FrameWork-적용-구현"
 ---
 ### Spring MVC

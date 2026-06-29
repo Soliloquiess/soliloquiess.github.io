@@ -3,7 +3,7 @@ title: "[Springboot] Springboot AOP 정리"
 date: 2021-07-03
 category: "Springboot"
 tags: ["Springboot"]
-description: "Springboot"
+description: "중요하게 봐야 할 점 1. RestController 2. 기본적인 요청과 응답을 배울 것 3. validation 체크 4. 로그 남겨볼 예정 5. 문서로 만들기 6. CORS 개념 주소로 들어오는 모든건…"
 permalink: "study/2021/07/03/Springboot-AOP정리"
 ---
 ### 중요하게 봐야 할 점

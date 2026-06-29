@@ -3,7 +3,7 @@ title: "[Springboot] Rest 정리"
 date: 2023-12-30
 category: "Springboot"
 tags: ["Spring"]
-description: "Spring"
+description: "Rest란 REST(Representational State Transfer)는 네트워크 아키텍처 원칙의 모음으로, 웹을 위한 소프트웨어 아키텍처의 한 형태. REST는 분산 시스템을 위한 기본적인 설계 원칙을…"
 permalink: "study/2023/12/30/springboot-및-Rest-정리"
 ---
 ### Rest란

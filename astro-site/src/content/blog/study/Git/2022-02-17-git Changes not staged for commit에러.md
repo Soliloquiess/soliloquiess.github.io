@@ -3,7 +3,7 @@ title: "[Git] Git Changes not staged for commit에러"
 date: 2022-02-17
 category: "Git"
 tags: ["Git"]
-description: "Git"
+description: "정상으로 깃 쓰던 레포지토리에 파일 추가하고 add .를 한 뒤 커밋을 하니까 이런 식으로 Changes not staged for commit: (use \"git add ...\" to update what…"
 permalink: "study/2022/02/17/git-Changes-not-staged-for-commit에러"
 ---
 정상으로 깃 쓰던 레포지토리에 파일 추가하고 add .를 한 뒤

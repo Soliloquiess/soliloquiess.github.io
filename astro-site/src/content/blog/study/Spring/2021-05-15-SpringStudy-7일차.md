@@ -3,7 +3,7 @@ title: "[Spring] SpringStudy-7일차"
 date: 2021-05-11
 category: "Spring"
 tags: ["Spring"]
-description: "Spring"
+description: "첨부파일 보여주는 영역 처리 json으로 실제 업로드 부분 ajax의 호출 결과는 show Result()라는 별도의 함수로 처리 ajax로 결과 가져오면 showResult()로 호출하도록 수정 이미지 파일의…"
 permalink: "study/2021/05/11/SpringStudy-7일차"
 ---
 첨부파일 보여주는 영역 처리

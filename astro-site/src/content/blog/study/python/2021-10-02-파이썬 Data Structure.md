@@ -3,7 +3,7 @@ title: "[python] python Data Structure"
 date: 2021-06-02
 category: "python"
 tags: ["Python"]
-description: "Python"
+description: "배열(Array), List(Python) 1. 배열은 왜 필요할까? 같은 종류의 데이터를 효율적으로 관리하기 위해 사용 같은 종류의 데이터를 순차적으로 저장 장점: 빠른 접근 가능 첫 데이터의 위치에서 상대적인…"
 permalink: "study/2021/06/02/파이썬-Data-Structure"
 ---
 #### 배열(Array), List(Python)

@@ -3,7 +3,7 @@ title: "[Spring] MVC FrontController, Pojo이용"
 date: 2021-05-29
 category: "Spring"
 tags: ["Spring"]
-description: "Spring"
+description: "클라이언트의 요청을 개별 컨트롤러에 연결해서 처리했는데 FrontController를 쓰면 모든 요청을 프론트 컨트롤러가 먼저 받게 된다. 서블릿도 자바고 서블릿은 웹에서 실행되는 골격 순수한 자바는 틀은 없음…"
 permalink: "study/2021/05/29/mvc-frontcontroller,pojo"
 ---
 클라이언트의 요청을 개별 컨트롤러에 연결해서 처리했는데 FrontController를 쓰면 모든 요청을 프론트 컨트롤러가 먼저 받게 된다.

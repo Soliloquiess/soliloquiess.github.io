@@ -3,7 +3,7 @@ title: "[Spring] MVC mybatis, session"
 date: 2021-06-01
 category: "Spring"
 tags: ["Spring"]
-description: "Spring"
+description: "mybatis는 jdbc로 수정하면 일일이 수정하면 유지보수하는데 어려움을 겪는다. 그리고 모든 쿼리 작성 이런걸 개발자가 작성해야되서 개발 속도가 되게 느리다. 그걸 해결해주는게 mybatis 그리고…"
 permalink: "study/2021/06/01/mybatis,session"
 ---
 mybatis는 jdbc로 수정하면 일일이 수정하면 유지보수하는데 어려움을 겪는다.

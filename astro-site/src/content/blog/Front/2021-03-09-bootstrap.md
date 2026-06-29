@@ -3,7 +3,7 @@ title: "[front] BootStrap&Ajax"
 date: 2021-03-09
 category: "Front"
 tags: ["Front"]
-description: "front"
+description: "Ajax(Asynchronous Javascript And XML) Ajax 소개 Ajax 는 언어나 프레임워크가 아닌 구현하는 방식 의미 Ajax 는 웹에서 화면을 갱신하지 않고 데이터를 서버로부터 가져와…"
 permalink: "class/2021/03/09/bootstrap"
 ---
 ### Ajax(Asynchronous Javascript And XML)

@@ -3,7 +3,7 @@ title: "IBXActivate 설정"
 date: 2022-11-09
 category: "etc"
 tags: ["etc"]
-description: "etc"
+description: "1 . cn 으로 시작하는 인증키로부터 인증키를 ibk 기업은행에 공공인증서 확인이라는 곳에 간다. 1-1 . 공동인증서 로그인에서 위 받은 인증서를 넣고 비밀번호를 넣어준다. 2 . NPKI 는…"
 permalink: "etc/2022/11/09/IBXActivate"
 ---
 1 . cn= 으로 시작하는 인증키로부터 인증키를  ibk 기업은행에 공공인증서 확인이라는 곳에 간다. 

@@ -3,7 +3,7 @@ title: "[Springboot] Spring에서 Batch 파일 사용"
 date: 2022-07-15
 category: "Springboot"
 tags: ["Springboot"]
-description: "Springboot"
+description: "Spring Batch 큰 단위의 작업을 일괄 처리 대부분 처리량이 많고 비 실시간성 처리에 사용 대용량 데이터 계산, 정산, 통계, 데이터베이스, 변환 등 사용자 상호작용으로 실행되기 보단, 스케줄러와 같은…"
 permalink: "study/2022/07/15/Spring-Batch-파일-사용"
 ---
 ### Spring Batch

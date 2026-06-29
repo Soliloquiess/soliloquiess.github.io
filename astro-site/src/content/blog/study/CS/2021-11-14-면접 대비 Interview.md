@@ -3,7 +3,7 @@ title: "[CS] 면접 대비 Interview"
 date: 2021-11-14
 category: "CS"
 tags: ["CS"]
-description: "CS"
+description: "브라우저 동작 방법 언어 가비지 컬렉션이란? 정리되지 않은 메모리, 유효하지 않은 메모리 주소인 가비지를 정리해주는 프로그램 Heap 메모리를 재활용 하기위해 참조되지 않는 객체들을 해제시켜 가용한 공간을 만드는…"
 permalink: "study/2021/11/14/면접-대비-Interview"
 ---
 # 브라우저 동작 방법

@@ -3,7 +3,7 @@ title: "[CS] 면접 대비 Web(Spring~Devops)"
 date: 2021-11-13
 category: "CS"
 tags: ["CS"]
-description: "CS"
+description: "[Spring] Bean Scope Bean은 스프링에서 사용하는 POJO 기반 객체다. 상황과 필요에 따라 Bean을 사용할 때 하나만 만들어야 할 수도 있고, 여러개가 필요할 때도 있고, 어떤 한 시점에서만…"
 permalink: "study/2021/11/13/면접-대비-Web(spring~devops)"
 ---
 # [Spring] Bean Scope

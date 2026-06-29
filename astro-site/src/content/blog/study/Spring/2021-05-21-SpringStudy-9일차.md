@@ -3,7 +3,7 @@ title: "[Spring] SpringStudy-9일차"
 date: 2021-05-11
 category: "Spring"
 tags: ["Spring"]
-description: "Spring"
+description: "자바 ORM 표준 JPA 프로그래밍 6장 06 다양한 연관관계 매핑 엔티티의 연관관계를 매핑할 때는 다음 3가지 고려사항이 있다. 다중성 단방향, 양방향 연관관계의 주인 다중성 다대일: @ManyToOne 일대다:…"
 permalink: "study/2021/05/11/SpringStudy-9일차"
 ---
 ### 자바 ORM 표준 JPA 프로그래밍 6장

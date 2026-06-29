@@ -3,7 +3,7 @@ title: "[Algorithm]] Algorithm Learn"
 date: 2021-03-14
 category: "algorithm"
 tags: ["Algorithm"]
-description: "Algorithm"
+description: "20210315 bfs는 최단인 경우 (최단경로 뽑을 떄) 사용 하는 경우가 많음. 근데 한계가 있는데 정점당 비용이 동일할 때 최단 거리 구하기 가능하나 이 조건에 위배시 bfs로 구할 수 없다. 이 경우엔…"
 permalink: "study/2021/03/14/Algorithm-보충"
 ---
 20210315

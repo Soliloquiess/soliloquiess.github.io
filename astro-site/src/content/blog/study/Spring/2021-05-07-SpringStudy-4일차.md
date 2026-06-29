@@ -3,7 +3,7 @@ title: "[Spring] SpringStudy-4일차"
 date: 2021-05-07
 category: "Spring"
 tags: ["Spring"]
-description: "Spring"
+description: "ServiceImpl의 Read부분으로 이동 이 3부분 필요 여기서 read하면 read.html이 떠야한다. modify도 동일. 두가지 한번에 처리하도록 묶어서 (배열로)처리 read.html에 dto라고…"
 permalink: "study/2021/05/07/SpringStudy-4일차"
 ---
 ```

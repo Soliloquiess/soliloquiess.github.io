@@ -1,5 +1,5 @@
 ---
-title: "layout: post"
+title: "[js] TypeScript part2"
 date: 2022-03-22
 category: "js"
 tags: []

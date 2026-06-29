@@ -1,5 +1,5 @@
 ---
-title: "layout: post"
+title: "[js] Javascript, ES6 이전 내용"
 date: 2022-03-18
 category: "js"
 tags: []

@@ -3,7 +3,7 @@ title: "[Spring] SpringRestAPI"
 date: 2021-05-03
 category: "Spring"
 tags: ["Spring"]
-description: "Spring"
+description: "REST 서비스란? HTTP URI + HTTP METHOD HTTP URI 를 통해 제어할 자원(Resource)를 명시하고 HTTP METHOD(GET, POST, PUT, DELETE)를 통해 해당…"
 permalink: "class/2021/05/03/SpringRestAPI"
 ---
 ### REST 서비스란?

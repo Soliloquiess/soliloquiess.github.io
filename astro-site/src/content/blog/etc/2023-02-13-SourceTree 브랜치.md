@@ -3,7 +3,7 @@ title: "Sourcetree 사용 중 충돌 해결법"
 date: 2023-02-13
 category: "etc"
 tags: ["etc"]
-description: "etc"
+description: "git을 사용 중 pull시 충돌 에러가 나오며 원하는 동작이 실행되지 않을 경우 내가 수정한 소스와 상대방이 push하여 원격 저장소에 올라간 소스와 충돌 났다. 이 경우에는 브랜치를 하나 생성해서 그 브랜치에…"
 permalink: "etc/2023/02/13/SourceTree-브랜치"
 ---
 git을 사용 중 pull시 충돌 에러가 나오며 원하는 동작이 실행되지 않을 경우

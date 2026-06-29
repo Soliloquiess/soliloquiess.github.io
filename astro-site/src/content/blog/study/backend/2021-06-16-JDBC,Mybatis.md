@@ -3,7 +3,7 @@ title: "[backend] JDBC,Mybatis"
 date: 2021-06-16
 category: "backend"
 tags: ["backend"]
-description: "backend"
+description: "Mybatis란? JDBC에 다 쓰던 SQL과 쿼리문을 분리시키자. 그럼 자바소스에서 SQL 쓰려면 API가 필요해질텐데? 자바 소스코드에서 SQL 연결하는 거를 마이바티스에서는 Mapping이라 하고 이…"
 permalink: "study/2021/06/16/JDBC,Mybatis"
 ---
 ### Mybatis란?

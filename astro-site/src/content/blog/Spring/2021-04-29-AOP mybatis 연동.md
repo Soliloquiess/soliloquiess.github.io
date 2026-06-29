@@ -3,7 +3,7 @@ title: "[Spring] AOP Mybatis"
 date: 2021-04-29
 category: "Spring"
 tags: ["Spring"]
-description: "Spring"
+description: "스프링에서 세팅 xml dao를 대신하는거(정확히 jdbc 대신) xml에 세팅하면 됨 그리고 conn이 접속해야 되는 url, id,pass가 뭔 xml에 세팅만 또 실행해야 하는 쿼리문이 뭔지 xml에…"
 permalink: "class/2021/04/29/AOP-mybatis-연동"
 ---
 스프링에서 세팅 = xml

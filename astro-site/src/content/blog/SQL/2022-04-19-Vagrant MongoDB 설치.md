@@ -3,7 +3,7 @@ title: "[SQL] Vagrant 실행"
 date: 2022-04-19
 category: "SQL"
 tags: ["SQL"]
-description: "SQL"
+description: "vagrant init vagrant up 과정은 동일하다 vagrant.file을 바꾸는데 위와 같이 바꿔준다. 이후 방화벽 권한과 yum 설치를 진행해준다. 여기로 들어가서 이 nano나 vim을 이용해 파일을…"
 permalink: "class/2022/04/19/Vagrant-MongoDB-설치"
 ---
 vagrant init - vagrant up 과정은 동일하다

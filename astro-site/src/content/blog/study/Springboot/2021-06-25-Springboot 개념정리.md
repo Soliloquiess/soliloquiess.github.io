@@ -3,7 +3,7 @@ title: "[Springboot] Springboot 개념정리"
 date: 2021-06-25
 category: "Springboot"
 tags: ["Springboot"]
-description: "Springboot"
+description: "Springboot with JPA 출처: IoC : Singleton으로 bean을 관리하는 Container DI : 인스턴스 생성시 IoC컨테이너에서 singleton으로 관리하는 bean들을 변수에 의존성…"
 permalink: "study/2021/06/25/Springboot-개념정리"
 ---
 ### Springboot with JPA

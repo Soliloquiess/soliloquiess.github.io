@@ -3,7 +3,7 @@ title: "[Spring] SpringMVC 기능들"
 date: 2021-06-09
 category: "Spring"
 tags: ["Spring"]
-description: "Spring"
+description: "XML로 세팅하기 Dispatcher서블릿이 가진 변수에 이 값을 집어넣겠다. URL MAPPING 이게 context-path다. Servlet/JSP URL 주소 사용자가 서버에 접속해서 서비스를 받기 위해…"
 permalink: "study/2021/06/09/SpringMVC-기능들"
 ---
 ###XML로 세팅하기

@@ -3,7 +3,7 @@ title: "[Springboot] Spring Batch 를 사용한 일괄 처리"
 date: 2022-07-16
 category: "Springboot"
 tags: ["Springboot"]
-description: "Springboot"
+description: "Spring Batch 쓰는 이유 스프링 배치는 스프링에 내장 되어 있다. 대용량에 있어 배치 처리에 용이하다(일괄 처리) 다양한 형태의 IO가 가능하다(XML , JSON, SQL 등) 시작, 중지 재시작 이런…"
 permalink: "study/2022/07/16/Spring-Batch-를-사용한-일괄-처리"
 ---
 ### Spring Batch 쓰는 이유

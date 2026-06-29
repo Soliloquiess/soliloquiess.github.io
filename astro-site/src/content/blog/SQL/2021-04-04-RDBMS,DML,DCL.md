@@ -3,7 +3,7 @@ title: "[SQL] RDBMS,DCL,DDL,DML"
 date: 2021-04-04
 category: "SQL"
 tags: ["SQL"]
-description: "SQL"
+description: "RDBMS? 관계형 데이터베이스 시스템 에티블 기반의 DBMS 1. 데이터를 테이블 단위로 관리 하나의 테이블은 여러개의 컬럼으로 구성 2. 중복데이터를 최소화함 같은 데이터가 여러 컬럼 또는 테이블에 존재했을…"
 permalink: "class/2021/04/04/RDBMS,DML,DCL"
 ---
 ## RDBMS?

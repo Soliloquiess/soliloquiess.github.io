@@ -3,7 +3,7 @@ title: "http, https과 fiddler, 개발자도구 사용 개념."
 date: 2022-10-20
 category: "etc"
 tags: ["etc"]
-description: "etc"
+description: "HTTP는 Hypertext Transfer Protocol의 약자 HTTP 프로토콜은 서로 다른 통신 시스템 간의 통신을 제공한다. 사용자가 브라우저에서 HTTP 요청을 하면 웹 서버는 요청된 데이터를 웹 페이지…"
 permalink: "etc/2022/10/20/http_https"
 ---
 #### HTTP는 Hypertext Transfer Protocol의 약자
