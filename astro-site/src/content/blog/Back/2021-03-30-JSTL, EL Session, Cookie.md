@@ -1,53 +1,61 @@
 ---
-title: "[Backend] JSTL, EL Session, Cookie"
+title: "[Backend] JSTL·EL·Session·Cookie — JSP 데이터 처리와 상태 관리"
 date: 2021-03-29
 category: "Backend"
 tags: ["Backend"]
-description: "참고로 나중에 뷰 쓰면 제이쿼리는 전혀 안 쓴다.(이건 걍 그렇다고) rs pstmt.executeQuery(); //리턴타입 먼저 설정하면 이클립스가 메서드 알아서 자동추가란에 올려주니 리턴타입을 먼저 주고…"
+description: "DTO/DAO 패턴으로 서블릿과 DB를 분리하고, Request·Session·Application 스코프 차이, Cookie를 이용한 아이디 저장 기능을 정리한 학습노트."
 permalink: "class/2021/03/29/JSTL,-EL-Session,-Cookie"
 ---
-![20210330_092559](/assets/20210330_092559.png)
-![20210330_092534](/assets/20210330_092534.png)
-![20210330_092523](/assets/20210330_092523.png)
 
-참고로 나중에 뷰 쓰면 제이쿼리는 전혀 안 쓴다.(이건 걍 그렇다고)
+## DTO와 DAO 패턴 준비
 
-rs = pstmt.executeQuery();	//리턴타입 먼저 설정하면 이클립스가 메서드 알아서 자동추가란에 올려주니 리턴타입을 먼저 주고 코딩하자.
+![DTO/DAO 관계 구조 1](/assets/20210330_092559.png)
 
-DTO는 테이블의 컬럼과 일반적으로 일치.
+![DTO/DAO 관계 구조 2](/assets/20210330_092534.png)
 
-//dto는 앞으로 자주 만든다.
+![DTO/DAO 관계 구조 3](/assets/20210330_092523.png)
 
-alt + (S + R + A +R )은 게터세터 한번에 단축키로 만드는
+> 참고: 나중에 Vue를 사용하면 jQuery는 전혀 쓰지 않는다.
 
+**DTO (Data Transfer Object)**는 테이블의 컬럼과 일반적으로 1:1 대응한다.
 
-서블릿 안에는 절대 html 코딩하면 안된다!
+```java
+rs = pstmt.executeQuery();  // 리턴 타입을 먼저 선언하면 IDE가 메서드를 자동 추가 목록에 올려준다.
+```
 
+- **DTO**는 앞으로 자주 만들게 된다.
+- `Alt + S → R → A → R`: 게터·세터(Getter/Setter)를 단축키 한 번에 생성
 
-![20210330_144935](/assets/20210330_144935.png)
-
-어차피 에러페이지 만들 거.
-
-리다이렉트는 리퀘스트에 아무리 담아도 다 버리고 가서 리퀘스트에 담을떄는 포워드로 담아야 한다.
-
-
-눌렀을 때 안되면 콘솔창 보면서 에러 보자(친절하게 다 나와있다)
-
-memberdto를 index에 담음.
-포워드는 바로 다음페이지까지만 리퀘스트 유지됨.
-거의 대부분에 담을건 리퀘스트 사용하면 안됨(일회성)
-세션에 담는다.
-![20210330_144935](/assets/20210330_144935_7dc2o8052.png)
-리퀘스트 세션 어플리케이션은 ,set,get 리무브 공통으로 지니는데 스코프만 다름.
-
-
-![20210330_152810](/assets/20210330_152810.png)
- 세션을 30분동안 건드리지 않으면 아웃됨
-만약 29분에 건드리면 다시 30분 세션 기다린 후에 아웃.
+> **서블릿 안에는 절대 HTML 코딩을 하면 안 된다.**
 
 ---
 
-![20210330_155120](/assets/20210330_155120.png)
+## Request·Session·Application 스코프
 
+![에러 페이지 처리](/assets/20210330_144935.png)
 
-아이디 저장 키누르면
+- **sendRedirect**: request에 아무리 데이터를 담아도 **모두 버리고** 이동 → 데이터 전달 시 **forward** 사용
+- **forward**: 다음 페이지까지만 request가 유지됨 (일회성)
+
+대부분의 데이터는 request에 담으면 안 된다. → **Session에 담는다.**
+
+![Session 스코프 예시](/assets/20210330_144935_7dc2o8052.png)
+
+**Request·Session·Application** 세 객체는 `setAttribute` / `getAttribute` / `removeAttribute`를 공통으로 가지며, 차이는 **스코프(유효 범위)**뿐이다.
+
+---
+
+## Session 관리
+
+![Session 타임아웃 설정](/assets/20210330_152810.png)
+
+- 세션은 **30분** 동안 아무 동작이 없으면 만료
+- 29분에 접근하면 다시 30분이 초기화되어 대기
+
+---
+
+## Cookie — 아이디 저장 기능
+
+![Cookie 아이디 저장 기능](/assets/20210330_155120.png)
+
+아이디 저장 체크 시 Cookie에 아이디를 저장하고, 다음 방문 시 자동으로 입력란에 채워준다.

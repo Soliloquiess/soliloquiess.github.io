@@ -1,158 +1,113 @@
 ---
-title: "[backend] SpringWeb MVC 만들기"
+title: "[backend] Spring MVC 구조 — DispatcherServlet, DI, 그리고 어노테이션 기반 컨트롤러"
 date: 2021-06-21
 category: "Backend"
 tags: ["Backend"]
-description: "MVC에서 C인 컨트롤러 부분이 FrontConotroller+Pojo로 이루어져 있었다. 이 서블릿도 클래스. 그리고 이 프론트 컨트롤러가 핸들러매핑과 연결되어있었는데 클라이언트 요청에 대한 pojo가 누구인지…"
+description: "순수 서블릿 기반의 FrontController + POJO 구조가 Spring MVC에서 DispatcherServlet과 어노테이션으로 어떻게 대체되는지, 그리고 DI(의존성 주입) 컨테이너의 역할을 정리한다."
 permalink: "study/2021/06/21/SpringWEB-MVC만들기"
 ---
-MVC에서 C인 컨트롤러 부분이
-FrontConotroller+Pojo로 이루어져 있었다.
 
+## 기존 MVC 구조 복습
 
-이 서블릿도 클래스.
+기존 MVC에서 **C(Controller)** 부분은 **FrontController + POJO** 로 이루어져 있었다.
 
+- **FrontController**: 서블릿 클래스. 핸들러 매핑과 연결되어 클라이언트 요청에 대응하는 POJO를 찾아준다.
+- **POJO**: 뷰(View)의 경로를 리턴하고, 모델(Model)과 연결해 DB CRUD를 실행한다.
+- **ViewResolver**: FrontController가 최종적으로 뷰 리졸버를 통해 JSP에 포워딩한다.
 
-그리고 이 프론트 컨트롤러가 핸들러매핑과 연결되어있었는데 클라이언트 요청에 대한 pojo가 누구인지 찾아주는 역할이 핸들러 매핑.
-
-이 pojo들이 뷰에 경로 리턴.
-
-
-pojo가 모델과 연결하고 모델이 db와 연결.
-
-그리고 crud 실행.
-
-이 프론트 컨트롤러가 최종적으로 뷰리졸브에서 얻어오고 jsp에 포워딩한다.
-
-pojo는
-1. 객체 바인딩
-2. next페이지 준다.
-
-이렇게 리턴해주면 뷰리졸버에 리턴하고 객체바인딩한거 읽어와서 준다. 결과를 슬라이드한테 응답한다.
-
-MVC의 C가 이렇게 변형이 되었다.
+POJO의 역할:
+1. **객체 바인딩** — 모델 데이터를 request/세션에 담음
+2. **next 페이지 리턴** — 이동할 뷰 경로 반환
 
 ![20210621_025333](/assets/20210621_025333.png)
 
-이렇게 전체적인 경로
-
+위 흐름이 기존 MVC의 전체 경로이다.
 
 ![20210621_030415](/assets/20210621_030415.png)
 
-근데 스프링에선 이 세 기능들을 미리 하는 기능들이 만들어져있다.
+Spring에서는 이 세 기능(FrontController, 핸들러 매핑, ViewResolver)이 프레임워크에 **미리 내장**되어 있다.
 
-]
-기존의 MVC가 스프링으로 넘어가면서 인터페이스 안씀.
+---
+
+## Spring MVC로의 전환
+
+기존 MVC에서는 POJO가 공통 `Controller` 인터페이스를 구현해야 했기 때문에 메서드 이름이 고정되었다.
 
 ![20210621_033811](/assets/20210621_033811.png)
 
-인터페이스 써버리 이름이 똑같아지기 떄문에
+**Spring MVC에서 달라지는 점:**
 
-스프링 부분에선 인터페이스 부분이 없어진다.
-
-인터페이스를 쓰지 않으면서 메서드 이름을 바꿔도 된다.
-
-핸들러 매핑이 사라지고 어떤 요청이 오면 바로 메서드와 연결이 되게 바뀐다.
+| 구성 요소 | 기존 MVC | Spring MVC |
+|---|---|---|
+| FrontController | 직접 서블릿 구현 | `DispatcherServlet` (프레임워크 제공) |
+| 핸들러 매핑 | 직접 구현 | 어노테이션 기반 자동 처리 |
+| ViewResolver | 직접 구현 | 프레임워크 제공 |
+| Controller 인터페이스 | 필수 구현 | 불필요 — 메서드 이름 자유 |
 
 ![20210621_035739](/assets/20210621_035739.png)
 
-어노테이션을 핸들러매핑이 처리함.
-
-핸들러 매핑은 내부적으로 제공해줌.
-
-프론트 컨트롤러는 pojo와 연결 되는데 프론트 컨트롤러도 핸들러 매핑이 없어지므로 pojo와 내부적으로 연결시킬뿐 프론트 컨트롤러도 없어짐.
-뷰 리졸버 또한 스프링에서 제공
+**어노테이션**으로 요청 URL과 메서드를 직접 매핑하므로, 핸들러 매핑이 내부적으로 처리된다. FrontController도 `DispatcherServlet`으로 대체되어 별도 구현이 없어진다.
 
 ![20210621_040139](/assets/20210621_040139.png)
 
-스프링은 그냥 멤버 컨트롤러에서 바로 작업하면 된다.
-
+Spring에서는 `MemberController`에서 바로 작업하면 된다.
 
 ![20210621_041017](/assets/20210621_041017.png)
 
-스프링은 이렇게 다 어노테이션으로 기호가 바뀐다.
+Spring은 이처럼 모든 설정을 **어노테이션** 기호로 처리한다.
 
+---
 
+## pom.xml과 Maven 의존성 관리
 
-pom.xml이 project object model로서 메이븐 툴에서 가장 중요한 파일로 이게 있어야 설정파일이 다 들어있어서 이걸 기반으로 돌게 된다.
+**pom.xml(Project Object Model)** 은 Maven 빌드 툴에서 가장 중요한 파일로, 프로젝트 설정과 라이브러리 관리를 담당한다.
 
-얘로 할수 있는 가장 중요한 것중 하나가 라이브러리 관리이다.ㄴ
-
+`<dependency>` 태그에 사용할 API를 선언하면 Maven이 **mvnrepository**에서 자동으로 다운로드한다.
 
 ![20210621_042917](/assets/20210621_042917.png)
 
-Dependency로 의존하고 자바에서 이런 api를 쓰고싶다는 걸 pom.xml로 적어주면 이 api가 자동으로 다운로드가 된다.
+---
 
-mvnrepository 여기 저장소가 있는데 다운이 된다.
+## DispatcherServlet과 root-context.xml
 
+기존 MVC의 FrontController를 Spring에서는 **DispatcherServlet**이 대신한다. 이를 정의하는 파일이 XML 설정 파일이며, 서버 기동 시 이 파일을 읽어 사전 작업을 수행한다.
 
--------
+- **root-context.xml**: 가장 먼저 실행되는 설정 파일. DB 연결 설정을 담당한다.
 
-
-우리가 기존 mvc에서 프론트 컨트롤러로 했지만 스프링은 대신 DispatcherServlet으로 만들어져있다. 이걸 정의해놓은 파일이 xml파일이고 이걸 리딩해서 사전에 작업하게 된다.
-
-root-context파일은 가장 먼저 실행된다.
-
-이 파일을 읽어들여서 이 xml파일 안에 있는 내용 읽음.
+Spring → MyBatis → JDBC → DB
 
 ![20210621_092335](/assets/20210621_092335.png)
 
-
-spring이 mybatis연결하고 mybatis가 jdbc연결
-
-root-context.xml에서 디비설정을 한다.
-
-
 ![20210621_095104](/assets/20210621_095104.png)
 
-스프링은 클래스 설정할 떄 bean으로 설정한다.
-A class 설정할때
-1) A a = new A(); 또는
-2) xml-> <bean id = "a" class="A/>이런식으로 만든다.
-이런게 리플렉션 기법임.
-어떤 클래스 이름만 알면 객체를 내부적으로 생성이 가능.
+Spring에서 클래스를 설정할 때는 **bean**으로 등록한다.
 
-이 xml에다가 db.properties 파일 연결하도록 bean으로 만들어 둠.
+- 방법 1 (코드): `A a = new A();`
+- 방법 2 (XML bean 설정 — 리플렉션 기법): `<bean id="a" class="A"/>`
 
-속성이 location인데 이 값을 집어넣으라는 뜻.
+클래스 이름만 알면 내부적으로 객체를 생성할 수 있는 이것이 **리플렉션(Reflection)** 기법이다.
+
+`db.properties` 파일을 bean으로 연결하고, `setLocations()` 메서드에 해당 경로값을 주입한다.
 
 ![20210621_095756](/assets/20210621_095756.png)
 
-set메서드 setLocations()안에 ()안에 저 value값을 넣어라.
+MyBatis의 **SqlSessionFactory**로 커넥션 풀(Connection Pool)을 생성한다.
 
-이 설정 정보를 가지게 됨.
+---
 
+## Spring 컨테이너와 DI(의존성 주입)
 
-파일 associations가 어떤 에디터와 연결이 되어있는지 본다.
+**Spring 컨테이너**는 모든 객체를 관리하는 메모리 공간이다.
 
-이 xml 클릭하고 default를 누르면 딱 바뀜.
+### 의존 관계(Dependency) 문제
 
+A 클래스 안에서 B 객체를 직접 생성(`B b = new B()`)하면 A와 B가 강하게 결합된다.
 
-mybatis SqlsessionFactory로 커넥션 풀을 만들어낸다.
+A가 B를 직접 생성하면 A와 B 사이에 **강한 의존 관계**가 생긴다. 이는 유지보수 시 문제가 된다.
 
-------
+### DI(Dependency Injection) — 의존성 주입
 
-스프링 컨테이너?
-
-스프링은 모든 객체를 컨테이너가 관리한다.
-
-객체를 관리하는 메모리 공간이 컨테이너이다.
-
-스프링의 특징으로 또 A라는 클래스와 B라는 클래가 있는데 A가 B에 객체를 생성해야 한다.
-
-B b= new B();
-
-A안에서 객체를 생성해서 이 객체를 가지고 이  B클래스를 한다.
-
-A와 B가 서로 의존 관계라 부른다.
-
-A가 B가 필요하니까 생성했을것이므로
-
-의존관계가 상당히 문제점이 있다.
-
-스프링은 이 의존관계를 느슨하게 하는 기법이 있는데 이게 DI 기법이다.
-
-스프링에서 가장 중요하게 하는 기법이 DI기법이다.
+Spring은 이 의존 관계를 **느슨하게** 만드는 **DI 기법**을 핵심으로 제공한다.
 
 ![20210621_104401](/assets/20210621_104401.png)
 
@@ -162,16 +117,10 @@ A가 B가 필요하니까 생성했을것이므로
 
 ![20210621_110735](/assets/20210621_110735.png)
 
-
 ![20210621_111024](/assets/20210621_111024.png)
 
 ![20210621_113046](/assets/20210621_113046.png)
 
+`@Autowired` 또는 `@Inject` 어노테이션을 사용하면 Spring 컨테이너가 `memberDAO`를 찾아 변수에 **자동 주입**한다.
 
-window=file=preferences=fileassociations 가서 설정editoreselection에서 spring properties editor를 설정한다.
-
-@Autowired나 @Injection으로 자동 주입.
-
-스프링 컨테이너에 가서 memberDAO찾고 변수에 연결.
-
-ㅇㅅㅇ
+> Window → File → Preferences → File Associations에서 XML 파일을 Spring Properties Editor와 연결하면 설정 파일 편집이 편해진다.
