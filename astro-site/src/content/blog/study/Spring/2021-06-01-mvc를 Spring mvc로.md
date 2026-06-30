@@ -1,311 +1,222 @@
 ---
-title: "[Spring] mvc를 Spring mvc로"
+title: "[Spring] 일반 MVC에서 Spring MVC로 — DispatcherServlet과 @RequestMapping"
 date: 2021-06-01
 category: "Spring"
 tags: ["Spring"]
-description: "일반 mvc로 구현하면 생산성이 떨어진다. 그래서 Spring mvc를 사용한다. 서블릿도 클래스. 프론트 컨트롤러와 핵심적으로 연결된 핸들러 매핑이란게 있었다. 클라이언트 요청에 대한 pojo를 찾아줌…"
+description: "일반 MVC의 다중 POJO를 Spring MVC의 단일 컨트롤러+메서드 방식으로 전환하는 과정을 정리한다. DispatcherServlet·HandlerMapping·ViewResolver 자동 제공 구조, Maven 의존성, MyBatis 연동 설정까지 포함."
 permalink: "study/2021/06/01/mvc를-Spring-mvc로"
 ---
+
+## 일반 MVC의 한계
+
 ![20210602_130416](/assets/20210602_130416.png)
 
-일반 mvc로 구현하면 생산성이 떨어진다. 그래서 Spring mvc를 사용한다.
+일반 MVC로 구현하면 생산성이 떨어진다. 그 이유는 다음과 같다.
 
-서블릿도 클래스.
+| 일반 MVC | Spring MVC |
+|----------|------------|
+| 요청마다 별도 POJO 클래스 필요 | 하나의 컨트롤러 클래스 + 메서드로 처리 |
+| HandlerMapping 직접 구현 | 프레임워크가 자동 제공 |
+| ViewResolver 직접 구현 | 프레임워크가 자동 제공 |
+| FrontController 직접 구현 | **DispatcherServlet**이 제공 |
 
-프론트 컨트롤러와 핵심적으로 연결된 핸들러 매핑이란게 있었다.
+> 서블릿도 클래스다. 프론트 컨트롤러와 핵심적으로 연결된 **HandlerMapping**이 클라이언트 요청에 대한 POJO를 찾아주고, POJO는 마지막으로 View 경로를 프론트 컨트롤러에 전달한다. 프론트 컨트롤러는 **ViewResolver**와 연동해 결과를 받아온다.
 
-클라이언트 요청에 대한 pojo를 찾아줌.
+---
 
-pojo들이 마지막으로 프론트 컨트롤러에 view의 경로 요청함.
+## Spring MVC 전환 핵심: POJO를 메서드로
 
-이 pojo들의 view의 경로를 이탈하게 되면 프론트 컨트롤러는 ViewResolver와 연동되어서 결과 받아옴.
-
-MVC에서 C가 2가지 FrontController+ Pojo로 묶여있었었다.
-
-그리고 pojo가 Model과 연동되고 Model이 jdbc(Mybatis)와 연동되어있었다.
-
-
-그리고 프론트 컨트롤러는 jsp(view)와 포워딩 했었다.
-
+일반 MVC에서 C(Controller)는 **FrontController + 다수의 POJO**로 구성되어 있었다.
 
 ![20210602_133045](/assets/20210602_133045.png)
 
+**Maven**은 의존성(라이브러리) 상태 관리 도구다. 스프링 프로젝트는 Boot가 아닌 **Legacy 방식(Spring MVC Project)**으로 생성한다.
 
-maven은 상태 관리 프로그램.
-그리고 스프링 프로젝트는 부트가 아니라 legacy파일로 생성한다.(spring mvc project)
-
-
-스프링은 맨 마지막 이름이 컨텍스트 패스로 등록이 된다.
+> 스프링은 맨 마지막 이름이 컨텍스트 패스로 등록된다.
 
 ![20210602_135254](/assets/20210602_135254.png)
 
-맨 마지막 이름으로 등록 이 경우엔 myapp
+이 경우 컨텍스트 패스는 `myapp`으로 등록된다.
 
+---
 
-만들어 질때 스프링 프레임 워크가 네트워크 연결해서 자동으로 만들어진다.
-
-스프링도 mvc로 따는데 m은 아직 없다 v는 샘플로 home.jsp가 있고
-c도 homecontroller (pojo)가 있다.
-
+스프링 MVC도 M·V·C 구조를 따르며, 프로젝트 생성 시 샘플로 `home.jsp`(View)와 `HomeController`(POJO)가 만들어진다.
 
 ![20210602_140445](/assets/20210602_140445.png)
 
-이런 클래스들이 스프링에선 자동으로 만들어주고 숨어있다.
+HandlerMapping, FrontController(DispatcherServlet), ViewResolver 같은 클래스들은 스프링이 **자동으로 만들어 숨겨두고** 제공한다.
 
-객체 넘어갈떄 객체 바인딩으로 포워딩 기법으로 넘어간다.
+객체는 **객체 바인딩 + Forward** 기법으로 다음 단계에 전달된다.
 
 ![20210602_143225](/assets/20210602_143225.png)
 
-스프링과 일반 mvc의 차이로
-일반 mvc가 pojo의 개수가 많다.
+---
 
+## 다수의 POJO를 하나의 컨트롤러로 통합
 
-저 부분의 pojo를 어떻게 하나로 만드냐
-메서드로 만들어야 되는데
-
-클라이언트에서 membetContent.do라는 메서드 요청 왔을떄 오른쪽 처리
-
-그외에도 각각 메서드 요청 왔을 떄 처리
-
-
-
-기존 핸들러 방식은 스트림과 클래스가 매핑이 되어 있었음
-
-그래서 어떤 요청이 오면 어떤 pojo가 오고 처리함.
-
+일반 MVC에서는 요청마다 별도 POJO 클래스가 필요했다.
 
 ![20210602_145213](/assets/20210602_145213.png)
 
-일반 mvc에선 각 do 요청이 오면
-
-근데 스프링은 저 검은 글씨처럼 MemberController하나로 처리가 다 가능하다.
+Spring MVC에서는 **MemberController 하나**로 모든 요청 처리가 가능하다.
 
 ![20210602_145833](/assets/20210602_145833.png)
 
-아래부분을 위처럼 바꾸는 걸 머리를 써야한다.
-
-이런 메서드들을 처리해야 여러개의 pojo를 하나의 메서드로 처리가 가능하다.
-
-
-개별로 했던 기능을 전부 메서드 단위로 만들어줘야한다(컨트롤러를 전부 메서드로 넣어서 하나로 만든다.)
+각 POJO에 있던 기능을 전부 **메서드 단위**로 만들어 하나의 컨트롤러에 넣는다.
 
 ![20210602_151009](/assets/20210602_151009.png)
 
-이렇게 여러 컨트롤러를 하나로 만든다.
+이제 이 컨트롤러는 어떤 요청이 와도 처리할 수 있다. 문제는 **어떤 메서드를 호출할지** 결정하는 것이다.
 
-이제 이 컨트롤러는 어떠한 요청이 와도 여기서 처리함.
+---
 
-그럼 어떠한 메서드를 처리해야 할지 고민.
-
-그럼 요청이 왔을떄 컨트롤러가 아닌 메서드와 요청하는 법이 없을까?
+## @RequestMapping — 요청과 메서드를 직접 연결
 
 ![20210602_153059](/assets/20210602_153059.png)
 
-그래서 스프링은 그런 방법을 적용시켰다(바로 메서드 가게)
-
-이런 어노테이션 기호가 있으면 핸들러 매핑으로 자동으로 관리해준다.
-
+스프링은 요청이 왔을 때 컨트롤러가 아닌 **메서드와 직접 연결**하는 방법을 제공한다. `@RequestMapping` 어노테이션이 있으면 **HandlerMapping이 자동으로 관리**한다.
 
 ![20210602_153347](/assets/20210602_153347.png)
 
-내부적으로 이렇게 바뀌게 된다.
+내부적으로 위와 같이 처리된다.
 
+---
 
-----
+## HandlerMapping·FrontController·ViewResolver는 건드리지 않는다
 
-HandelerMapping, FrontController, ViewResolver는 스프링에서 제공해주는데 이유가 우리가 거의 손댈 일이 없다 수정도 할 일이 거의 없음.
+**HandlerMapping, FrontController(DispatcherServlet), ViewResolver**는 스프링이 제공하므로 거의 수정할 일이 없다. 우리는 **POJO(컨트롤러 메서드)부터 바로 코딩**하면 된다.
 
-
-핸들러 매핑에 매핑 걸어주고 우리는 pojo부터 바로 코딩(스프링도 마찬가지 다 정의 되어있음)
-
-나머지는 수정할 일이 없다
-
-수정할 부분을 굳이 찾는다 하면
+수정이 필요한 부분은 아래와 같다.
 
 ![20210602_154252](/assets/20210602_154252.png)
 
-이런 부분
+---
 
+## Maven 의존성 설정
 
 ![20210602_162625](/assets/20210602_162625.png)
 
-mvnRepository에서 자동으로 네트워크를 통해 Libraries에 설치해준다.
+**mvnRepository**에서 네트워크를 통해 라이브러리를 자동으로 설치한다.
 
 ![20210602_163905](/assets/20210602_163905.png)
 
-
-그리고 gson을 다운받자
-이건 자바 오브젝트를 쉽게 json형태로 바꿔주는 라이브러리다.
+**Gson** 라이브러리도 추가하자. Gson은 Java 객체를 JSON 형태로 쉽게 변환해주는 라이브러리다.
 
 ![20210602_164555](/assets/20210602_164555.png)
 
-아래 부분을 카피해서 dependecies 에 추가한다.
-
-적어주면 자동으로 api가 다운받아진다.
+의존성을 `pom.xml`의 `<dependencies>`에 추가하면 자동으로 다운로드된다.
 
 ![20210602_164943](/assets/20210602_164943.png)
 
-----
+---
 
+## Spring MVC 전환 정리
 
+> Spring MVC로 오면서 가장 큰 변화: **다수의 POJO를 하나의 컨트롤러(메서드)로 통합**. `@RequestMapping` 어노테이션으로 요청-메서드 매핑이 간단해졌다.
 
-mvc에서 스프링으로 오면서 pojo 줄이고 (한개로 바꿈) 이게 대표적.
+**HandlerMapping, FrontController, ViewResolver** 3개는 없어진 게 아니라 Maven(프레임워크)에 내장되어 자동 제공된다.
 
-그리고 데이터베이스 설정하는 부분이 약간 변동이 된다.
+---
 
-스프링 프레임워크를 만들면 HandelerMapping, FrontController, ViewResolver 이 3개가 없어진게 아니라 메이븐에 만들어진다.
-
-@RequestMapping 어노테이션으로 인해 간단해졌음을 알아두자.
-
------
-
+## 설정 파일 구조
 
 ![20210602_171746](/assets/20210602_171746.png)
 
-이 파일은 읽어들여서 xml 내용을 실행
+스프링은 `web.xml`을 읽으면서 시작된다. `web.xml`에는 `root-context.xml`과 `servlet-context.xml`이 보이는데, 각각 리스너와 DispatcherServlet이 읽어들인다.
 
-설정파일
+- **ContextLoaderListener** → `root-context.xml` (1번)
+- **DispatcherServlet** → `servlet-context.xml` (2번)
 
-서블릿 xml파일은 rootcontext.xml 은
+---
 
-web.xml보면
-root context.xml과 servelet-context.xml이 보이는데 각 리스너와 디스패쳐 서블릿이 읽어들임.
-
-COntextLoaderListener와 DispatcherServlet이 각각 순차적으로 1,2번으로 읽어들인다.
-
-
-커넥션 풀 만드는게 참 중요한 작업.
-
-스프링에서도 디비 연결하는 작업이 있다.
-
-스프링에서 mybatis로 읽어들이는데
-스프링과 역할 나눠서 함.
-
-spring과 jdbc 연결하는 거.
-
+## MyBatis 연동
 
 ![20210602_172419](/assets/20210602_172419.png)
 
-mybatis를 연결하기 위해 이 3가지 파일이 필요하다.
+MyBatis를 연결하기 위해 위 3가지 파일이 필요하다.
 
 ![20210602_172739](/assets/20210602_172739.png)
 
-이런 API를 다운받기 위해 pom.xml에 설정해줘야한다.
-
-
+필요한 API를 다운받기 위해 `pom.xml`에 설정을 추가한다.
 
 ![20210602_173430](/assets/20210602_173430.png)
 
-우린 mysql 8이므로 8버전 커넥터를 받아야 한다.
+MySQL 8 버전을 사용하므로 **8버전 커넥터**를 받아야 한다.
 
 ![20210602_173613](/assets/20210602_173613.png)
 
-가면 2개가 있는데 둘다 받아야 된다고 한다.
-
-가서 mvnRepository에서 젤 많은거 받아주자,.
-
-springjdbc도 받아주자.
-
-낮은버전도 된다. 3.1.1 받자
+mvnRepository에서 가장 많이 사용되는 버전으로 받자. **Spring JDBC**도 함께 받는다 (3.1.1).
 
 ![20210602_174006](/assets/20210602_174006.png)
 
-
-이건 jdbc 연결해주는 레퍼지토리
-
-
+JDBC 연결 레퍼지토리.
 
 ![20210602_174336](/assets/20210602_174336.png)
 
-이렇게 나오면 성공
+위와 같이 나오면 성공.
 
-자바에서는 A라는 클래스 만들고 사용하려면 객체 생성해서 쓰는 방법과
-xml파일 bean으로 받는다.
-
-
-
-클래스 이름만 알면 객체 생성가능한데 이게 리플렉션 기법이다.
+자바에서 클래스를 사용하는 방법은 두 가지다. 직접 객체를 생성하거나, **XML의 `<bean>`으로 등록**하거나. 클래스 이름만 알면 객체를 생성할 수 있는 것이 **리플렉션(Reflection)** 기법이다.
 
 ![20210602_181913](/assets/20210602_181913.png)
 
+---
 
- window 탭으로 가서 File Associations 으로 가서 .xml로 가서 보자.
+## XML 편집기 설정
 
- ![20210602_183005](/assets/20210602_183005.png)
+Window 탭 → File Associations → `.xml` → XML Editor를 선택 후 Default로 맨 위로 올린다.
 
-xml editor 가서 default눌러서 맨 위로 올린다.
-
+![20210602_183005](/assets/20210602_183005.png)
 
 ![20210602_191140](/assets/20210602_191140.png)
 
-sqlSessionFactory 안에는 이런 xml 정보들이 다 적용 된다.
+`sqlSessionFactory` 안에 위의 XML 정보들이 모두 적용된다.
 
+---
 
-
-----
-
-
-스프링은 web.xml 읽으면서 시작.
-
+## 한글 인코딩 필터
 
 ![20210602_211314](/assets/20210602_211314.png)
-
 
 ![20210602_212231](/assets/20210602_212231.png)
 
 ![20210602_230550](/assets/20210602_230550.png)
 
-클라이언트가 요청오면 디스패쳐 서블릿 가기전에 필터를 거침(한글 꺠지는 거 방지하기 위해)
+클라이언트 요청이 오면 DispatcherServlet 이전에 **Filter**를 거친다. 한글 깨짐을 방지하기 위해 CharacterEncodingFilter를 설정한다.
 
 ![20210602_231538](/assets/20210602_231538.png)
 
-한글 쓰려면 이 부분을 web.xml에 넣어준다.
+위 설정을 `web.xml`에 추가하면 모든 요청이 `CharacterEncodingFilter`를 거치게 된다.
 
-이제 모든 요청은 CharacterEncodingFilter를 거치게 된다.
+---
 
-----------
+## Mapper 파일과 Configuration 파일 분리
 
-
-Mapper  파일과  configurations파일 분리
-
-DAO는 메서드 이름으로 SQL과 연결
-이런 부분이 하나의 규칙으로 됨.
-
-DAO를 규칙으로 XML과 연결
-
+**DAO는 메서드 이름으로 SQL과 연결**된다. 이 규칙이 하나의 표준이 된다.
 
 ![20210603_010231](/assets/20210603_010231.png)
 
-만약 메이븐에서 뭘 추가하거나 했는데 에러나 x표시 나면 업데이트 한번 해보자.
+Maven에서 추가·변경 후 에러나 X 표시가 나면 **Update**를 한 번 해보자.
 
 ![20210603_011659](/assets/20210603_011659.png)
 
-혹은 clean도 써서 rebuild 해보자.
+또는 **Clean** 후 Rebuild를 시도한다.
 
+---
 
-
-DAO 가 없더라도 인터페이스 내부에서 바로 sql 실행할 수 있도록 해주는 매퍼
-
-mybatis 보면 각 매칭이 다 되어있다.
+**Mapper 인터페이스**를 사용하면 DAO 없이도 인터페이스 내부에서 바로 SQL을 실행할 수 있다.
 
 ![20210603_011659](/assets/20210603_011659_fosenhpb1.png)
 
-매퍼의 네임 스페이스 이름과 실제 인터페이스의 이름이 같아야 찾아갈 수 있다.
+**매퍼의 namespace 이름**과 **실제 인터페이스 이름**이 같아야 스프링이 두 부분을 하나로 연결해 관리한다.
 
 ![20210603_011659](/assets/20210603_011659_ol5ynhlrc.png)
-
-그럼 스프링이 이 두 부분을 하나로 보고 관리해준다.
-
-
-XML에서 매퍼 인터페이스와 (연결하고 있으니 매퍼 인터페이스라는 말을 쓴다).
 
 매퍼 인터페이스는 XML 파일과 연결된다.
 
 ![20210603_023837](/assets/20210603_023837.png)
 
-@ Mapper 쓰면 Mabits로 인식해서 Sqlsession을 내부적으로 불러온다.
+`@Mapper`를 붙이면 MyBatis로 인식해 `SqlSession`을 내부적으로 자동 호출한다.
 
 ![20210603_024314](/assets/20210603_024314.png)
 
-
-그 외에도 root-context에 자잘한 설정을 해줘야 한다.
+그 외에도 `root-context.xml`에 자잘한 설정을 추가해야 한다.

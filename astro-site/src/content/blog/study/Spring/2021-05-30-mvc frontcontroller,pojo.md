@@ -1,28 +1,28 @@
 ---
-title: "[Spring] MVC FrontController, Pojo이용"
+title: "[Spring] MVC FrontController와 POJO 분리 설계"
 date: 2021-05-29
 category: "Spring"
 tags: ["Spring"]
-description: "클라이언트의 요청을 개별 컨트롤러에 연결해서 처리했는데 FrontController를 쓰면 모든 요청을 프론트 컨트롤러가 먼저 받게 된다. 서블릿도 자바고 서블릿은 웹에서 실행되는 골격 순수한 자바는 틀은 없음…"
+description: "모든 요청을 단일 진입점에서 받는 FrontController 패턴과, 실제 처리를 담당하는 POJO 컨트롤러를 분리하는 구조를 코드와 함께 정리한다. Forward/Redirect 전환 판단 기준도 포함."
 permalink: "study/2021/05/29/mvc-frontcontroller,pojo"
 ---
-클라이언트의 요청을 개별 컨트롤러에 연결해서 처리했는데 FrontController를 쓰면 모든 요청을 프론트 컨트롤러가 먼저 받게 된다.
 
-서블릿도 자바고 서블릿은 웹에서 실행되는 골격
+## FrontController 패턴이란?
 
-순수한 자바는 틀은 없음.
+기존 방식은 클라이언트의 요청을 **개별 컨트롤러에 직접 연결**해서 처리했다. **FrontController**를 도입하면 모든 요청을 프론트 컨트롤러가 먼저 받아 분기한다.
 
-그래서 일반 서블릿과 다른 걸 만들었는데 그게 Pojo
-plain old java object로 평범한 자바라 명시.
+| 구분 | 구현 방식 | 설명 |
+|------|-----------|------|
+| **FrontController** | 서블릿(Servlet) | 웹 요청을 받는 골격. 웹에서 실행되는 자바 |
+| **일반 Controller (POJO)** | 순수 자바 클래스 | 틀 없는 평범한 자바 — Plain Old Java Object |
 
+> 서블릿은 웹에서 실행되는 골격이고, 순수 자바(POJO)는 그런 틀이 없다. FrontController는 서블릿으로 만들고, 일반 Controller는 POJO로 만든다.
 
-FrontController는 서블릿으로 만들고
-일반 Controller는 자바로 만든다. 이 때 자바를 pojo 라 부른다.
+---
 
 ![20210531_141558](/assets/20210531_141558.png)
 
-.do로 끝나는 요청은 FrontController로 받게 하자.
-
+`.do`로 끝나는 요청은 FrontController가 받도록 설정한다.
 
 ```
 package kr.bit.frontcontroller;
@@ -82,79 +82,61 @@ public class MemberFrontController extends HttpServlet {
 
 ```
 
+---
+
 ![20210531_142525](/assets/20210531_142525.png)
 
-mvc04가 contextpath 이 컨텍스트 패스로 등록됨.
-
-이 컨텍스트 이름으로 뒤에 있는 이름을 뽑아냄.
+`mvc04`가 컨텍스트 패스로 등록된다. 이 컨텍스트 이름 뒤에 있는 이름을 뽑아내어 실제 요청 명령을 파악한다.
 
 ![20210531_150907](/assets/20210531_150907.png)
 
+이전 MVC 정리에서는 컨트롤러가 여러 개였다면, 이번에는 **컨트롤러가 하나로 통합**된 것이 핵심 차이다.
 
+여기서 FrontController가 해야 할 일을 대신할 컨트롤러를 추가하는데, 그것이 **POJO**다.
 
-전의 mvc 개인정리 1 에서 했던 내용과 같은데 그때 컨트롤러가 여러개였다면 이번엔 컨트롤러가 하나가 됐다는 점이 다르다.
+> FrontController가 모든 처리를 직접 다 하면 부하가 발생할 수 있다. FrontController는 **안내·보조원** 역할만 하고, 실제 업무는 POJO에 위임한다.
 
-여기서 프론트 컨트롤러가 해야할 일을 대신해야할 컨트롤러를 추가할 건데 그걸 Pojo라고 한다.
+---
 
-
-
-근데 FrontController가 다하면 부하가 날 수도 있다.
-
-그래서 FrontController를 안내보조원이라 생각하면 된다.
-
-FrontController는 서블릿으로 만들고 일바 pojo는 자바로 만든다.
-
+## POJO의 역할
 
 ![20210531_155319](/assets/20210531_155319.png)
 
 ![20210531_160359](/assets/20210531_160359.png)
 
-리퀘스트 핸들러 기능 넣어주기위해 인터페이스 하나 만듬
+`requestHandler` 기능을 넣어주기 위해 인터페이스를 하나 만든다.
 
------------
+---
 
-### Pojo가 할 일
-
-
+### POJO가 할 일
 
 ![20210531_162424](/assets/20210531_162424.png)
 
+`memberlist.do` 요청이 들어왔을 때 POJO가 처리하는 작업:
 
-memberlist.do 가 들어왔을 때 오른쪽을 작업시킴.
-
-pojo를 만들고 컨트롤러가 어디까지 할건가
-
-모델하고 연결하고(dao) 객체 바인딩하고(vo)
-뷰 페이지의 정보를 리턴하는게 pojo의 역할
-
-
+- **Model 연결** — DAO 호출
+- **객체 바인딩** — VO 처리
+- **뷰 페이지 경로 반환** — 결과 뷰 이름 리턴
 
 ![20210531_164250](/assets/20210531_164250.png)
 
-
-
 ![20210531_165715](/assets/20210531_165715.png)
 
-view의 경로는 옮길면 바꿔줘야(리턴값) = 당연
-
-
+> View 경로를 변경하면 반환값도 함께 바꿔야 한다.
 
 ![20210531_180222](/assets/20210531_180222.png)
 
+---
 
-----
-
-핸들러 매핑
+## HandlerMapping
 
 ![20210531_205927](/assets/20210531_205927.png)
 
-위 핸들러가 들어오면 아래 컨트롤러가 실행
+특정 핸들러(요청)가 들어오면 대응하는 컨트롤러(POJO)가 실행된다.
 
+---
 
-
-
-웹은 현재 작업중인 페이지에서 다른 페이지로 이동하기 위해 2가지 페이지 전환 기능을 제공합니다. 오늘은 2가지의 페이지 전환 방법의 차이와 사용법에 대해 알아보도록 하겠습니다.
-
+## Forward vs Redirect 판단
 
 ```
 if(nextPage!=null) {
@@ -168,57 +150,34 @@ if(nextPage!=null) {
 		}		
 ```
 
+FrontController에서 nextPage 값에 `"redirect:"` 문자열이 있으면 Redirect, 없으면 Forward로 처리한다.
 
-FrontController 에서
-여기서 Redierct 글자가 있으면 리다이렉트로  넘기고 없으면  Forward로 넘기게 설정
+### Forward 방식
 
-1. Forward 방식
-[ Forward 방식 ]
-Forward는 Web Container 차원에서 페이지의 이동만 존재합니다. 실제로 웹 브라우저는 다른 페이지로 이동했음을 알 수 없습니다. 그렇기 때문에 웹 브라우저에는 최초에 호출한 URL이 표시되고, 이동한 페이지의 URL 정보는 확인할 수 없습니다. 또한 현재 실행중인 페이지와 forward에 의해 호출될 페이지는 Request 객체와 Response 객체를 공유합니다.
+**Forward**는 Web Container 차원에서 페이지를 이동한다. 웹 브라우저는 이동 사실을 알 수 없으므로 URL이 최초 호출 URL 그대로 유지된다. 현재 페이지와 Forward로 호출되는 페이지는 **Request·Response 객체를 공유**한다.
 
+> 주의: 글쓰기처럼 시스템에 변화가 생기는 요청에 Forward를 쓰면, 새로고침 시 요청 정보가 살아있어 **게시물이 중복 등록**될 수 있다. 단순 조회(글 목록, 검색)에만 Forward를 사용하는 것이 바람직하다.
 
-위와 같이 Foward는 다음으로 이동 할 URL로 요청정보를 그대로 전달합니다. 그렇기 때문에 사용자가 최초로 요청한 요청정보는 다음 URL에서도 유효합니다. 예를 들어 게시판을 작성하는 과정이라고 할 때, 사용자가 보낸 요청 정보를 이용하여 글쓰기 기능을 수행한다고 할 때, forward를 사용하여 응답 페이지를 부르면 다음과 같은 문제가 발생하게 됩니다. 만약 사용자가 실수 혹은 고의로 글쓰기 응답 페이지에서 새로고침을 누른다면, 요청 정보가 그대로 살아있기 때문에 요청이 여러 번 전달되어 동일한 게시물이 여러 번 등록될 수 있습니다. 그렇기 때문에 게시판을 제작하는 과정에서는 시스템에 변화가 생기지 않는 단순 조회 요청(글 목록 보기, 검색)의 경우 forward로 응답하는 것이 바람직합니다.
+### Redirect 방식
 
+**Redirect**는 Web Container가 브라우저에게 다른 페이지로 이동하라는 명령을 내린다. 브라우저는 URL을 지시된 주소로 바꾸고 해당 주소로 **새 요청**을 보낸다. 새로운 페이지에서는 Request·Response 객체가 새롭게 생성된다.
 
+> 글쓰기·회원가입처럼 **시스템에 변화가 생기는 요청**에는 Redirect를 사용해야 새로고침 시 중복 처리를 막을 수 있다.
 
-
-
-
-
-
-
-
-
-2. Redirect 방식
-[ Redirect 방식 ]
-Redirect는 Web Container로 명령이 들어오면, 웹 브라우저에게 다른 페이지로 이동하라고 명령을 내립니다. 그러면 웹 브라우저는 URL을 지시된 주소로 바꾸고 해당 주소로 이동합니다. 다른 웹 컨테이너에 있는 주소로 이동하며 새로운 페이지에서는 Request와 Response객체가 새롭게 생성됩니다.
-
-
-
-
-Redirect의 경우 최초 요청을 받은 URL1에서 클라이언트에게 redirect할 URL2를 반환하고, 클라이언트에서는 새로운 요청을 생성하여 URL2에 다시 요청을 보냅니다. 그러므로 처음 보냈던 최초의 Request와 Response 객체는 유효하지 않고 새롭게 생성되는 것 입니다. 예를 들어 게시판을 작성하는 과정이라고 할 때, 사용자가 보낸 요청 정보를 이용하여 글쓰기 기능을 수행한다고 할 때, redirect를 사용하여 응답 페이지를 부르면 사용자가 실수 혹은 고의로 글쓰기 응답 페이지에서 새로고침을 누른다고 하더라도, 처음의 요청 정보는 존재하지 않으므로 게시물이 여러 번 등록되지 않습니다. 그렇기 때문에 시스템에 변화가 생기는 요청(회원가입, 글쓰기 등)의 경우에는 redirection을 사용하는 것이 바랍직합니다.
-
-
-
-
-
-출처: https://mangkyu.tistory.com/51 [MangKyu's Diary]
-
+출처: https://mangkyu.tistory.com/51
 
 ![20210531_211313](/assets/20210531_211313.png)
 
-여기서 앞에 redirect라는 글자가 있으면 redirect로 가고 없으면 forward로 간다.
+---
 
+## 정리
 
+**FrontController 흐름 요약:**
 
+1. `memberList.do` 요청이 FrontController에 도착
+2. **HandlerMapping**이 키(요청 URL)로 해당 POJO를 조회해 반환
+3. FrontController가 POJO에 처리를 위임
+4. POJO가 결과 뷰 경로를 반환
+5. FrontController가 Forward 또는 Redirect로 응답
 
-
-
-
-FrontController에 요청이 왔다 memberList.do라는 요청이 왔는데 Handler매핑은 키로 찾아보고 찾으면 그 밸류를 프론트 컨트롤러에 리턴하면 pojo에 일을 시킴.
-
-
-프론트 컨트롤러는 자기가 해야될 일이 정해져 있음
-
-스프링은 이미 프론트 컨트롤러가 만들어져 있다.
-DispatcherServlet이 이미 주어져서 여기서 프론트 컨트롤러에
+> 스프링에서는 이 FrontController가 이미 **DispatcherServlet**으로 구현되어 제공된다.

@@ -1,111 +1,112 @@
 ---
-title: "[Spring] SpringRestAPI"
+title: "[Spring] Spring REST API — @RestController와 JSON 응답"
 date: 2021-05-03
 category: "Spring"
 tags: ["Spring"]
-description: "REST 서비스란? HTTP URI + HTTP METHOD HTTP URI 를 통해 제어할 자원(Resource)를 명시하고 HTTP METHOD(GET, POST, PUT, DELETE)를 통해 해당…"
+description: "REST 서비스의 개념과 HTTP URI·METHOD 설계 원칙을 정리하고, @Controller/@RestController로 JSON 응답을 구현하는 두 가지 방법과 MyBatis 매퍼 연동 구조를 설명한다."
 permalink: "class/2021/05/03/SpringRestAPI"
 ---
-### REST 서비스란?
 
+## REST 서비스란?
 
+**REST(Representational State Transfer)**는 HTTP URI와 HTTP METHOD를 조합한 아키텍처 스타일이다.
 
-HTTP URI + HTTP METHOD
+- **HTTP URI**: 제어할 자원(Resource)을 명시
+- **HTTP METHOD**: 해당 자원에 수행할 명령을 지정 (`GET`, `POST`, `PUT`, `DELETE`)
 
-- HTTP URI 를 통해 제어할 자원(Resource)를 명시하고
-  HTTP METHOD(GET, POST, PUT, DELETE)를 통해
-  해당 자원(RESOURCE)를 제어하는 명령을 내리는 방식의 아키텍쳐.
+| HTTP METHOD | 의미 |
+|---|---|
+| `GET` | 자원 조회 |
+| `POST` | 자원 생성 |
+| `PUT` | 자원 수정 |
+| `DELETE` | 자원 삭제 |
 
-서버는 json형식으로 받아도 자바 형식으로 받아야 한다.
+서버는 JSON 형식으로 받더라도 내부적으로는 자바 객체로 처리한다.
 
 ![20210722_202633](/assets/20210722_202633.png)
 
-
 ![20210722_203009](/assets/20210722_203009.png)
 
-기존 서비스는 가공된 데이터 이용해서 특정 플랫폼에 적합한 형태의 View로 만들어서 반환
+### 기존 서비스 vs REST 서비스
 
-
-
-그에 비해 Rest Service는 데이터 처리만 한다거나 처리 후 반환될 데이터가 있다면 JSON이나 XML 형태로 전달. View에 대해서는 신경 쓸 필요가 없다. -> 이런 이유로 OPEN API 에서 많이 사용
-
-
-
-기존 서비스는 웹이던 모바일이던 플랫폼에 맞게 view를 변경해야 했으나 Rest를 쓰면 json/xml의 형식의 데이터만 전달해서 아무곳에서 사용 가능.
+| 구분 | 기존 서비스 | REST 서비스 |
+|---|---|---|
+| 응답 형태 | 플랫폼에 맞는 View(HTML 등) | JSON 또는 XML 데이터 |
+| View 관리 | 필요 | 불필요 |
+| 플랫폼 의존성 | 웹/모바일별 View 변경 필요 | 어느 플랫폼에서나 동일 사용 가능 |
+| 주 사용처 | 전통적 웹 서비스 | **OPEN API**, SPA, 모바일 앱 |
 
 ![20210722_203457](/assets/20210722_203457.png)
-
 
 ![20210723_010305](/assets/20210723_010305.png)
 
 ![20210723_010307](/assets/20210723_010307.png)
 
-우리가 데이터 넘겨줄 떄 클라이언트가 전송 view 페이지를 만들어서 보내는게 일반적인 방법(jsp)라던가 비동기는 좀 달라짐. 모든 화면을 구성해서 보내는 게 아니라 xml이나 json 형태로 보내게 된다.
-
-
-서버쪽에서 서블릿으로 만들던게 스프링으로 만들며 방법이 좀 달라지게 된다.
-
-![20210723_014701](/assets/20210723_014701.png)
-
-자바스크립트, url(이동할 곳의),
-타입은 get,post,put이런거 지정.
-
-contentType은 클라이언트에서 서버에 보내는 타입 지정.(여기선 제이슨 형식으로 보냄)
-
-dataType은 서버에서 클라이언트로 돌아올 때의 타입.
-
-![20210723_015406](/assets/20210723_015406.png)
-
-#### 비동기로 만드는 2가지 방법
-
-1. @Controller로 만드는데 그럼 일반 컨트롤러랑 차이가 없으니까 메서드에 리턴타입을 @ResponseBody를 이용해서 String, dto, list이런걸 리턴시켜서 뷰의 이름이 아니라 실제 데이터를 리턴.
-
-2. @RestConroller라고 설정 가능.
-이렇게 설정하면 이 메서드는 public String/DTO/list  + 메서드가
-이 앞에 ResponseBody가 없다.
-이 안에서 처리하는 모든 매핑은 다 REST라 자동으로 ResponseBody가 붙는다고 생각하면 된다.
-
-![20210723_021640](/assets/20210723_021640.png)
-
-리스트를 서비스에서 얻어와라
-오브젝트하고 배열돌려라
-포문 돌려라
-오브젝트하고 풋풋한걸 배열에 집어넣고 문자열로 바꿔서 보내라.
-
-원래 이렇게 해야됨(옛날 방식)
-그리고 이걸 쓰기 위해 json-simple.jar로 사용해서 했었다.
-
-
-![20210723_021839](/assets/20210723_021839.png)
-
-근데 이건 우리가 알던 제이슨 작업 안하고 바로 리턴 작업 해버림
-
-![20210723_021945](/assets/20210723_021945.png)
-
-그래서 석세스 부분에 유저에 list가 들어가는데 json형태인데 그냥 오면 java객체는 못들어 가서 일반적으로는 안됨.
-
-
-근데 jackson 라이브러리를 쓰면 설정해서 java객체는 json으로 자동으로 변환시켜준다.
-
-
-### Json
-
-javascript 에서 객체를 만들 때 사용하는 표현식을 말한다.
-
-RestController가 함축하고 있는 2가지는?
-
-@RestConroller = @Controller + @ResponseBody
-
-컨트롤러는 서비스 주입받고 서비스는 dao주입받고.
+클라이언트가 데이터를 전송할 때, 일반적인 방법(JSP)은 전체 화면을 구성해서 보내지만, REST는 XML이나 JSON 형태의 데이터만 전송한다.
 
 ---
 
-클라이언트에 요청이 들어오면 화면은 없이 데이터만 처리한다.
-화면이 있긴 있어야 하는데 요청한 클라이언트 (postman)으로 대체한다.
+## AJAX 요청 설정
 
-원하는 데이터는 uri로 전달해주고(얘기해주고) = what
-메서드로 전달해줘야.(얘기한 데이터를 어떻게 해야하는지 나타내는 것.줘야되는지 삭제해야되는지 수정해야되는지 = 방법 그걸 메서드라는 것으로 표시하는 것.
-)
+![20210723_014701](/assets/20210723_014701.png)
+
+| 옵션 | 설명 |
+|---|---|
+| `url` | 요청을 보낼 서버 경로 |
+| `type` | HTTP METHOD (`GET`, `POST`, `PUT` 등) |
+| `contentType` | 클라이언트 → 서버로 보내는 데이터 타입 (여기선 JSON) |
+| `dataType` | 서버 → 클라이언트로 돌아오는 데이터 타입 |
+
+![20210723_015406](/assets/20210723_015406.png)
+
+---
+
+## 비동기 응답을 만드는 2가지 방법
+
+### 방법 1: `@Controller` + `@ResponseBody`
+
+- 일반 컨트롤러처럼 `@Controller`를 사용
+- 메서드에 `@ResponseBody`를 추가하면 뷰 이름이 아닌 **실제 데이터**(String, DTO, List 등)를 HTTP 응답 바디로 직접 반환
+
+### 방법 2: `@RestController`
+
+- `@RestController` 하나로 `@Controller` + `@ResponseBody` 효과를 동시에 적용
+- 클래스 내 모든 메서드에 자동으로 `@ResponseBody`가 붙는다고 이해하면 된다.
+
+> `@RestController` = `@Controller` + `@ResponseBody`
+
+![20210723_021640](/assets/20210723_021640.png)
+
+과거에는 `json-simple.jar`를 사용해 JSON 객체를 직접 조립해서 반환했다 (아래가 구 방식).
+
+![20210723_021839](/assets/20210723_021839.png)
+
+**Jackson 라이브러리**를 사용하면 자바 객체를 JSON으로 **자동 변환**하여 반환할 수 있다.
+
+![20210723_021945](/assets/20210723_021945.png)
+
+`success` 콜백에 List가 들어오는데, Jackson이 자바 객체를 JSON으로 변환해주기 때문에 별도 처리 없이 사용 가능하다.
+
+---
+
+## JSON이란?
+
+**JSON(JavaScript Object Notation)**은 자바스크립트에서 객체를 표현할 때 사용하는 표현식으로, 데이터 교환 형식으로 널리 사용된다.
+
+---
+
+## REST 요청 실습 — MyBatis 연동
+
+클라이언트 요청 흐름:
+
+```
+Request → DispatcherServlet → Controller → Service → DAO → XML Mapper (쿼리)
+```
+
+화면은 **Postman**으로 대체한다.
+
+- **URI**: 원하는 자원을 명시 (what)
+- **HTTP METHOD**: 자원에 수행할 동작을 명시 (how)
 
 ![20210503_191534](/assets/20210503_191534.png)
 
@@ -113,37 +114,27 @@ RestController가 함축하고 있는 2가지는?
 
 ![20210503_191813](/assets/20210503_191813.png)
 
-//쿼리의 아이디(xml매퍼)랑 dao(자바 매퍼)랑 맞춰야 한다
+> XML 매퍼의 쿼리 `id`와 자바 매퍼(DAO 인터페이스)의 메서드 이름이 **반드시 일치**해야 한다.
 
-req(리퀘스트)가 들어오면 디스패쳐가 읽고 컨트롤러 읽고 서비스 일고 dao 읽음
-
-```
+```java
 package com.mvc.dao;
 
 import java.util.List;
-
 import com.mvc.vo.Customer;
 
-//client(CustomerServiceImpl.java)
-//java mapper(method name == xml mapper 안에 있는 쿼리 id)
-//얘도 매퍼라 부른다. 매퍼는 매펀데 자바인 매퍼라 자바 매퍼라 부름.
-//아까 쿼리문 들어있던 매퍼파일은 xml매퍼파일.
+// client(CustomerServiceImpl.java)
+// java mapper (method name == xml mapper 안에 있는 쿼리 id)
 public interface CustomerDao {
-	public List<Customer> selectAll();
-	public Customer selectOne(String num);
-	public int insert(Customer c);
-
-	public int delete(String num);
-	public List<Customer> findByAddress(String address);
-	public int update(Customer c);
-
+    public List<Customer> selectAll();
+    public Customer selectOne(String num);
+    public int insert(Customer c);
+    public int delete(String num);
+    public List<Customer> findByAddress(String address);
+    public int update(Customer c);
 }
-
-
-
 ```
 
-```
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper
    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
@@ -153,7 +144,6 @@ namespace: 작업하는 테이블들을 구분해주기 위한 식별자 -->
 <mapper namespace="com.mvc.dao.CustomerDao">
 
   <select id="selectAll" resultType="Customer">
-
     select * from customer
   </select>
 
@@ -167,9 +157,7 @@ namespace: 작업하는 테이블들을 구분해주기 위한 식별자 -->
 
   <update id="update" parameterType="Customer">
   	update customer set address = #{address} where num = #{num}
-
   </update>
-
 
   <select id="findAddress" parameterType="string" resultType="Customer">
   	select * from customer where address = #{address}
@@ -180,39 +168,23 @@ namespace: 작업하는 테이블들을 구분해주기 위한 식별자 -->
   </delete>
 
 </mapper>
-
-
-
-
-
-
-
-
 ```
 
-서비스는 dao메서도 읽음
+- **서비스**는 DAO 메서드를 호출
+- **컨트롤러**는 서비스 메서드를 호출
+- DAO가 XML 매퍼의 쿼리 `id`와 일치하는 메서드를 호출하면 해당 쿼리가 실행됨
 
-컨트롤러는 서비스의 메서드 읽음
+### @PathVariable
 
-(왼쪽이 오을쪽을 읽음(사용))
+- `@Path`: 경로 지정
+- `@PathVariable`: 경로에 포함된 변수 값을 추출
 
-서비스에 있가 dao 호출하면 xml 쿼리 있던 여러개 중에서 id 같으면 selectAll 실행
+GET 방식으로 URL에 변수를 포함해 요청할 때 사용한다.
 
-쿼리 아이디랑 2개가 일치해야한다.
-
-그래야 그 메서드가 호출했을 떄 동작한다.
-
-@Path는 경로
-@PathVariable는 경로에 들어있는 변수를 의미한다.
-
-get방식으로 요청하면서 url에 이러한 식으로 요청하겠다 이런 의미.
-
-PathVariable 는 경로에 들어있는 값 중 하나를 의미한다.앞이 num이니까 tommy name 이렇게 들어간다.
-
-raw 면 바로 넣겠다는 뜻
+- `raw`: 데이터를 직접 바디에 넣어 전송
 
 ---
 
-@RestController
-쓰면 자동으로 @ResponseBody 붙는
-그럼 알아서 제이슨으로 리턴이 됨.
+## 정리
+
+`@RestController`를 사용하면 자동으로 `@ResponseBody`가 적용되어, 메서드 반환값이 JSON으로 변환되어 응답된다.

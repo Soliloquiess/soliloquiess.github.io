@@ -1,57 +1,51 @@
 ---
-title: "[Maven] HttpServletRequest cannot be resolved to a type 해결"
+title: "[Maven] Eclipse에서 HttpServletRequest cannot be resolved to a type 해결"
 date: 2022-05-25
 category: "Spring"
 tags: ["Spring"]
-description: "Maven 프로젝트를 만드는 데 이클립스에서 HttpServlet이나 javax.servlet 패키지에 속해있는 클래스들을 못 찾았다. 이 경우 설정을 확인하기 위해 프로젝트를 클릭하고 또는 마우스 우클릭…"
+description: "Maven 프로젝트에서 Eclipse가 HttpServlet·javax.servlet 패키지를 찾지 못할 때, Project Facets의 Dynamic Web Module 설정과 Runtimes 탭에서 서블릿 컨테이너를 연결해 해결하는 방법을 정리한다."
 permalink: "class/2022/05/25/HttpServletRequest-cannot-be-resolved-to-a-type문제"
 ---
-Maven 프로젝트를 만드는 데
+
+Maven 프로젝트를 만들 때 아래와 같은 오류가 발생했다.
 
 ![20220527_114246](/assets/20220527_114246.png)
 
-이클립스에서 HttpServlet이나 javax.servlet 패키지에 속해있는 클래스들을 못 찾았다.
-<br>
-이 경우
+Eclipse에서 `HttpServlet`이나 `javax.servlet` 패키지에 속한 클래스들을 찾지 못하는 문제다.
 
-<br>
+---
+
+### 해결 방법
+
 ![20220527_114246](/assets/20220527_114246_hx3y4vkz2.png)
 
-<br>
-설정을 확인하기 위해 프로젝트를 클릭하고  또는 마우스 우클릭 -> Properties 를 통해 프로젝트 설정으로 간다.
+프로젝트를 우클릭 → **Properties** → **Project Facets**로 이동한다.
 
-Project Facets로 이동하여 Dynamic Web Module에 체크되어 있는지 확인한다.
+**확인 항목:**
+- **Dynamic Web Module**에 체크되어 있는지 확인
+- **Version**이 원하는 Servlet 스펙 버전으로 설정되어 있는지 확인
 
-또한 Version이 자신의 원하는 환경의 버전으로 되어있는지 확인합니다. Version은 Servlet의 버전을 의미하는데 현재 프로젝트가 Servlet 스펙의 몇버전을 가지고 진행할것인지를 설정한다.
+> Version은 Servlet 스펙 버전을 의미한다. 현재 프로젝트가 Servlet 스펙 몇 버전으로 동작할지 결정한다. 해당 버전을 지원하는 서블릿 컨테이너가 필요하다(예: 톰캣 8은 Servlet 3.1까지 지원).
 
-<br>
-물론 해당 버전을 지원하는 서블릿 컨테이너가 필요함.(톰캣8의 경우 3.1까지 지원)
-
-
-<br>
+---
 
 ![99035D3B5D297C2F0D](/assets/99035D3B5D297C2F0D.png)
 
+**Dynamic Web Module**이 이미 설정되어 있다면, 우측 **Runtimes** 탭으로 이동한다.
 
-<br>
+- 이 프로젝트의 구동 환경(서블릿 컨테이너)이 **체크**되어 있는지 확인
+- 체크되어 있지 않으면 체크한다
+- 단, Eclipse에 Server 환경 설정으로 서블릿 컨테이너(예: 톰캣)가 **사전에 등록**되어 있어야 하며, 해당 컨테이너가 Dynamic Web Module 버전을 지원해야 한다
+- 설정 완료 후 **Apply and Close**
 
-만약 Dynamic Web Module 설정이 되어있다면 우측의 Runtimes탭으로 이동한다. 여기서 이 프로젝트의 구동환경(서블릿 컨테이너)이 체크되어 있는지 확인하고 안되어 있다면 체크합니다. 단 이클립스에 Server 환경설정으로 서블릿컨테이너(예를 들면 톰캣)가 등록되어 있어야 하며, 해당 서블릿 컨테이너가 Dynamic Web Module의 버전을 지원해야 한다. 설정이 끝났다면 Apply and Close로 종료한다.
+---
 
+### 부가 현상
 
-
-<br>
-
-
-그리고 위와 같이 Dynamic module 설정을 3.1로 해주니
-package에 들어가던 Deployment Descriptor이라는 것이 안 보이게 된다.( 왜 생기는지 의문이였음.)
-
-
-<br>
+Dynamic Web Module 버전을 **3.1**로 설정하니 패키지에 표시되던 **Deployment Descriptor** 항목이 사라졌다.
 
 ![20220527_114715](/assets/20220527_114715.png)
 
+---
 
-
-<br>
-
-참고 블로그 : https://dololak.tistory.com/711
+참고 블로그: https://dololak.tistory.com/711
