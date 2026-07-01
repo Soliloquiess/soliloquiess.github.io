@@ -1,5 +1,5 @@
 ---
-title: "[python] python Data Structure"
+title: "[Python] python Data Structure"
 date: 2021-06-02
 category: "Python"
 tags: ["Python"]

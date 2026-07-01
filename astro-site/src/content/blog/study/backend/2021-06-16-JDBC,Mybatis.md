@@ -1,5 +1,5 @@
 ---
-title: "[backend] JDBC의 한계와 MyBatis로의 전환"
+title: "[Backend] JDBC의 한계와 MyBatis로의 전환"
 date: 2021-06-16
 category: "Backend"
 tags: ["Backend"]

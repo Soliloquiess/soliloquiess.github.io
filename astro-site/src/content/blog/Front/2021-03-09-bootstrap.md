@@ -1,5 +1,5 @@
 ---
-title: "[front] BootStrap & Ajax"
+title: "[Front] BootStrap & Ajax"
 date: 2021-03-09
 category: "Front"
 tags: ["Front"]

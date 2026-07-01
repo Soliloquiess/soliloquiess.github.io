@@ -1,5 +1,5 @@
 ---
-title: "[python] python Algorithm"
+title: "[Python] python Algorithm"
 date: 2021-06-03
 category: "Python"
 tags: ["Python"]

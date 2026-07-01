@@ -1,5 +1,5 @@
 ---
-title: "[java] Spring WAR 파일을 Tomcat에 직접 배포하는 법"
+title: "[Java] Spring WAR 파일을 Tomcat에 직접 배포하는 법"
 date: 2022-05-01
 category: "Java"
 tags: ["Java"]
