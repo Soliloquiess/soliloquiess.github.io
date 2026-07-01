@@ -1,99 +1,56 @@
 ---
-title: "http, https과 fiddler, 개발자도구 사용 개념"
+title: "HTTP vs HTTPS 핵심 개념과 Fiddler로 트래픽 분석하기"
 date: 2022-10-20
 category: "Etc"
 tags: ["Etc"]
-description: "HTTP는 Hypertext Transfer Protocol의 약자 HTTP 프로토콜은 서로 다른 통신 시스템 간의 통신을 제공한다. 사용자가 브라우저에서 HTTP 요청을 하면 웹 서버는 요청된 데이터를 웹 페이지…"
+description: "HTTP와 HTTPS의 구조적 차이(SSL/TLS, 포트, 보안 계층)를 정리하고, Fiddler로 HTTPS 트래픽을 캡처하는 방법과 Python requests에서 SSL 검증을 우회하는 방법을 설명한다."
 permalink: "etc/2022/10/20/http_https"
 ---
-#### HTTP는 Hypertext Transfer Protocol의 약자
 
-- HTTP 프로토콜은 서로 다른 통신 시스템 간의 통신을 제공한다. 
-- 사용자가 브라우저에서 HTTP 요청을 하면 웹 서버는 요청된 데이터를 웹 페이지 형태로 사용자에게 보냄. 간단히 말해서 HTTP 프로토콜을 통해 서버에서 클라이언트로 데이터를 전송할 수 있다고 말할 수 있음.
+## HTTP (Hypertext Transfer Protocol)
 
+- **HTTP**는 서로 다른 시스템 간 통신을 제공하는 응용 프로그램 계층(Application Layer) 프로토콜이다.
+- 사용자가 브라우저에서 HTTP 요청을 하면 웹 서버는 요청된 데이터를 웹 페이지 형태로 응답한다.
+- **TCP** 위에서 동작하며, 웹 브라우저와 서버에 표준 통신 규칙을 제공한다.
+- **상태 비저장(Stateless)** 프로토콜로, 각 트랜잭션은 이전 트랜잭션과 독립적으로 실행된다. 트랜잭션 완료 후 연결이 끊어진다.
 
+---
 
-- HTTP 는 TCP 계층 위에 있는 응용 프로그램 계층 프로토콜. 웹 브라우저와 서버에 몇 가지 표준 규칙을 제공하여 서로 통신하는 데 사용할 수 있다.
+## HTTPS (Hypertext Transfer Protocol Secure)
 
-- HTTP 는 각 트랜잭션이 이전 트랜잭션에 대한 지식 없이 별도로 실행되기 때문에 상태 비저장 프로토콜. 즉, 웹 브라우저와 서버 간에 트랜잭션이 완료되면 연결이 끊어짐.
+- **HTTPS**는 HTTP에 보안 기능을 추가한 확장 프로토콜이다.
+- 데이터를 **암호화된 형식**으로 전송하며, 은행·로그인 등 민감한 정보 전송 시 필수다.
+- 암호화에는 **TLS (Transport Layer Security)** 를 사용하며, 공식 명칭은 **SSL (Secure Sockets Layer)** 이다.
+- **비대칭 공개 키 인프라** 메커니즘을 사용하는 두 가지 키:
 
-<br>
+| 키 종류 | 관리 주체 | 역할 |
+|---------|----------|------|
+| **개인 키 (Private Key)** | 웹 서버(사이트 소유자) | 공개 키로 암호화된 정보를 복호화 |
+| **공개 키 (Public Key)** | 누구나 사용 가능 | 데이터를 암호화된 형태로 변환 |
 
-----
+---
 
+## HTTP vs HTTPS 주요 차이점
 
-#### HTTPS의 전체 형식은 Hypertext Transfer Protocol Secure이다.
+HTTP와 HTTPS의 핵심 차이는 **SSL 인증서** 유무다.
 
-                                                                                                                                                                                                                           . 
+- HTTPS 프로토콜은 **SSL 프로토콜**로 보호된다. (Amazon ACM 같은 서비스 참고)
+  - https://soliloquiess.github.io/study/2022/08/22/http%EB%A5%BC-https%EB%A1%9C-(SSL).html
+- SSL은 클라이언트가 서버로 전송하는 데이터를 암호화하여, 중간에서 탈취해도 내용을 알 수 없게 한다.
 
-- 이 프로토콜을 사용하면 암호화된 형식으로 데이터를 전송할 수 있다. HTTPS 프로토콜의 사용은 주로 은행 계좌 정보를 입력해야 하는 경우에 필요하다.                                         
+| 항목 | HTTP | HTTPS |
+|------|------|-------|
+| **규약** | Hypertext Transfer Protocol | Hypertext Transfer Protocol Secure |
+| **보안** | SSL 없음 — 데이터 평문 전송, 탈취 가능 | SSL 인증서 포함 — 암호화 전송 |
+| **포트 번호** | **80** (RFC 1340, IETF 지정) | **443** (1994년 RFC 지정) |
+| **동작 계층** | 애플리케이션 계층 | 전송 계층(보안 래핑) |
+| **SSL 인증서** | 불필요 | 서명된 SSL 인증서 설치 필요 (무료/유료) |
 
-- HTTPS 프로토콜은 로그인 자격 증명을 입력해야 하는 경우 주로 사용된다. 크롬과 같은 최신 브라우저에서는 두 프로토콜, 즉 HTTP와 HTTPS가 다르게 표시된다. 
+> 포트 번호가 지정되지 않으면 HTTP(포트 80)로 간주된다.
 
-- HTTPS는 암호화를 제공하기 위해 Transport Layer Security라는 암호화 프로토콜을 사용하며 공식적으로는 SSL(Secure Sockets Layer)이라고 한다. 이 프로토콜은 비대칭 공개 키 인프라로 알려진 메커니즘을 사용하며 아래에 제공된 두 가지 다른 키를 사용한다.
+---
 
-
-
-    - 개인 키: 이 키는 웹 사이트 소유자가 관리하는 웹 서버에서 사용할 수 있다.
-        - 공개키로 암호화된 정보를 복호화.
-    - 공개 키: 이 키는 모든 사람이 사용할 수 있다. 데이터를 암호화된 형태로 변환한다.
-
-<br>
-
-------
-
-#### HTTP와 HTTPS의 주요 차이점
-
-
-HTTP 와 HTTPS 의 주요 차이점은 SSL 인증서. HTTPS 프로토콜은 보안 기능이 추가된 HTTP 프로토콜의 확장 버전이다.
-
-이 추가 보안 기능은 신용 카드 정보와 같은 민감한 데이터를 전송하는 웹 사이트에 매우 중요하다.
-
-
-- HTTPS 프로토콜은 SSL 프로토콜로 인해 보호됨.(Amazon ACM 같은)
- - https://soliloquiess.github.io/study/2022/08/22/http%EB%A5%BC-https%EB%A1%9C-(SSL).html
-
-- SSL 프로토콜은 클라이언트가 서버로 전송하는 데이터를 암호화. 
- 
-- 누군가 클라이언트와 서버 간에 통신 중인 정보를 훔치려고 하면 암호화로 인해 이해할 수 없다. 
-
-- 이것은 HTTP에 SSL이 포함되어 있지 않은 반면 HTTPS에는 클라이언트와 서버 간의 보안 통신을 제공하는 SSL이 포함되어 있다는 HTTP와 HTTPS의 주요 차이점이다.
-
-<br>
-
- -----------------
-
-
-#### 규약
-
-- HTTP 프로토콜은 Hypertext Transfer Protocol의 약자<br> HTTPS는 Hypertext Transfer Protocol Secure의 약자.
-
-#### 보안
- 
-- HTTP 프로토콜은 SSL(Secure Sockets Layer)을 포함하지 않으므로 보안 프로토콜이 아님.<br> 즉, 클라이언트에서 서버로 데이터를 전송할 때 데이터를 도난당할 수 있다. 
-
-- 반면 HTTPS 프로토콜에는 데이터를 암호화된 형식으로 변환하는 SSL 인증서가 포함되어 있으므로 이 경우 외부인이 암호화된 텍스트를 이해하지 못 하기 때문에 데이터를 도용할 수 없다.
-
-#### 포트 번호
-
-- HTTP는 포트 번호 80을 통해 데이터를 전송하는 반면 HTTPS는 443 포트 번호를 통해 데이터를 전송. "포트 번호가 지정되지 않으면 HTTP로 간주될 것"
-
-- RFC 1340이 발표되었을 때 IETF(Internet Engineering Task Force)는 HTTP에 포트 번호 80을 제공. 1994년에 새로운 RFC가 출시되었을 때 HTTPS에는 포트 번호 443이 할당.
-
-#### 레이어
-
-- HTTP 프로토콜은 애플리케이션 계층에서 작동하고 HTTPS 프로토콜은 전송 계층에서 작동. <br>
-전송 계층의 책임은 데이터를 클라이언트에서 서버로 이동하는 것이며 데이터 보안이 주요 관심사. 
-<br>
-HTTPS는 전송 계층에서 작동하므로 보안 계층으로 래핑.
-
-#### SSL 인증서
-
-- 웹사이트에 HTTPS 프로토콜을 사용하려면 서명된 SSL 인증서를 설치.<br>
-SSL 인증서는 무료 및 유료 서비스 모두에서 사용할 수 있다.
-<br> 서비스는 비즈니스 요구 사항에 따라 선택.
-
-- HTTP는 SSL 인증서를 포함하지 않으므로 데이터를 해독하지 않으며 데이터는 일반 텍스트 형식으로 전송.
+## Python requests 예제 — HTTPS 날씨 스크래핑
 
 ```
 import requests
@@ -146,14 +103,13 @@ if __name__ == "__main__":
     scrape_weather()  #  날씨정보 가져오기, 직접 실행할 때만 동작하도록 함수 정의, 다른 파일에 의해서 호출될 때는 실행 안되게
 ```
 
+---
 
-<br>
+## Fiddler에서 SSL 인증서 오류 발생 시
 
-------
+Fiddler를 실행하고 트래픽을 잡으면 SSL 인증서 오류가 발생한다. Fiddler의 프록시 인증서를 신뢰할 수 없는 인증서로 인식하기 때문이다.
 
-해당 피들러를 실행하고 잡아보면 에러가 뜬다.
-
-이는 SSL을 신뢰할수 없는 인증서라고 인식해서 이다.
+`requests.get`에 **`verify=False`** 옵션을 주면 SSL 검증을 우회하여 실행할 수 있다.
 
 ```
     print("[네이버 오늘의 날씨]")
@@ -163,38 +119,24 @@ if __name__ == "__main__":
     res = requests.get(url, verify = False)
 ```
 
-여기 부분에서 requests.get에서 verify = False를 주면 실행이 가능해진다.
+---
 
+## Fiddler — HTTP 트래픽 분석 도구
 
-<br>
+**Fiddler**는 HTTP 트래픽을 검사하는 가장 인기 있는 도구 중 하나로, REST API 웹 요청을 쉽게 테스트할 수 있다.
 
--------
+### 웹 요청 및 응답 캡처 방법
 
-#### fiddler
+- Fiddler에서 **Capture**를 실행하면 트래픽 캡처가 시작된다.
 
-- Http 트래픽을 검사하는 가장 인기 있는 도구 중 하나다. 이 도구를 사용하면 REST API 웹 요청을 매우 쉽게 테스트할 수 있다.
+### HTTPS 트래픽 캡처 설정
 
-
-#### 웹 요청 및 응답을 보는 방법
-
-- 피들러에서  capture을 실행. 이에 따라 캡쳐 실행 설정 가능
-
-#### HTTPS 트래픽을 캡처
- 
-Fiddler 는 암호화되어 있기 때문에 HTTPS URL(보안 사이트) 에 대한 웹 요청의 내용을 표시하지 않는다
-
-그래서 쓰려면 옵션에서 설정해야 한다.
+Fiddler는 기본적으로 HTTPS 내용을 표시하지 않는다(암호화되어 있기 때문). HTTPS를 캡처하려면 아래와 같이 옵션을 설정해야 한다.
 
 ![20221025_112844](https://user-images.githubusercontent.com/37941513/197800574-cf507c53-35fc-48f2-b5f3-fd001bb062fe.png)
 
+**Tools → Options → HTTPS** 탭에서 HTTPS 복호화 옵션을 활성화한다.
 
+---
 
-Tools -> options -> Https
-
-
-<br>
-
-------------
-
-
-#### 웹 요청 및 응답을 보는 방법
+### 웹 요청 및 응답을 보는 방법
