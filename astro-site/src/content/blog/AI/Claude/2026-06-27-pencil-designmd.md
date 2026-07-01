@@ -1,12 +1,12 @@
 ---
-title: "Pencil.dev & DESIGN.md 정리 (디자인-투-코드)"
+title: "Pencil.dev & DESIGN.md — 디자인을 코드로"
 date: 2026-06-27
 category: "Claude"
-tags: []
-description: "Pencil.dev & DESIGN.md 정리 (디자인 투 코드) 작성일: 2026 06 27 주제: AI 코딩 시대의 \"디자인 → 코드\" 도구·포맷 — Pencil, DESIGN.md, getdesign.md, 크"
+tags: ["Claude", "Pencil", "DESIGN.md"]
+description: "AI 코딩 시대의 '디자인 → 코드' 도구·포맷 — Pencil.dev와 DESIGN.md의 정체·활용법·한계를 정리한 노트."
 permalink: "2026/06/27/pencil-designmd"
 ---
-# Pencil.dev & DESIGN.md 정리 (디자인-투-코드)
+# Pencil.dev & DESIGN.md — 디자인을 코드로
 
 > 작성일: 2026-06-27
 > 주제: AI 코딩 시대의 "디자인 → 코드" 도구·포맷 — Pencil, DESIGN.md, getdesign.md, 크롬 확장

@@ -1,12 +1,12 @@
 ---
-title: "Claude Code 정리 노트"
+title: "Claude Code 정리 노트 — 메모리·훅·서브에이전트·Agent Teams"
 date: 2026-06-20
 category: "Claude"
-tags: []
-description: "Claude Code 정리 노트 작성일: 2026 06 20 1. 팀 계정 사용 정책 개인 기기에서 팀 계정 사용 시 팀/조직 계정을 개인 컴퓨터에서 사용하는 것 자체가 자동 정지되지는 않음 동일 계정으로 다른 기기"
+tags: ["Claude", "Claude Code"]
+description: "Claude Code의 팀 계정 정책, 파일 기반 메모리 시스템, CLAUDE.md 스코프, 훅 생명주기, 서브에이전트와 Agent Teams, 동적 워크플로까지 정리한 노트."
 permalink: "2026/06/20/claude-code-notes"
 ---
-# Claude Code 정리 노트
+# Claude Code 정리 노트 — 메모리·훅·서브에이전트·Agent Teams
 
 > 작성일: 2026-06-20
 

@@ -1,12 +1,12 @@
 ---
-title: "Claude Code 정리 노트 (2)"
+title: "Claude Code 정리 노트 — SDD·컨텍스트 엔지니어링·MCP·Ouroboros"
 date: 2026-06-27
 category: "Claude"
-tags: []
-description: "Claude Code 정리 노트 (2) 작성일: 2026 06 27 이전 노트: 2026 06 20 claude code notes.md 의 후속편 1. Token Maxxing (토큰 맥싱) 공식 용어가 아니라 L"
+tags: ["Claude", "Claude Code"]
+description: "토큰 맥싱, SDD(명세 주도 개발), 컨텍스트 엔지니어링, 권한 모드, MCP, Ouroboros, 루프 엔지니어링 등 Claude Code 심화 주제를 정리한 후속 노트."
 permalink: "2026/06/27/claude-code-notes_2"
 ---
-# Claude Code 정리 노트 (2)
+# Claude Code 정리 노트 — SDD·컨텍스트 엔지니어링·MCP·Ouroboros
 
 > 작성일: 2026-06-27
 > 이전 노트: 2026-06-20-claude-code-notes.md 의 후속편

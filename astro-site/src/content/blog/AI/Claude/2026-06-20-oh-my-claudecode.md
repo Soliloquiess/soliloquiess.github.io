@@ -1,12 +1,12 @@
 ---
-title: "oh-my-claudecode (OMC) 정리"
+title: "oh-my-claudecode(OMC) — 멀티에이전트 오케스트레이션 정리"
 date: 2026-06-20
 category: "Claude"
-tags: []
-description: "oh my claudecode (OMC) 정리 작성일: 2026 06 20 저장소: https://github.com/yeachan heo/oh my claudecode (npm 패키지명: oh my claude s"
+tags: ["Claude", "oh-my-claudecode"]
+description: "Claude Code 위에서 동작하는 멀티에이전트 오케스트레이션 레이어 oh-my-claudecode(OMC)의 구성과 사용법을 정리한 노트."
 permalink: "2026/06/20/oh-my-claudecode"
 ---
-# oh-my-claudecode (OMC) 정리
+# oh-my-claudecode(OMC) — 멀티에이전트 오케스트레이션 정리
 
 > 작성일: 2026-06-20
 > 저장소: https://github.com/yeachan-heo/oh-my-claudecode
