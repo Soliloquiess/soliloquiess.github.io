@@ -1,5 +1,5 @@
 ---
-title: "[CS] 면접 대비 Interview — 언어·OS·DB·네트워크·Spring"
+title: "[CS] 기술 면접 Q&A — Java·OS·DB·네트워크·Spring 종합 정리"
 date: 2021-11-14
 category: "CS"
 tags: ["CS"]
