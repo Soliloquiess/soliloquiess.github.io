@@ -2,7 +2,7 @@
 import type { GetStaticPaths } from 'astro';
 import { render } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Comments from '../components/Comments.astro';
+import Giscus from '../components/Giscus.astro';
 import { getPublishedPosts, getRelatedPosts, getReadingTime, getSeries, formatDate, type Post, type SeriesItem } from '../lib/posts';
 import { SITE, postUrl } from '../lib/site';
 
@@ -134,7 +134,7 @@ const jsonLd = {
         </section>
       )}
 
-      <Comments pageId={data.permalink} pageUrl={canonical} pageTitle={data.title} />
+      <Giscus />
     </article>
   </div>
 
