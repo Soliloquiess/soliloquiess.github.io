@@ -1,0 +1,18 @@
+---
+// Cusdis 댓글 (GitHub 로그인 불필요 — 이름만으로 익명 댓글 가능)
+interface Props { pageId: string; pageUrl: string; pageTitle: string; }
+const { pageId, pageUrl, pageTitle } = Astro.props;
+const APP_ID = 'f72f8d6a-d3ac-472c-bbc6-4ece063641cf';
+---
+<section class="comments" id="comments">
+  <div
+    id="cusdis_thread"
+    data-host="https://cusdis.com"
+    data-app-id={APP_ID}
+    data-page-id={pageId}
+    data-page-url={pageUrl}
+    data-page-title={pageTitle}
+    data-theme="auto"
+  ></div>
+  <script is:inline async defer src="https://cusdis.com/js/cusdis.es.js"></script>
+</section>
