@@ -1,10 +1,10 @@
 ---
 title: "[Springboot] Springboot 면접 질문 목록"
-date: 2024-01-23
+date: 2024-01-04
 category: "Springboot"
 tags: ["Springboot"]
 description: "스프링부트 관련 면접 질문 리스트 Q1. 스프링 부트란 무엇인가? Spring Boot는 어떤 문제를 해결합니까? 스프링 부트 (Spring Boot): 스프링 부트는 Pivotal(현재는 VMware의…"
-permalink: "study/2024/01/23/Springboot-인터뷰-질문-목록"
+permalink: "study/2024/01/04/Springboot-인터뷰-질문-목록"
 ---
 ### 스프링부트 관련 면접 질문 리스트
 
