@@ -5,9 +5,11 @@ interface Props { post: Post }
 const { post } = Astro.props;
 const { data } = post;
 ---
-<a class="post-item" href={postUrl(data.permalink)}>
+<a class:list={['post-item', data.category === 'Notice' && 'notice']} href={postUrl(data.permalink)}>
   <div class="meta">
-    <span class="cat">{data.category}</span>
+    {data.category === 'Notice'
+      ? <span class="cat notice-badge">📢 공지</span>
+      : <span class="cat">{data.category}</span>}
     <time datetime={data.date.toISOString()}>{formatDate(data.date)}</time>
   </div>
   <h2>{data.title}</h2>

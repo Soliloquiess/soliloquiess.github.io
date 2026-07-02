@@ -14,6 +14,10 @@
   --accent:    #4f86aa;
   --accent-2:  #2f5d7c;
   --accent-bg: #eaf1f6;
+  --notice:       #b9772a;
+  --notice-bg:    #fbf1e3;
+  --notice-border:#ecd9bd;
+  --notice-chip:  #f5e6cf;
   --code-bg:   #f6f8fa;
   --shadow:    0 1px 2px rgba(20,30,45,.04), 0 4px 18px rgba(20,30,45,.05);
   --radius:    12px;
@@ -37,6 +41,10 @@
   --accent:    #6fa8cc;
   --accent-2:  #8fbdd9;
   --accent-bg: #1d2832;
+  --notice:       #d4a24e;
+  --notice-bg:    #2a2216;
+  --notice-border:#43371f;
+  --notice-chip:  #3a2f1c;
   --code-bg:   #1b2129;
   --shadow:    0 1px 2px rgba(0,0,0,.2), 0 6px 22px rgba(0,0,0,.28);
   color-scheme: dark;
@@ -154,6 +162,18 @@ main { min-height: 64vh; padding: 38px 0 60px; }
 .post-item h2 { font-size: 18.5px; font-weight: 700; margin: 0 0 5px; color: var(--text); letter-spacing: -.01em; }
 .post-item p { margin: 0; color: var(--muted); font-size: 14.5px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .post-item .tags { margin-top: 9px; display: flex; flex-wrap: wrap; gap: 6px; }
+
+/* Notice(공지) 강조 — 사이드바 전용 항목 + 글 카드 색 구분 */
+.s-notice { display: flex; align-items: center; gap: 9px; padding: 9px 11px; margin: 2px 0;
+  border-radius: 8px; font-size: 15px; font-weight: 700; color: var(--notice); background: var(--notice-bg); }
+.s-notice:hover { text-decoration: none; filter: brightness(.98); }
+.s-notice.active { box-shadow: inset 2px 0 0 var(--notice); }
+.s-notice .ico { font-size: 15px; line-height: 1; }
+.s-notice .n { margin-left: auto; font-family: var(--mono); font-size: 12px; font-weight: 400; opacity: .8; }
+.post-item.notice { background: var(--notice-bg); border-color: var(--notice-border); border-left: 3px solid var(--notice); }
+.post-item.notice .cat.notice-badge { color: var(--notice); background: var(--notice-chip); }
+.chip-cloud a.chip-notice { color: var(--notice); background: var(--notice-bg); border-color: var(--notice-border); }
+.chip-cloud a.chip-notice .count { color: var(--notice); }
 .tag-chip { font-size: 12px; color: var(--muted); background: var(--surface-2); border: 1px solid var(--border); padding: 1px 9px; border-radius: 999px; font-family: var(--mono); }
 .tag-chip:hover { color: var(--accent-2); border-color: var(--accent); text-decoration: none; }
 

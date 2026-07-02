@@ -1,7 +1,9 @@
 ---
 import { SITE } from '../lib/site';
 import { getCategories } from '../lib/posts';
-const categories = (await getCategories()).sort((a, b) => a.name.localeCompare(b.name));
+const allCats = (await getCategories()).sort((a, b) => a.name.localeCompare(b.name));
+const notice = allCats.find((c) => c.name === 'Notice');
+const categories = allCats.filter((c) => c.name !== 'Notice');
 const path = Astro.url.pathname;
 const isHome = path === '/' || path === '/index.html' || /^\/page\//.test(path);
 const here = (href: string) => path === href;
@@ -19,6 +21,12 @@ const here = (href: string) => path === href;
       <a href="/vault.html" class={here('/vault.html') ? 'active' : ''}>📦 보관함</a>
       <a href="/search.html" class={here('/search.html') ? 'active' : ''}>검색</a>
     </nav>
+
+    {notice && (
+      <a class:list={['s-notice', here('/categories/Notice.html') && 'active']} href="/categories/Notice.html">
+        <span class="ico" aria-hidden="true">📢</span><span>공지</span><span class="n">{notice.count}</span>
+      </a>
+    )}
 
     <details class="s-group" open>
       <summary>

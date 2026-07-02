@@ -1,12 +1,19 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCategories } from '../lib/posts';
-const categories = (await getCategories()).sort((a, b) => a.name.localeCompare(b.name));
+const allCats = (await getCategories()).sort((a, b) => a.name.localeCompare(b.name));
+const notice = allCats.find((c) => c.name === 'Notice');
+const categories = allCats.filter((c) => c.name !== 'Notice');
 ---
 <BaseLayout title="Categories" description="카테고리 모음">
   <div class="container">
     <h1 class="page-title">Categories</h1>
     <p class="page-sub">전체 {categories.length}개 카테고리</p>
+    {notice && (
+      <div class="chip-cloud" style="margin-bottom:16px">
+        <a class="chip-notice" href={`/categories/${encodeURIComponent(notice.name)}.html`}>📢 공지<span class="count">{notice.count}</span></a>
+      </div>
+    )}
     <div class="chip-cloud">
       {categories.map((c) => (
         <a href={`/categories/${encodeURIComponent(c.name)}.html`}>{c.name}<span class="count">{c.count}</span></a>
