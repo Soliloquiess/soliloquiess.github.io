@@ -1,5 +1,5 @@
 ---
-title: "Claude Code 정리 노트 — 메모리·훅·서브에이전트·Agent Teams"
+title: "[Claude] Claude Code 정리 노트 — 메모리·훅·서브에이전트·Agent Teams"
 date: 2026-06-20
 category: "Claude"
 tags: ["Claude", "Claude Code"]

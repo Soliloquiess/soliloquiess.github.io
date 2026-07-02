@@ -1,5 +1,5 @@
 ---
-title: "oh-my-claudecode(OMC) — 멀티에이전트 오케스트레이션 정리"
+title: "[Claude] oh-my-claudecode(OMC) — 멀티에이전트 오케스트레이션 정리"
 date: 2026-06-20
 category: "Claude"
 tags: ["Claude", "oh-my-claudecode"]

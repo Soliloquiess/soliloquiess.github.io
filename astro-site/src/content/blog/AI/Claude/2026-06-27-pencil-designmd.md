@@ -1,5 +1,5 @@
 ---
-title: "Pencil.dev & DESIGN.md — 디자인을 코드로"
+title: "[Claude] Pencil.dev & DESIGN.md — 디자인을 코드로"
 date: 2026-06-27
 category: "Claude"
 tags: ["Claude", "Pencil", "DESIGN.md"]

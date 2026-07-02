@@ -1,5 +1,5 @@
 ---
-title: "HTTPS 키 교환 이야기 — RSA vs ECDHE, 그리고 Forward Secrecy"
+title: "[Network] HTTPS 키 교환 이야기 — RSA vs ECDHE, 그리고 Forward Secrecy"
 date: 2026-07-02
 category: "Network"
 tags: ["Network", "네트워크", "보안", "TLS"]

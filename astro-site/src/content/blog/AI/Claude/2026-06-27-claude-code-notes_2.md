@@ -1,5 +1,5 @@
 ---
-title: "Claude Code 정리 노트 — SDD·컨텍스트 엔지니어링·MCP·Ouroboros"
+title: "[Claude] Claude Code 정리 노트 — SDD·컨텍스트 엔지니어링·MCP·Ouroboros"
 date: 2026-06-27
 category: "Claude"
 tags: ["Claude", "Claude Code"]
