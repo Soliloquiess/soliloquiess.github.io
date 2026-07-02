@@ -1,8 +1,8 @@
 ---
-title: "HTTP vs HTTPS 핵심 개념과 Fiddler로 트래픽 분석하기"
+title: "[Network] HTTP vs HTTPS 핵심 개념과 Fiddler로 트래픽 분석하기"
 date: 2022-10-20
-category: "Etc"
-tags: ["Etc", "네트워크"]
+category: "Network"
+tags: ["Network", "네트워크"]
 description: "HTTP와 HTTPS의 구조적 차이(SSL/TLS, 포트, 보안 계층)를 정리하고, Fiddler로 HTTPS 트래픽을 캡처하는 방법과 Python requests에서 SSL 검증을 우회하는 방법을 설명한다."
 permalink: "etc/2022/10/20/http_https"
 ---

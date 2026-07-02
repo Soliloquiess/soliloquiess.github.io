@@ -1,8 +1,8 @@
 ---
 title: "HTTPS 키 교환 이야기 — RSA vs ECDHE, 그리고 Forward Secrecy"
 date: 2026-07-02
-category: "Etc"
-tags: ["Etc", "네트워크", "보안", "TLS"]
+category: "Network"
+tags: ["Network", "네트워크", "보안", "TLS"]
 description: "HTTPS는 어떻게 도청자가 보는 공용 도로 위에서 둘만의 비밀 열쇠를 정할까? 낡은 RSA 키 교환과 요즘의 ECDHE(디피-헬만)의 차이, 전방향 안전성(Forward Secrecy), 그리고 '취약한 RSA cipher 제거'가 왜 안전한지를 물감 비유로 정리한다."
 permalink: "etc/2026/07/02/tls-rsa-ecdhe-key-exchange"
 ---

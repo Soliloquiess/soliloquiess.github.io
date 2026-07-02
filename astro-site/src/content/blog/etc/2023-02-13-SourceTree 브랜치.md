@@ -1,8 +1,8 @@
 ---
-title: "Sourcetree로 브랜치 전략을 활용한 Git 충돌 해결"
+title: "[Git] Sourcetree로 브랜치 전략을 활용한 Git 충돌 해결"
 date: 2023-02-13
-category: "Etc"
-tags: ["Etc"]
+category: "Git"
+tags: ["Git"]
 description: "pull 중 충돌이 발생했을 때 임시 브랜치를 생성해 충돌을 안전하게 분리하고, Sourcetree의 GUI로 손쉽게 병합·해결하는 전 과정을 단계별로 정리했다."
 permalink: "etc/2023/02/13/SourceTree-브랜치"
 ---
