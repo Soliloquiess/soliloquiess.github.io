@@ -592,8 +592,13 @@ Ouroboros (MCP)    = 그 방법론을 SDD·진화루프로 제품화한 "Agent O
 
 ## 13. Interview 모드
 
-> 📊 시각 다이어그램(Artifact): https://claude.ai/code/artifact/4077f859-0c24-416b-9dd7-cf259a85098b
-> (A. 모호함 깔때기: 요청→질문 게이트→명세→구현 / D. 우로보로스 진화 루프)
+**A. 모호함 깔때기 (Ambiguity Funnel)**
+
+![모호함 깔때기 다이어그램](/assets/diagram_13_funnel.png)
+
+**D. 우로보로스 진화 루프 (Ouroboros Evolution Loop)**
+
+![우로보로스 진화 루프 다이어그램](/assets/diagram_13_ouro.png)
 
 > **AI가 곧장 작업에 들어가는 대신, 먼저 "질문을 던지며" 요구사항을 캐내는 동작 모드.** Socratic Reasoning(12번)을 실제 도구로 구현한 형태. 핵심은 **"실행 전 질문 단계를 강제"**해 추측·goal drift를 차단.
 
@@ -647,7 +652,6 @@ Interview 모드 ──→ Ouroboros Interview / deep-interview / planner
 ## 14. Ouroboros 사용법
 
 > 출처: github.com/Q00/ouroboros
-> 📊 진화 루프 다이어그램(D): https://claude.ai/code/artifact/4077f859-0c24-416b-9dd7-cf259a85098b
 > ⚠️ 명령어는 **`/ouroboros:interview`(슬래시)가 아니라 `ooo <명령>` 형식**.
 
 ### 설치 (Claude Code)
@@ -711,9 +715,9 @@ ooo evaluate / evolve    → 검증·진화 반복
 
 ## 15. 우로보로스 ↔ MCP 관계 & "규약 vs 허브"
 
-> 📊 시각 다이어그램(Artifact): https://claude.ai/code/artifact/41103e60-b1c9-4086-a35e-c0fc6862bb7d
-> (① MCP 기본구조 ② 우로보로스 매핑 ③ 규약/서버/허브 3층 — 한 장 도식)
 > 10번(MCP)·12~14번(Ouroboros)을 잇는 정리.
+
+![MCP 3층 구조 다이어그램](/assets/diagram_15_mcp.png)
 
 ### A. 우로보로스를 MCP 구조에 끼우면
 ```
