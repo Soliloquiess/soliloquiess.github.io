@@ -1,8 +1,8 @@
 ---
 title: "[Maven] Eclipse에서 HttpServletRequest cannot be resolved to a type 해결"
 date: 2022-05-25
-category: "Spring"
-tags: ["Spring"]
+category: "Etc"
+tags: ["Etc"]
 description: "Maven 프로젝트에서 Eclipse가 HttpServlet·javax.servlet 패키지를 찾지 못할 때, Project Facets의 Dynamic Web Module 설정과 Runtimes 탭에서 서블릿 컨테이너를 연결해 해결하는 방법을 정리한다."
 permalink: "class/2022/05/25/HttpServletRequest-cannot-be-resolved-to-a-type문제"
 ---

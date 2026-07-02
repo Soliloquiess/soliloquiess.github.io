@@ -1,8 +1,8 @@
 ---
-title: "[Backend] JDBC의 한계와 MyBatis로의 전환"
+title: "[JSP-Servlet] JDBC의 한계와 MyBatis로의 전환"
 date: 2021-06-16
-category: "Backend"
-tags: ["Backend"]
+category: "JSP-Servlet"
+tags: ["JSP-Servlet"]
 description: "JDBC(Java Database Connectivity)의 보안·유지보수 문제를 짚고, MyBatis의 3개 설정 파일 구조, SqlSessionFactory·SqlSession·커넥션 풀 동작 원리, MemberDAO 실전 코드까지 단계별로 정리한 학습노트."
 permalink: "study/2021/06/16/JDBC,Mybatis"
 ---

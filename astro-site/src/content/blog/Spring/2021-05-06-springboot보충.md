@@ -1,8 +1,8 @@
 ---
-title: "[Spring] Spring Boot 프로젝트 초기 세팅 — Swagger·MyBatis 연동 체크리스트"
+title: "[Springboot] Spring Boot 프로젝트 초기 세팅 — Swagger·MyBatis 연동 체크리스트"
 date: 2021-05-06
-category: "Spring"
-tags: ["Spring"]
+category: "Springboot"
+tags: ["Springboot"]
 description: "Spring Boot 신규 프로젝트 생성부터 Swagger 의존성 추가, MyBatis Mapper 설정, application.properties 편집까지 단계별 체크리스트를 정리한다."
 permalink: "class/2021/05/06/springboot보충"
 ---

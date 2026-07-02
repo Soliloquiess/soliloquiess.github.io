@@ -1,8 +1,8 @@
 ---
 title: "VirtualBox CentOS 8 설치 및 초기 환경 설정 가이드"
 date: 2022-04-08
-category: "Etc"
-tags: ["Etc"]
+category: "DevOps"
+tags: ["DevOps"]
 description: "VirtualBox에 CentOS 8 DVD ISO를 마운트하여 설치하고, 네트워크·루트 계정·사용자 계정·개발 도구를 포함한 초기 환경을 구성하는 단계별 가이드."
 permalink: "etc/2022/04/08/Centos8-java설치"
 ---

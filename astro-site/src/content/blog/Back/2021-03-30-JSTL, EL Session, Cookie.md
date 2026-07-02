@@ -1,8 +1,8 @@
 ---
-title: "[Backend] JSTL·EL·Session·Cookie — JSP 데이터 처리와 상태 관리"
+title: "[JSP-Servlet] JSTL·EL·Session·Cookie — JSP 데이터 처리와 상태 관리"
 date: 2021-03-29
-category: "Backend"
-tags: ["Backend"]
+category: "JSP-Servlet"
+tags: ["JSP-Servlet"]
 description: "DTO/DAO 패턴으로 서블릿과 DB를 분리하고, Request·Session·Application 스코프 차이, Cookie를 이용한 아이디 저장 기능을 정리한 학습노트."
 permalink: "class/2021/03/29/JSTL,-EL-Session,-Cookie"
 ---

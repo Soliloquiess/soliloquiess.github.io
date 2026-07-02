@@ -1,8 +1,8 @@
 ---
-title: "[Backend] Servlet과 JSP — 웹 서버 동작 원리부터 MVC 구조까지"
+title: "[JSP-Servlet] Servlet과 JSP — 웹 서버 동작 원리부터 MVC 구조까지"
 date: 2021-03-29
-category: "Backend"
-tags: ["Backend"]
+category: "JSP-Servlet"
+tags: ["JSP-Servlet"]
 description: "Web Server·WAS·Servlet·JSP의 역할을 구분하고, HttpServlet 요청 처리 흐름(Request/Response·doGet/doPost)과 JSP 스크립트 요소, sendRedirect vs. forward 차이를 정리한 학습노트."
 permalink: "class/2021/03/29/Servlet,JSP"
 ---

@@ -1,8 +1,8 @@
 ---
-title: "[SQL] RDBMS,DCL,DDL,DML"
+title: "[DB] RDBMS,DCL,DDL,DML"
 date: 2021-04-04
-category: "SQL"
-tags: ["SQL"]
+category: "DB"
+tags: ["DB"]
 description: "RDBMS의 개념과 SQL 명령어 분류(DDL·DML·DCL·TCL), MySQL 데이터 타입과 테이블 생성, 제약조건, 내장함수, 트랜잭션을 정리한 학습 노트."
 permalink: "class/2021/04/04/RDBMS,DML,DCL"
 ---

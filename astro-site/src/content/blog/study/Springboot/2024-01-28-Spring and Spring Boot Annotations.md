@@ -2,7 +2,7 @@
 title: "[Springboot] Spring and Spring Boot Annotations"
 date: 2024-01-28
 category: "Springboot"
-tags: ["Spring"]
+tags: ["Springboot"]
 description: "Spring 및 Spring Boot는 애플리케이션의 구성 및 개발을 간소화하기 위해 주석(Annotations)을 널리 활용합니다. 다음은 Spring 및 Spring Boot에서 자주 사용되는 25개 이상의…"
 permalink: "study/2024/01/28/Spring-and-Spring-Boot-Annotations"
 ---
