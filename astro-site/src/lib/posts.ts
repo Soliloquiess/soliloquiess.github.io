@@ -92,7 +92,7 @@ export async function getCategories(): Promise<{ name: string; count: number }[]
   for (const p of posts) map.set(p.data.category, (map.get(p.data.category) ?? 0) + 1);
   return [...map.entries()]
     .map(([name, count]) => ({ name, count }))
-    .sort((a, b) => b.count - a.count);
+    .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
 }
 
 export async function getTags(): Promise<{ name: string; count: number }[]> {
