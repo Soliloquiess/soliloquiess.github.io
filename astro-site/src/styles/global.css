@@ -386,3 +386,26 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display: none !important; }
 .related .r-title { font-size: 14.5px; font-weight: 600; color: var(--text); line-height: 1.4; }
 .related time { font-size: 12px; color: var(--faint); font-family: var(--mono); }
 @media (max-width: 560px) { .related ul { grid-template-columns: 1fr; } }
+
+/* ── 본문 이미지 라이트박스 (클릭하면 크게) ───────────────── */
+.prose img { cursor: zoom-in; }
+.lightbox {
+  position: fixed; inset: 0; z-index: 9999;
+  display: none; align-items: center; justify-content: center;
+  background: rgba(0,0,0,.85); padding: 24px;
+  cursor: zoom-out; -webkit-tap-highlight-color: transparent;
+}
+.lightbox.open { display: flex; }
+.lightbox img {
+  max-width: 96vw; max-height: 94vh; width: auto; height: auto;
+  border-radius: 8px; box-shadow: 0 8px 40px rgba(0,0,0,.5); background: #0d1117;
+}
+.lightbox .lb-close {
+  position: fixed; top: 14px; right: 20px; width: 40px; height: 40px;
+  font-size: 30px; line-height: 1; color: #fff; opacity: .85;
+  border: 0; background: none; cursor: pointer;
+}
+.lightbox .lb-hint {
+  position: fixed; bottom: 16px; left: 0; right: 0; text-align: center;
+  color: #fff; opacity: .55; font-size: 13px; pointer-events: none;
+}

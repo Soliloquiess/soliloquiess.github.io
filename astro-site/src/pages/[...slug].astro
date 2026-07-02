@@ -178,6 +178,30 @@ const jsonLd = {
         img.setAttribute('decoding', 'async');
       });
 
+      // 2-2) 본문 이미지 클릭 확대 (라이트박스)
+      (function () {
+        var imgs = document.querySelectorAll('.prose img');
+        if (!imgs.length) return;
+        var lb = document.createElement('div');
+        lb.className = 'lightbox';
+        lb.innerHTML = '<button class="lb-close" type="button" aria-label="닫기">×</button><img alt=""><div class="lb-hint">클릭 또는 Esc로 닫기</div>';
+        document.body.appendChild(lb);
+        var lbImg = lb.querySelector('img');
+        function closeLb() { lb.classList.remove('open'); document.body.style.overflow = ''; lbImg.removeAttribute('src'); }
+        imgs.forEach(function (img) {
+          img.addEventListener('click', function () {
+            lbImg.src = img.currentSrc || img.src;
+            lbImg.alt = img.alt || '';
+            lb.classList.add('open');
+            document.body.style.overflow = 'hidden';
+          });
+        });
+        lb.addEventListener('click', closeLb);
+        document.addEventListener('keydown', function (e) {
+          if (e.key === 'Escape' && lb.classList.contains('open')) closeLb();
+        });
+      })();
+
       // 3) 읽기 진행 바
       var bar = document.getElementById('read-progress-bar');
       var article = document.querySelector('article');
