@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 940 430" font-family="'Segoe UI','Malgun Gothic',sans-serif">
+  <defs>
+    <marker id="m3" markerWidth="9" markerHeight="9" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#8b949e"/></marker>
+  </defs>
+  <style>
+    .btxt{font-size:15px;font-weight:700;text-anchor:middle;dominant-baseline:middle}
+    .chip{font-size:12.5px;font-weight:600;text-anchor:middle;dominant-baseline:middle;fill:#aff5b4}
+    .lbl{font-size:12px;text-anchor:middle;fill:#8b949e}
+    .th{font-size:12.5px;font-weight:700;dominant-baseline:middle;fill:#e6edf3}
+    .td{font-size:13px;dominant-baseline:middle;fill:#adbac7}
+  </style>
+  <rect x="0" y="0" width="940" height="430" fill="#0d1117"/>
+
+  <!-- Host <-> Server -->
+  <rect x="90" y="50" width="250" height="60" rx="10" fill="#0f2b46" stroke="#4a9eff" stroke-width="1.5"/>
+  <text class="btxt" x="215" y="74" fill="#cae3ff">Claude Code</text>
+  <text class="lbl" x="215" y="94">호스트 (Host)</text>
+
+  <rect x="600" y="50" width="250" height="60" rx="10" fill="#2d2140" stroke="#a371f7" stroke-width="1.5"/>
+  <text class="btxt" x="725" y="74" fill="#e2d4ff">Ouroboros</text>
+  <text class="lbl" x="725" y="94">MCP 서버 (Server)</text>
+
+  <line x1="340" y1="72" x2="598" y2="72" stroke="#8b949e" stroke-width="1.5" marker-end="url(#m3)"/>
+  <line x1="600" y1="90" x2="342" y2="90" stroke="#8b949e" stroke-width="1.5" marker-end="url(#m3)"/>
+  <text x="470" y="66" text-anchor="middle" font-size="12.5px" font-weight="700" fill="#58a6ff">MCP 규약</text>
+  <text x="470" y="104" text-anchor="middle" font-size="11px" fill="#6e7681">STDIO / HTTP</text>
+
+  <!-- Tools exposed -->
+  <text x="725" y="140" text-anchor="middle" font-size="12px" fill="#bc8cff" font-weight="700">↓ 노출하는 MCP Tools</text>
+  <g>
+    <rect x="512" y="156" width="86" height="30" rx="15" fill="#12251a" stroke="#3fb950"/>
+    <text class="chip" x="555" y="171">interview</text>
+    <rect x="606" y="156" width="66" height="30" rx="15" fill="#12251a" stroke="#3fb950"/>
+    <text class="chip" x="639" y="171">seed</text>
+    <rect x="680" y="156" width="60" height="30" rx="15" fill="#12251a" stroke="#3fb950"/>
+    <text class="chip" x="710" y="171">run</text>
+    <rect x="748" y="156" width="86" height="30" rx="15" fill="#12251a" stroke="#3fb950"/>
+    <text class="chip" x="791" y="171">evaluate</text>
+    <rect x="600" y="192" width="80" height="30" rx="15" fill="#12251a" stroke="#3fb950"/>
+    <text class="chip" x="640" y="207">evolve</text>
+    <rect x="688" y="192" width="150" height="30" rx="15" fill="#12251a" stroke="#3fb950"/>
+    <text class="chip" x="763" y="207" font-size="11px">= 워크플로 12·13·14번</text>
+  </g>
+
+  <!-- mapping table -->
+  <text x="90" y="176" font-size="13px" font-weight="700" fill="#e6edf3">MCP 구성 → 우로보로스에서는</text>
+  <g>
+    <rect x="90" y="192" width="360" height="150" rx="8" fill="#161b22" stroke="#30363d"/>
+    <line x1="90" y1="228" x2="450" y2="228" stroke="#30363d"/>
+    <line x1="90" y1="266" x2="450" y2="266" stroke="#30363d"/>
+    <line x1="90" y1="304" x2="450" y2="304" stroke="#30363d"/>
+    <line x1="228" y1="192" x2="228" y2="342" stroke="#30363d"/>
+    <text class="th" x="104" y="210">MCP 구성</text>
+    <text class="th" x="242" y="210">우로보로스</text>
+    <text class="td" x="104" y="247">Host</text>
+    <text class="td" x="242" y="247">Claude Code</text>
+    <text class="td" x="104" y="285">Server</text>
+    <text class="td" x="242" y="285">Ouroboros</text>
+    <text class="td" x="104" y="323">Tools</text>
+    <text class="td" x="242" y="323" font-size="12px">interview·evaluate·evolve…</text>
+  </g>
+
+  <!-- summary -->
+  <rect x="90" y="372" width="760" height="40" rx="8" fill="#12251f" stroke="#238636"/>
+  <text x="110" y="392" font-size="13px" fill="#7ee787" font-weight="700">한 줄 요약</text>
+  <text x="110" y="392" font-size="12.5px" fill="#adbac7"><tspan x="200" dy="0">우로보로스 = MCP 서버로 구현된 Agent OS. Claude Code(호스트)가 MCP 규약으로 그 도구들을 호출한다.</tspan></text>
+</svg>

@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 940 430" font-family="'Segoe UI','Malgun Gothic',sans-serif">
+  <style>
+    .h{font-size:14px;font-weight:700;dominant-baseline:middle}
+    .d{font-size:12px;dominant-baseline:middle;fill:#8b949e}
+    .th{font-size:12.5px;font-weight:700;dominant-baseline:middle;fill:#e6edf3}
+    .td{font-size:12.5px;dominant-baseline:middle;fill:#adbac7}
+    .cap{font-size:13px;font-weight:700;fill:#e6edf3}
+  </style>
+  <rect x="0" y="0" width="940" height="430" fill="#0d1117"/>
+
+  <!-- LEFT: 3-layer -->
+  <text class="cap" x="60" y="42">3층 구조 — 규약 · 서버 · 허브</text>
+  <!-- 규약 -->
+  <rect x="60" y="60" width="400" height="66" rx="8" fill="#0f2b46" stroke="#4a9eff" stroke-width="1.5"/>
+  <text class="h" x="80" y="84" fill="#4a9eff">① 규약 (MCP)</text>
+  <text class="d" x="80" y="106">어떻게 통신할지의 표준 — Model Context Protocol</text>
+  <!-- 서버 -->
+  <rect x="60" y="136" width="400" height="66" rx="8" fill="#1a2e22" stroke="#3fb950" stroke-width="1.5"/>
+  <text class="h" x="80" y="160" fill="#3fb950">② 서버</text>
+  <text class="d" x="80" y="182">그 규약으로 만든 도구 — Ouroboros · GitHub MCP · context7</text>
+  <!-- 허브 -->
+  <rect x="60" y="212" width="400" height="66" rx="8" fill="#3a2e12" stroke="#d29922" stroke-width="1.5"/>
+  <text class="h" x="80" y="236" fill="#d29922">③ 허브 (마켓플레이스)</text>
+  <text class="d" x="80" y="258">서버를 모아 파는 별도 층 — MCP ≠ 허브!</text>
+
+  <!-- RIGHT: analogy table -->
+  <text class="cap" x="500" y="42">비유: 규격 ≠ 파는 곳</text>
+  <rect x="500" y="60" width="380" height="150" rx="8" fill="#161b22" stroke="#30363d"/>
+  <line x1="500" y1="96" x2="880" y2="96" stroke="#30363d"/>
+  <line x1="500" y1="153" x2="880" y2="153" stroke="#30363d"/>
+  <line x1="590" y1="60" x2="590" y2="210" stroke="#30363d"/>
+  <line x1="735" y1="60" x2="735" y2="210" stroke="#30363d"/>
+  <text class="th" x="512" y="79"> </text>
+  <text class="th" x="600" y="79">규격(규약)</text>
+  <text class="th" x="747" y="79">파는 곳(허브)</text>
+  <text class="td" x="512" y="124">USB</text>
+  <text class="td" x="600" y="118" font-size="11.5px">USB 규격</text>
+  <text class="td" x="600" y="136" font-size="11px" fill="#6e7681">(포트·통신)</text>
+  <text class="td" x="747" y="124" font-size="11.5px">USB 기기 상점</text>
+  <text class="td" x="512" y="181">콘센트</text>
+  <text class="td" x="600" y="175" font-size="11.5px">220V 표준</text>
+  <text class="td" x="747" y="181" font-size="11.5px">전자제품 매장</text>
+
+  <!-- summary -->
+  <rect x="60" y="310" width="820" height="80" rx="8" fill="#12251f" stroke="#238636"/>
+  <text x="82" y="336" class="cap" fill="#7ee787">쉽게 말하면</text>
+  <text x="82" y="360" font-size="13px" fill="#adbac7">• MCP = <tspan fill="#4a9eff" font-weight="700">콘센트 규격</tspan> &#160;&#160; • 마켓플레이스 = <tspan fill="#d29922" font-weight="700">전자제품 매장</tspan> &#160;&#160; • Ouroboros = <tspan fill="#3fb950" font-weight="700">그 콘센트에 꽂는 가전</tspan></text>
+  <text x="82" y="380" font-size="12px" fill="#8b949e">→ MCP는 "규약"이지 "허브"가 아니다. 허브는 서버를 모아 파는 별개 마켓.</text>
+</svg>

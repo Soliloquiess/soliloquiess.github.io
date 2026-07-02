@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 940 380" font-family="'Segoe UI','Malgun Gothic',sans-serif">
+  <defs>
+    <marker id="a2" markerWidth="9" markerHeight="9" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#6e7681"/></marker>
+  </defs>
+  <style>
+    .btxt{font-size:14px;font-weight:600;text-anchor:middle;dominant-baseline:middle}
+    .cap{font-size:16px;font-weight:700;text-anchor:middle}
+    .sub{font-size:11.5px;text-anchor:middle;fill:#8b949e}
+    .ln{stroke:#6e7681;stroke-width:1.5}
+  </style>
+  <rect x="0" y="0" width="940" height="380" fill="#0d1117"/>
+  <line x1="470" y1="30" x2="470" y2="350" stroke="#30363d" stroke-width="1" stroke-dasharray="4 4"/>
+
+  <!-- LEFT: 서브에이전트 -->
+  <text class="cap" x="235" y="40" fill="#58a6ff">서브에이전트 — 허브앤스포크</text>
+  <rect x="150" y="66" width="170" height="44" rx="8" fill="#0f2b46" stroke="#4a9eff" stroke-width="1.5"/>
+  <text class="btxt" x="235" y="88" fill="#cae3ff">Main (Opus)</text>
+  <line class="ln" x1="200" y1="110" x2="110" y2="184" marker-end="url(#a2)"/>
+  <line class="ln" x1="235" y1="110" x2="235" y2="184" marker-end="url(#a2)"/>
+  <line class="ln" x1="270" y1="110" x2="360" y2="184" marker-end="url(#a2)"/>
+  <g>
+    <rect x="60" y="186" width="100" height="40" rx="8" fill="#1a2e22" stroke="#3fb950" stroke-width="1.5"/>
+    <text class="btxt" x="110" y="206" fill="#aff5b4">Sub</text>
+    <rect x="185" y="186" width="100" height="40" rx="8" fill="#1a2e22" stroke="#3fb950" stroke-width="1.5"/>
+    <text class="btxt" x="235" y="206" fill="#aff5b4">Sub</text>
+    <rect x="310" y="186" width="100" height="40" rx="8" fill="#1a2e22" stroke="#3fb950" stroke-width="1.5"/>
+    <text class="btxt" x="360" y="206" fill="#aff5b4">Sub</text>
+  </g>
+  <text class="sub" x="235" y="270">결과만 Main에 보고 · 서브끼리 대화 ✗</text>
+  <text class="sub" x="235" y="292" fill="#6e7681">중첩 가능(깊이 5) · 토큰 저렴(요약 반환)</text>
+
+  <!-- RIGHT: Agent Teams -->
+  <text class="cap" x="705" y="40" fill="#bc8cff">Agent Teams — 메시(mesh)</text>
+  <rect x="620" y="66" width="170" height="44" rx="8" fill="#2d2140" stroke="#a371f7" stroke-width="1.5"/>
+  <text class="btxt" x="705" y="88" fill="#e2d4ff">Lead (main)</text>
+  <line class="ln" x1="705" y1="110" x2="705" y2="130" marker-end="url(#a2)"/>
+  <rect x="530" y="132" width="350" height="34" rx="8" fill="#3a2e12" stroke="#d29922" stroke-width="1.5"/>
+  <text class="btxt" x="705" y="149" fill="#f0c674" font-size="12.5px">공유 작업목록 + 메일박스</text>
+  <!-- teammates mesh -->
+  <rect x="540" y="200" width="96" height="40" rx="8" fill="#0f2b46" stroke="#4a9eff" stroke-width="1.5"/>
+  <text class="btxt" x="588" y="220" fill="#cae3ff">팀원 A</text>
+  <rect x="657" y="200" width="96" height="40" rx="8" fill="#0f2b46" stroke="#4a9eff" stroke-width="1.5"/>
+  <text class="btxt" x="705" y="220" fill="#cae3ff">팀원 B</text>
+  <rect x="774" y="200" width="96" height="40" rx="8" fill="#0f2b46" stroke="#4a9eff" stroke-width="1.5"/>
+  <text class="btxt" x="822" y="220" fill="#cae3ff">팀원 C</text>
+  <text x="646" y="225" text-anchor="middle" font-size="15px" fill="#a371f7">↔</text>
+  <text x="763" y="225" text-anchor="middle" font-size="15px" fill="#a371f7">↔</text>
+  <path class="ln" d="M588,200 C588,175 822,175 822,200" fill="none"/>
+  <!-- lead to teammates -->
+  <line class="ln" x1="588" y1="166" x2="588" y2="200"/>
+  <line class="ln" x1="822" y1="166" x2="822" y2="200"/>
+  <text class="sub" x="705" y="270">팀원끼리 직접 메시지·반박 · 스스로 일 claim</text>
+  <text class="sub" x="705" y="292" fill="#6e7681">중첩 ✗ · 토큰 높음(각자 인스턴스) · 실험적(env 필요)</text>
+</svg>

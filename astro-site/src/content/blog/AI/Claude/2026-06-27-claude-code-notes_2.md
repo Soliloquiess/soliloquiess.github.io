@@ -717,14 +717,9 @@ ooo evaluate / evolve    → 검증·진화 반복
 
 > 10번(MCP)·12~14번(Ouroboros)을 잇는 정리.
 
-![MCP 3층 구조 다이어그램](/assets/diagram_15_mcp.png)
 
 ### A. 우로보로스를 MCP 구조에 끼우면
-```
-[Claude Code]  ←─ MCP 규약 ─→  [Ouroboros MCP 서버]
- = MCP 호스트/클라이언트          = 도구 제공자
- (당신이 ooo 명령 입력)           (interview·evaluate·evolve... 노출)
-```
+![우로보로스 ↔ MCP 매핑 — 워크플로 단계 = MCP Tools](/assets/ouroboros-mcp-mapping.svg)
 
 | MCP 구성 | 우로보로스에서는 |
 |----------|------------------|
@@ -746,6 +741,8 @@ ooo evaluate / evolve    → 검증·진화 반복
 
 ### C. MCP = "규약"이지 "허브"가 아님 (헷갈림 주의)
 MCP 자체는 **규약(프로토콜)**이고, 서버를 모아둔 **허브(마켓플레이스)**는 별개 층.
+
+![MCP 규약 vs 허브 — 3층 구조와 USB/콘센트 비유](/assets/mcp-protocol-vs-hub.svg)
 
 | 비유 | MCP는 이것 | 허브/마켓은 이것 |
 |------|-----------|------------------|

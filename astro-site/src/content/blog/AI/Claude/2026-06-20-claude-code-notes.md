@@ -718,14 +718,7 @@ $env:CLAUDE_CODE_SUBAGENT_MODEL = "haiku"
 **Agent Teams=팀원끼리 직접 소통 + 공유 작업목록(메시)**.
 
 ### 구조
-```
-[서브에이전트]                      [Agent Teams]
-      Main(Opus)                         Lead(main)
-     ╱   │   ╲                              │
-   Sub  Sub  Sub      vs           ┌─ 공유 작업목록 + 메일박스 ─┐
-   (결과만 메인에 보고)            팀원A ↔ 팀원B ↔ 팀원C
-   서로 대화 X                     (서로 직접 메시지·반박, 스스로 일 claim)
-```
+![서브에이전트(허브앤스포크) vs Agent Teams(메시) 구조](/assets/subagent-vs-teams.svg)
 
 ### 항목별 비교
 
