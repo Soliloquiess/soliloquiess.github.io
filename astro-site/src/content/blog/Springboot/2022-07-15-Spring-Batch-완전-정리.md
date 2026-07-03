@@ -203,7 +203,6 @@ spring:
 ```java
 package com.example.batchtest.batch;
 
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
@@ -634,7 +633,6 @@ public class TemplateConfiguration {
     public TemplateConfiguration(JobBuilderFactory jobBuilderFactory,
                                  StepBuilderFactory stepBuilderFactory){
 
-
         this.jobBuilderFactory = jobBuilderFactory;
         this.stepBuilderFactory = stepBuilderFactory;
     }
@@ -662,7 +660,6 @@ public class TemplateConfiguration {
 Live Template 설정 화면:
 
 ![20220717_134006](/assets/20220717_134006.png)
-![20220717_134202](/assets/20220717_134202_u43xh5t2k.png)
 
 ![20220717_134439](/assets/20220717_134439.png)
 
@@ -683,7 +680,6 @@ public class ${NAME} {
     private final StepBuilderFactory stepBuilderFactory;
     public ${NAME}(JobBuilderFactory jobBuilderFactory,
                                  StepBuilderFactory stepBuilderFactory){
-
 
         this.jobBuilderFactory = jobBuilderFactory;
         this.stepBuilderFactory = stepBuilderFactory;
