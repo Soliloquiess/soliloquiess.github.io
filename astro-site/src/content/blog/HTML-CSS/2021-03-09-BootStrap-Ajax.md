@@ -1,8 +1,8 @@
 ---
-title: "[Front] BootStrap & Ajax"
+title: "[HTML·CSS] BootStrap & Ajax"
 date: 2021-03-09
-category: "Front"
-tags: ["Front"]
+category: "HTML·CSS"
+tags: ["HTML·CSS"]
 description: "Ajax 개념과 XMLHttpRequest, jQuery Ajax 함수, GET/POST 방식, CSV/XML/JSON 데이터 형식, 그리고 반응형 웹과 부트스트랩 기초를 정리."
 permalink: "class/2021/03/09/bootstrap"
 ---
