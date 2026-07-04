@@ -1101,4 +1101,66 @@ harness가 액션 실행 ── (완료까지 반복)
 
 ---
 
-> 참고: 19·20번의 AutoResearch·AlphaEvolve 관련 일정·수치는 공개된 발표·보도 기준이며, 향후 업데이트될 수 있다. 실제 적용 전에는 각 프로젝트의 최신 저장소·공식 발표를 함께 확인할 것. 21·23·24번의 OMC(oh-my-claudecode) 관련 스킬·에이전트명은 플러그인 버전에 따라 달라질 수 있으니 실제 사용 전 해당 플러그인 문서를 확인할 것. 31~34번의 Playwright(Microsoft)·Browser Use는 Claude Code native 기능도 OMC 플러그인도 아닌 외부 도구이며, 토큰 수치·CLI 등장 시점·browser-use 세부는 예시/보도 수치이자 버전에 따라 달라질 수 있으니 실제 사용 전 각 프로젝트의 최신 문서를 확인할 것.
+## 35. cua-driver란?
+
+> trycua가 만든 오픈소스 **백그라운드 "컴퓨터-사용(computer-use)" 드라이버**. 34번 Browser Harness가 브라우저(CDP)에 국한되는 것과 달리, **네이티브 데스크톱 앱 전반**을 대상으로 한다. Claude Code native 기능도 OMC 플러그인도 아닌 외부 오픈소스 도구다.
+
+![cua-driver](/assets/cua-driver.svg)
+> 그림: 코딩 에이전트 → MCP/CLI(동일 표면) → cua-driver → 네이티브 데스크톱 앱. 핵심은 **커서·포커스를 빼앗지 않고 백그라운드로** 클릭·입력·스크롤·접근성 트리 조회·창 캡처. macOS·Windows·Linux·Android를 지원하며 Cua 인프라(driver·agent·sandbox·bench)의 일부. 제어 표면이 CDP(30)→Playwright(32)→Browser Harness(34)→cua-driver(35, 데스크톱 전체)로 넓어진다.
+
+### 개념 한 줄
+**커서·포커스를 빼앗지 않고 백그라운드에서, 네이티브 데스크톱 앱을 클릭·입력·스크롤·조회하게 해주는 드라이버.**
+
+### 기능
+
+| 기능 | 내용 |
+|------|------|
+| 조작 | 클릭·입력·스크롤 |
+| 조회 | 접근성 트리(accessibility tree) 조회 |
+| 캡처 | 창(window) 상태 캡처(스크린샷) |
+| 표면 | 위 기능을 **MCP/CLI 동일 표면**으로 제공 |
+
+### 핵심 차별점 — 백그라운드 동작
+34번 Browser Harness나 32~33번 Playwright류가 브라우저 안에서 동작하는 것과 달리, cua-driver는 **커서·포커스를 가로채지 않고 백그라운드에서** 동작한다. 즉 사람이 컴퓨터를 그대로 쓰는 동안에도, 에이전트가 별도로 다른 앱을 조작할 수 있다.
+
+### 크로스 플랫폼
+
+| 대상 | 지원 |
+|------|------|
+| macOS | O |
+| Windows | O |
+| Linux | O |
+| Android | O |
+| 스케일 | 컴퓨터 "플릿(fleet)" 단위로 확장 |
+
+### 사용 방식 — CLI + MCP
+CLI 도구이자 MCP 서버, 양쪽으로 동작한다. Claude Code·Cursor·Codex·OpenClaw 등의 MCP 설정에 추가하면, 코딩 에이전트에 "스크린샷·클릭·입력" 도구가 생겨 실제 네이티브 앱을 조작하게 할 수 있다 — 단, 이는 Claude Code 자체 기능이 아니라 **외부 MCP 서버로서 붙는 것**이다.
+
+### Cua 인프라 안에서의 위치
+
+| 구성 | 역할 |
+|------|------|
+| **cua-driver** | 백그라운드 컴퓨터-사용 드라이버(이 절의 주제) |
+| **cua-agent** | 컴퓨터-사용 에이전트 프레임워크 |
+| **cua-sandbox** | 샌드박스 생성·제어 SDK |
+| **cua-bench** | 벤치마크·RL 환경 |
+
+→ "컴퓨터-사용 에이전트 인프라를 주말 해킹이 아니라 진짜 인프라로 취급"한다는 지향.
+
+🔗 **34번 Browser Harness**(브라우저 한정·CDP)와 대비 — cua-driver는 **데스크톱 전체 + 백그라운드 + MCP/CLI 표면**. 30~33번(브라우저 자동화·CDP·MCP/CLI), 9번(하네스 엔지니어링)과도 이어진다. MCP/CLI 두 표면을 다 제공하는 점은 33번(Playwright MCP vs CLI)의 구도와 닮았다.
+
+> 한 줄 요약: **cua-driver = 커서·포커스를 뺏지 않고 백그라운드에서 네이티브 데스크톱 앱을 클릭·입력·스크롤·캡처하는 오픈소스 컴퓨터-사용 드라이버.** MCP/CLI 두 표면으로 Claude Code 등 코딩 에이전트에 붙여 쓸 수 있으며, cua-agent·cua-sandbox·cua-bench와 함께 더 큰 Cua 인프라를 이룬다.
+
+출처: https://github.com/trycua/cua , https://cua.ai
+
+※ 신생·빠르게 변하는 프로젝트라 세부는 버전에 따라 다를 수 있다.
+
+---
+
+## 맺음말 — 30~35번을 관통하는 흐름
+
+CDP(30) → Playwright(32) → MCP/CLI 대비(31 단점·33) → Browser Harness(34) → cua-driver(35)로 이어지며, "AI 에이전트에게 브라우저·컴퓨터를 어떻게 쥐여줄 것인가"라는 질문에 대한 **제어 표면이 브라우저 한정에서 데스크톱 전체로 점점 넓어진다.**
+
+---
+
+> 참고: 19·20번의 AutoResearch·AlphaEvolve 관련 일정·수치는 공개된 발표·보도 기준이며, 향후 업데이트될 수 있다. 실제 적용 전에는 각 프로젝트의 최신 저장소·공식 발표를 함께 확인할 것. 21·23·24번의 OMC(oh-my-claudecode) 관련 스킬·에이전트명은 플러그인 버전에 따라 달라질 수 있으니 실제 사용 전 해당 플러그인 문서를 확인할 것. 31~35번의 Playwright(Microsoft)·Browser Use·cua-driver(trycua)는 Claude Code native 기능도 OMC 플러그인도 아닌 외부 도구이며, 토큰 수치·CLI 등장 시점·browser-use/cua 세부는 예시/보도 수치이자 버전에 따라 달라질 수 있으니 실제 사용 전 각 프로젝트의 최신 문서를 확인할 것.
