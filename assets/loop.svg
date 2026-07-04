@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 460" font-family="'Segoe UI','Malgun Gothic',sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#eef4fc"/><stop offset="1" stop-color="#f8fafc"/></linearGradient>
+    <filter id="sh" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="2" stdDeviation="5" flood-color="#1e293b" flood-opacity="0.10"/></filter>
+  </defs>
+  <style>
+    .title{font-size:25px;font-weight:800;fill:#0f172a}
+    .sub{font-size:14px;fill:#64748b}
+    .h{font-size:15px;font-weight:800;fill:#0f172a}
+    .code{font-family:'Consolas','Courier New',monospace;font-size:12px;fill:#1d4ed8}
+    .cd{font-size:11px;fill:#64748b}
+    .th{font-size:12px;font-weight:700;fill:#334155;text-anchor:middle}
+    .tv{font-size:11.5px;fill:#475569;text-anchor:middle}
+    .rl{font-size:11.5px;font-weight:700;fill:#64748b}
+    .foot{font-size:12px;fill:#94a3b8}
+    .fp{font-size:12px;font-weight:700;text-anchor:middle;dominant-baseline:middle}
+    .badge{font-size:10.5px;font-weight:700;text-anchor:middle;dominant-baseline:middle}
+  </style>
+  <rect x="0" y="0" width="900" height="460" fill="url(#bg)"/>
+  <text class="title" x="40" y="50">loop — 반복 실행 스킬 (/loop)</text>
+  <text class="sub" x="40" y="74">현재 세션에서 프롬프트·명령을 주기적으로 반복 (native bundled)</text>
+  <rect x="726" y="30" width="132" height="28" rx="14" fill="#dbeafe"/><text class="badge" x="792" y="45" fill="#1d4ed8">Claude Code native</text>
+
+  <!-- usage card -->
+  <rect x="40" y="104" width="360" height="238" rx="14" fill="#fff" stroke="#e2e8f0" filter="url(#sh)"/>
+  <text class="h" x="60" y="134">사용법</text>
+  <rect x="60" y="148" width="320" height="46" rx="10" fill="#eff6ff"/><text class="code" x="74" y="168">/loop 5m &lt;prompt&gt;</text><text class="cd" x="74" y="186">고정 5분 간격 (cron으로 변환)</text>
+  <rect x="60" y="202" width="320" height="46" rx="10" fill="#eff6ff"/><text class="code" x="74" y="222">/loop &lt;prompt&gt;</text><text class="cd" x="74" y="240">간격 생략 → Claude가 1분~1시간 동적 선택</text>
+  <rect x="60" y="256" width="320" height="46" rx="10" fill="#eff6ff"/><text class="code" x="74" y="276">/loop</text><text class="cd" x="74" y="294">기본 유지보수 프롬프트 실행</text>
+  <text class="cd" x="60" y="326">Esc로 중단 · 생성 후 7일 만료 · 세션 닫히면 멈춤</text>
+
+  <!-- comparison card -->
+  <rect x="420" y="104" width="440" height="238" rx="14" fill="#fff" stroke="#e2e8f0" filter="url(#sh)"/>
+  <text class="h" x="440" y="134">/loop vs /schedule</text>
+  <text class="th" x="565" y="162" fill="#2563eb">/loop</text>
+  <text class="th" x="770" y="162" fill="#7c3aed">/schedule</text>
+  <line x1="440" y1="172" x2="840" y2="172" stroke="#e2e8f0"/>
+  <text class="rl" x="440" y="192">실행 위치</text><text class="tv" x="565" y="192">현재 머신·세션</text><text class="tv" x="770" y="192">Anthropic 클라우드</text>
+  <text class="rl" x="440" y="218">지속성</text><text class="tv" x="565" y="218">7일 만료</text><text class="tv" x="770" y="218">계정 영구</text>
+  <text class="rl" x="440" y="244">최소 간격</text><text class="tv" x="565" y="244">1분</text><text class="tv" x="770" y="244">1시간</text>
+  <text class="rl" x="440" y="270">머신 꺼도?</text><text class="tv" x="565" y="270">아니오</text><text class="tv" x="770" y="270">예</text>
+  <text class="rl" x="440" y="296">로컬 파일</text><text class="tv" x="565" y="296">접근 가능</text><text class="tv" x="770" y="296">불가(fresh)</text>
+  <line x1="440" y1="312" x2="840" y2="312" stroke="#f1f5f9"/>
+  <text class="tv" x="640" y="330" font-size="11">세션 컨텍스트 상속 vs 완전 독립 자동</text>
+
+  <!-- guide -->
+  <rect x="40" y="360" width="820" height="42" rx="10" fill="#eef2ff"/>
+  <text class="tv" x="450" y="386" fill="#4338ca">현재 작업 중 빠른 반복(PR·빌드 대기)=<tspan font-weight="800">/loop</tspan> · 야간/정기 자동=<tspan font-weight="800">/schedule</tspan> · 루프 엔지니어링(13번)의 "시간 기반 반복" 형태</text>
+
+  <!-- footer -->
+  <circle cx="46" cy="440" r="11" fill="#2563eb"/><text x="46" y="441" class="fp" fill="#fff" font-size="11">27</text>
+  <rect x="66" y="437" width="60" height="5" rx="2.5" fill="#2563eb"/><rect x="130" y="437" width="24" height="5" rx="2.5" fill="#cbd5e1"/>
+  <text class="foot" x="860" y="444" text-anchor="end">Claude 정리 노트 · /loop</text>
+</svg>

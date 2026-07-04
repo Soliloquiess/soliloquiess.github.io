@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 480" font-family="'Segoe UI','Malgun Gothic',sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#eef4fc"/><stop offset="1" stop-color="#f8fafc"/></linearGradient>
+    <filter id="sh" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="2" stdDeviation="5" flood-color="#1e293b" flood-opacity="0.10"/></filter>
+    <marker id="a" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#818cf8"/></marker>
+  </defs>
+  <style>
+    .title{font-size:25px;font-weight:800;fill:#0f172a}
+    .sub{font-size:14px;fill:#64748b}
+    .pn{font-size:11px;font-weight:700;fill:#6366f1}
+    .pt{font-size:14px;font-weight:700;fill:#0f172a}
+    .pd{font-size:11px;fill:#64748b}
+    .chip{font-size:11.5px;font-weight:700;text-anchor:middle;dominant-baseline:middle}
+    .foot{font-size:12px;fill:#94a3b8}
+    .fp{font-size:12px;font-weight:700;text-anchor:middle;dominant-baseline:middle}
+  </style>
+  <rect x="0" y="0" width="900" height="480" fill="url(#bg)"/>
+  <text class="title" x="40" y="50">OMC 개발 루프 자동화 — Autopilot</text>
+  <text class="sub" x="40" y="74">아이디어 2~3줄 → 동작하는 검증된 코드까지 전 생애주기 자율 실행 (OMC 플러그인)</text>
+  <circle cx="852" cy="44" r="16" fill="#6366f1"/><text x="852" y="45" class="fp" fill="#fff" font-size="13">25</text>
+
+  <!-- row1 -->
+  <g>
+    <rect x="40" y="108" width="256" height="86" rx="14" fill="#fff" stroke="#e2e8f0" filter="url(#sh)"/>
+    <text class="pn" x="60" y="132">PHASE 0</text><text class="pt" x="60" y="152">Expansion (확장)</text><text class="pd" x="60" y="172">analyst·architect(Opus) → spec.md</text>
+    <rect x="322" y="108" width="256" height="86" rx="14" fill="#fff" stroke="#e2e8f0" filter="url(#sh)"/>
+    <text class="pn" x="342" y="132">PHASE 1</text><text class="pt" x="342" y="152">Planning (계획)</text><text class="pd" x="342" y="172">architect 계획 + critic 검증</text>
+    <rect x="604" y="108" width="256" height="86" rx="14" fill="#fff" stroke="#e2e8f0" filter="url(#sh)"/>
+    <text class="pn" x="624" y="132">PHASE 2</text><text class="pt" x="624" y="152">Execution (구현)</text><text class="pd" x="624" y="172">Ralph+Ultrawork · executor 병렬</text>
+  </g>
+  <path d="M296 151 L320 151" stroke="#818cf8" stroke-width="2" marker-end="url(#a)"/>
+  <path d="M578 151 L602 151" stroke="#818cf8" stroke-width="2" marker-end="url(#a)"/>
+  <!-- connector down -->
+  <path d="M732 194 C732 214, 732 214, 732 224 L168 224 C168 224, 168 234, 168 244" fill="none" stroke="#818cf8" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#a)"/>
+
+  <!-- row2 -->
+  <g>
+    <rect x="40" y="248" width="256" height="86" rx="14" fill="#fff" stroke="#e2e8f0" filter="url(#sh)"/>
+    <text class="pn" x="60" y="272">PHASE 3</text><text class="pt" x="60" y="292">QA (UltraQA)</text><text class="pd" x="60" y="312">빌드·린트·테스트·수정 · 최대 5회</text>
+    <rect x="322" y="248" width="256" height="86" rx="14" fill="#fff" stroke="#e2e8f0" filter="url(#sh)"/>
+    <text class="pn" x="342" y="272">PHASE 4</text><text class="pt" x="342" y="292">Validation (검증)</text><text class="pd" x="342" y="312">architect·security·code-reviewer 전원 승인</text>
+    <rect x="604" y="248" width="256" height="86" rx="14" fill="#f0fdf4" stroke="#bbf7d0" filter="url(#sh)"/>
+    <text class="pn" x="624" y="272" fill="#16a34a">PHASE 5</text><text class="pt" x="624" y="292">Cleanup · 완료</text><text class="pd" x="624" y="312">상태 파일 정리 · 결과 보고</text>
+  </g>
+  <path d="M296 291 L320 291" stroke="#818cf8" stroke-width="2" marker-end="url(#a)"/>
+  <path d="M578 291 L602 291" stroke="#818cf8" stroke-width="2" marker-end="url(#a)"/>
+
+  <!-- note strips -->
+  <rect x="40" y="356" width="410" height="34" rx="9" fill="#eef2ff"/><text class="chip" x="245" y="373" fill="#4338ca">각 단계 순차 · QA 같은 에러 3회 반복 시 중단</text>
+  <rect x="466" y="356" width="394" height="34" rx="9" fill="#eef2ff"/><text class="chip" x="663" y="373" fill="#4338ca">파이프라인: deep-interview → ralplan → autopilot</text>
+
+  <text class="sub" x="40" y="420" font-size="12.5" fill="#475569">이 노트의 명세(파트 A)·Ralph/Ultrawork(루프)·UltraQA(검증)·멀티에이전트 검증을 하나로 묶은 종합판.</text>
+
+  <!-- footer -->
+  <circle cx="46" cy="452" r="11" fill="#6366f1"/><text x="46" y="453" class="fp" fill="#fff" font-size="11">25</text>
+  <rect x="66" y="449" width="60" height="5" rx="2.5" fill="#6366f1"/><rect x="130" y="449" width="24" height="5" rx="2.5" fill="#cbd5e1"/>
+  <text class="foot" x="860" y="456" text-anchor="end">Claude 정리 노트 · Autopilot</text>
+</svg>

@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 460" font-family="'Segoe UI','Malgun Gothic',sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#eef4fc"/><stop offset="1" stop-color="#f8fafc"/></linearGradient>
+    <filter id="sh" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="2" stdDeviation="5" flood-color="#1e293b" flood-opacity="0.10"/></filter>
+    <marker id="a" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#94a3b8"/></marker>
+    <marker id="g" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#4ade80"/></marker>
+  </defs>
+  <style>
+    .title{font-size:25px;font-weight:800;fill:#0f172a}
+    .sub{font-size:14px;fill:#64748b}
+    .bt{font-size:13.5px;font-weight:700;fill:#0f172a;text-anchor:middle}
+    .bs{font-size:11px;fill:#64748b;text-anchor:middle}
+    .li{font-size:12px;fill:#475569;text-anchor:middle}
+    .dm{font-size:11.5px;font-weight:600;text-anchor:middle;dominant-baseline:middle;fill:#0369a1}
+    .conn{font-size:12px;font-weight:700;fill:#2563eb;text-anchor:middle}
+    .foot{font-size:12px;fill:#94a3b8}
+    .fp{font-size:12px;font-weight:700;text-anchor:middle;dominant-baseline:middle}
+  </style>
+  <rect x="0" y="0" width="900" height="460" fill="url(#bg)"/>
+  <text class="title" x="40" y="50">CDP (Chrome DevTools Protocol)란?</text>
+  <text class="sub" x="40" y="74">Chromium 브라우저를 프로그램으로 제어·계측하는 프로토콜</text>
+  <circle cx="852" cy="44" r="16" fill="#0ea5e9"/><text x="852" y="45" class="fp" fill="#fff" font-size="13">30</text>
+
+  <!-- client -->
+  <rect x="40" y="112" width="230" height="150" rx="16" fill="#fff" stroke="#e2e8f0" filter="url(#sh)"/>
+  <text class="bt" x="155" y="140">제어 측 (클라이언트)</text>
+  <rect x="62" y="156" width="186" height="28" rx="14" fill="#eff6ff"/><text class="li" x="155" y="174" fill="#1d4ed8">헤들리스 Chrome</text>
+  <rect x="62" y="190" width="186" height="28" rx="14" fill="#eff6ff"/><text class="li" x="155" y="208" fill="#1d4ed8">Puppeteer</text>
+  <rect x="62" y="224" width="186" height="28" rx="14" fill="#eff6ff"/><text class="li" x="155" y="242" fill="#1d4ed8">Lighthouse · (Playwright 일부)</text>
+
+  <!-- channel -->
+  <rect x="330" y="158" width="180" height="58" rx="14" fill="#dbeafe" stroke="#bfdbfe"/>
+  <text class="conn" x="420" y="182">WebSocket</text><text class="bs" x="420" y="202" fill="#2563eb">JSON-RPC 메시지</text>
+  <path d="M270 178 L328 178" stroke="#94a3b8" stroke-width="2" marker-end="url(#a)"/>
+  <path d="M508 198 L272 198" stroke="#94a3b8" stroke-width="2" marker-end="url(#a)"/>
+  <text class="bs" x="399" y="232" fill="#94a3b8">명령 → / ← 이벤트</text>
+
+  <!-- browser + domains -->
+  <rect x="570" y="112" width="290" height="150" rx="16" fill="#fff" stroke="#e2e8f0" filter="url(#sh)"/>
+  <text class="bt" x="715" y="140">Chromium 브라우저</text>
+  <rect x="588" y="154" width="86" height="26" rx="13" fill="#e0f2fe"/><text class="dm" x="631" y="167">Page</text>
+  <rect x="680" y="154" width="86" height="26" rx="13" fill="#e0f2fe"/><text class="dm" x="723" y="167">DOM</text>
+  <rect x="772" y="154" width="72" height="26" rx="13" fill="#e0f2fe"/><text class="dm" x="808" y="167">Network</text>
+  <rect x="588" y="188" width="86" height="26" rx="13" fill="#e0f2fe"/><text class="dm" x="631" y="201">Runtime</text>
+  <rect x="680" y="188" width="100" height="26" rx="13" fill="#e0f2fe"/><text class="dm" x="730" y="201">Performance</text>
+  <rect x="588" y="222" width="256" height="26" rx="13" fill="#dcfce7"/><text class="dm" x="716" y="235" fill="#15803d">Screenshot (스크린샷 캡처)</text>
+  <path d="M510 187 L568 187" stroke="#94a3b8" stroke-width="2" marker-end="url(#a)"/>
+
+  <!-- use case -->
+  <rect x="40" y="290" width="820" height="96" rx="14" fill="#fff" stroke="#e2e8f0" filter="url(#sh)"/>
+  <text class="bt" x="450" y="316" font-size="13">활용 — 시각 QA 파이프라인의 캡처 엔진</text>
+  <rect x="70" y="332" width="170" height="38" rx="10" fill="#eff6ff"/><text class="li" x="155" y="355" fill="#1d4ed8">AI 생성 UI</text>
+  <rect x="300" y="332" width="200" height="38" rx="10" fill="#e0f2fe"/><text class="li" x="400" y="355" fill="#0369a1">CDP로 스크린샷 캡처</text>
+  <rect x="560" y="332" width="250" height="38" rx="10" fill="#f5f3ff"/><text class="li" x="685" y="355" fill="#7c3aed">visual-verdict 판정 (29번)</text>
+  <path d="M240 351 L298 351" stroke="#94a3b8" stroke-width="2" marker-end="url(#a)"/>
+  <path d="M500 351 L558 351" stroke="#94a3b8" stroke-width="2" marker-end="url(#g)"/>
+
+  <text class="bs" x="450" y="410" fill="#94a3b8">이 노트의 이미지도 헤들리스 Chrome로 렌더링·캡처 — CDP 계열 메커니즘</text>
+
+  <!-- footer -->
+  <circle cx="46" cy="432" r="11" fill="#0ea5e9"/><text x="46" y="433" class="fp" fill="#fff" font-size="11">30</text>
+  <rect x="66" y="429" width="60" height="5" rx="2.5" fill="#0ea5e9"/><rect x="130" y="429" width="24" height="5" rx="2.5" fill="#cbd5e1"/>
+  <text class="foot" x="860" y="436" text-anchor="end">Claude 정리 노트 · CDP</text>
+</svg>
