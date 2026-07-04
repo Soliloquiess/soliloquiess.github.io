@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 460" font-family="'Segoe UI','Malgun Gothic',sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#eef4fc"/><stop offset="1" stop-color="#f8fafc"/></linearGradient>
+    <filter id="sh" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="2" stdDeviation="5" flood-color="#1e293b" flood-opacity="0.10"/></filter>
+  </defs>
+  <style>
+    .title{font-size:25px;font-weight:800;fill:#0f172a}
+    .sub{font-size:14px;fill:#64748b}
+    .ct{font-size:13.5px;font-weight:700;fill:#0f172a}
+    .cd{font-size:11px;fill:#64748b}
+    .bt{font-size:13px;font-weight:700;text-anchor:middle;dominant-baseline:middle;fill:#0f172a}
+    .chip{font-size:11.5px;font-weight:600;text-anchor:middle;dominant-baseline:middle;fill:#15803d}
+    .foot{font-size:12px;fill:#94a3b8}
+    .fp{font-size:12px;font-weight:700;text-anchor:middle;dominant-baseline:middle}
+  </style>
+  <rect x="0" y="0" width="900" height="460" fill="url(#bg)"/>
+  <text class="title" x="40" y="50">Playwright란?</text>
+  <text class="sub" x="40" y="74">Microsoft의 브라우저 자동화 프레임워크 (외부 도구)</text>
+  <circle cx="852" cy="44" r="16" fill="#16a34a"/><text x="852" y="45" class="fp" fill="#fff" font-size="12">32</text>
+
+  <!-- 3 browsers -->
+  <text class="ct" x="40" y="112">다중 브라우저 — 하나의 API로 셋 제어</text>
+  <rect x="40" y="124" width="250" height="56" rx="14" fill="#fff" stroke="#e2e8f0" filter="url(#sh)"/><circle cx="72" cy="152" r="12" fill="#dbeafe"/><text class="bt" x="170" y="152">Chromium</text>
+  <rect x="308" y="124" width="250" height="56" rx="14" fill="#fff" stroke="#e2e8f0" filter="url(#sh)"/><circle cx="340" cy="152" r="12" fill="#ffedd5"/><text class="bt" x="438" y="152">Firefox</text>
+  <rect x="576" y="124" width="284" height="56" rx="14" fill="#fff" stroke="#e2e8f0" filter="url(#sh)"/><circle cx="608" cy="152" r="12" fill="#dcfce7"/><text class="bt" x="718" y="152">WebKit (Safari 엔진)</text>
+
+  <!-- features -->
+  <text class="ct" x="40" y="216">핵심 기능</text>
+  <g>
+    <rect x="40" y="228" width="196" height="46" rx="12" fill="#fff" stroke="#e2e8f0" filter="url(#sh)"/><text class="bt" x="138" y="252" font-size="12.5">auto-wait (자동 대기)</text>
+    <rect x="248" y="228" width="196" height="46" rx="12" fill="#fff" stroke="#e2e8f0" filter="url(#sh)"/><text class="bt" x="346" y="252" font-size="12.5">네트워크 가로채기</text>
+    <rect x="456" y="228" width="196" height="46" rx="12" fill="#fff" stroke="#e2e8f0" filter="url(#sh)"/><text class="bt" x="554" y="252" font-size="12.5">스크린샷·트레이스</text>
+    <rect x="664" y="228" width="196" height="46" rx="12" fill="#fff" stroke="#e2e8f0" filter="url(#sh)"/><text class="bt" x="762" y="252" font-size="12.5">codegen (녹화→코드)</text>
+  </g>
+
+  <!-- cross language -->
+  <text class="ct" x="40" y="308">크로스 언어</text>
+  <rect x="40" y="320" width="120" height="30" rx="15" fill="#dcfce7"/><text class="chip" x="100" y="336">JS / TS</text>
+  <rect x="168" y="320" width="120" height="30" rx="15" fill="#dcfce7"/><text class="chip" x="228" y="336">Python</text>
+  <rect x="296" y="320" width="120" height="30" rx="15" fill="#dcfce7"/><text class="chip" x="356" y="336">Java</text>
+  <rect x="424" y="320" width="120" height="30" rx="15" fill="#dcfce7"/><text class="chip" x="484" y="336">.NET</text>
+
+  <!-- AI note -->
+  <rect x="40" y="368" width="820" height="44" rx="12" fill="#f0fdf4" stroke="#bbf7d0"/>
+  <text class="cd" x="60" y="394" font-size="12.5" fill="#166534">접근성 우선 로케이터 + auto-wait 같은 AI 친화적 API → <tspan font-weight="700">에이전트 브라우저 자동화에 자주 채택</tspan>. 원래 "사람이 테스트 코드 작성"용이지만 에이전트 제어 계층으로도 활용.</text>
+
+  <!-- footer -->
+  <circle cx="46" cy="434" r="11" fill="#16a34a"/><text x="46" y="435" class="fp" fill="#fff" font-size="11">32</text>
+  <rect x="66" y="431" width="60" height="5" rx="2.5" fill="#16a34a"/><rect x="130" y="431" width="24" height="5" rx="2.5" fill="#cbd5e1"/>
+  <text class="foot" x="860" y="438" text-anchor="end">Claude 정리 노트 · Playwright</text>
+</svg>
