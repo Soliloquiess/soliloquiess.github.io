@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 400" font-family="'Segoe UI','Malgun Gothic',sans-serif">
+  <defs>
+    <marker id="ara" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#8b949e"/></marker>
+    <marker id="arg" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#3fb950"/></marker>
+    <marker id="arr" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#f85149"/></marker>
+  </defs>
+  <style>
+    .h{font-size:19px;font-weight:700;text-anchor:middle;fill:#e6edf3}
+    .cap{font-size:13px;text-anchor:middle;fill:#8b949e}
+    .bt{font-size:13px;font-weight:700;text-anchor:middle;dominant-baseline:middle;fill:#e6edf3}
+    .bs{font-size:10.5px;text-anchor:middle;fill:#8b949e}
+    .lb{font-size:11.5px;font-weight:700;text-anchor:middle}
+  </style>
+  <rect x="0" y="0" width="900" height="400" fill="#0d1117"/>
+  <text class="h" x="450" y="34">Karpathy의 AutoResearch — ML 실험 자율 루프</text>
+  <text class="cap" x="450" y="54">Ralph 루프를 ML 연구에 특화 · 시간당 ~12개 실험</text>
+
+  <!-- human input -->
+  <g>
+    <rect x="40" y="150" width="160" height="72" rx="10" fill="#161b22" stroke="#4a9eff"/>
+    <text class="bt" x="120" y="178">program.md</text>
+    <text class="bs" x="120" y="200">사람이 쓰는 연구 방향·맥락</text>
+  </g>
+  <text class="lb" x="120" y="132" fill="#79c0ff">사람</text>
+  <line x1="200" y1="186" x2="248" y2="186" stroke="#8b949e" marker-end="url(#ara)"/>
+
+  <!-- loop stages -->
+  <g>
+    <rect x="250" y="150" width="150" height="72" rx="10" fill="#161b22" stroke="#a371f7"/>
+    <text class="bt" x="325" y="174">train.py 수정</text>
+    <text class="bs" x="325" y="196">아키텍처·하이퍼파라미터</text>
+    <text class="bs" x="325" y="212">·옵티마이저·배치</text>
+  </g>
+  <line x1="400" y1="186" x2="448" y2="186" stroke="#8b949e" marker-end="url(#ara)"/>
+  <g>
+    <rect x="450" y="150" width="150" height="72" rx="10" fill="#161b22" stroke="#d29922"/>
+    <text class="bt" x="525" y="178">5분 학습</text>
+    <text class="bs" x="525" y="200">wall-clock 고정 → 비교 가능</text>
+  </g>
+  <line x1="600" y1="186" x2="648" y2="186" stroke="#8b949e" marker-end="url(#ara)"/>
+  <g>
+    <rect x="650" y="150" width="150" height="72" rx="10" fill="#161b22" stroke="#8b949e"/>
+    <text class="bt" x="725" y="178">val_bpb 평가</text>
+    <text class="bs" x="725" y="200">낮을수록 개선</text>
+  </g>
+
+  <!-- decision below -->
+  <line x1="725" y1="222" x2="725" y2="256" stroke="#8b949e" marker-end="url(#ara)"/>
+  <g>
+    <rect x="640" y="258" width="170" height="52" rx="10" fill="#161b22" stroke="#e6edf3" stroke-opacity="0.4"/>
+    <text class="bt" x="725" y="284">개선됐나?</text>
+    <text class="bs" x="725" y="300">현재 최고 기록과 비교</text>
+  </g>
+  <!-- keep -->
+  <g>
+    <rect x="360" y="258" width="200" height="52" rx="10" fill="#12251a" stroke="#2ea043"/>
+    <text class="bt" x="460" y="280" fill="#7ee787">git 커밋으로 유지</text>
+    <text class="bs" x="460" y="298" fill="#7ee787">keep-if-better (언덕 오르기)</text>
+  </g>
+  <line x1="640" y1="284" x2="562" y2="284" stroke="#3fb950" stroke-width="1.5" marker-end="url(#arg)"/>
+  <text class="lb" x="600" y="276" fill="#7ee787">Yes</text>
+  <!-- discard -->
+  <g>
+    <rect x="640" y="330" width="170" height="40" rx="10" fill="#2d1214" stroke="#da3633"/>
+    <text class="bt" x="725" y="354" fill="#ff7b72" font-size="12.5">폐기 (되돌림)</text>
+  </g>
+  <line x1="725" y1="310" x2="725" y2="328" stroke="#f85149" marker-end="url(#arr)"/>
+  <text class="lb" x="752" y="324" fill="#ff7b72">No</text>
+
+  <!-- loop back from keep to train.py -->
+  <path d="M360 284 C300 284, 300 240, 300 240 L325 240 L325 224" fill="none" stroke="#3fb950" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#arg)"/>
+  <text class="bs" x="290" y="258" fill="#7ee787" font-weight="700">반복 ↑</text>
+
+  <text class="cap" x="230" y="384" fill="#6e7681">사람은 방향·지표를 설계하고, 루프가 밤새 실험을 돌린다</text>
+</svg>
