@@ -12,7 +12,9 @@ permissions:
 
 concurrency:
   group: pages
-  cancel-in-progress: false
+  # 빠른 연속 push 시 이전 배포를 취소하고 최신만 배포 → github-pages 환경 동시 배포로 인한
+  # "syncing_files → Deployment failed" 충돌 방지 (블로그는 최신 우선이므로 안전)
+  cancel-in-progress: true
 
 jobs:
   build:
