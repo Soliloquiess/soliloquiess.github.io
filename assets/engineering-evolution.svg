@@ -1,54 +1,67 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 400" font-family="'Segoe UI','Malgun Gothic',sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 480" font-family="'Segoe UI','Malgun Gothic',sans-serif">
   <defs>
-    <marker id="ar2" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#58a6ff"/></marker>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#eef4fc"/><stop offset="1" stop-color="#f8fafc"/></linearGradient>
+    <filter id="sh" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="2" stdDeviation="5" flood-color="#1e293b" flood-opacity="0.10"/></filter>
+    <marker id="a" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#93c5fd"/></marker>
   </defs>
   <style>
-    .h{font-size:19px;font-weight:700;text-anchor:middle;fill:#e6edf3}
-    .st{font-size:16px;font-weight:700;text-anchor:middle;fill:#e6edf3}
-    .tag{font-size:11.5px;font-weight:700;text-anchor:middle;dominant-baseline:middle}
-    .sub{font-size:12px;text-anchor:middle;fill:#8b949e}
-    .li{font-size:12px;text-anchor:middle;fill:#adbac7}
-    .q{font-size:14.5px;font-weight:600;text-anchor:middle;fill:#cae3ff}
+    .title{font-size:25px;font-weight:800;fill:#0f172a}
+    .sub{font-size:14px;fill:#64748b}
+    .st{font-size:17px;font-weight:800;fill:#0f172a;text-anchor:middle}
+    .ss{font-size:12.5px;fill:#64748b;text-anchor:middle}
+    .li{font-size:12.5px;fill:#475569;text-anchor:middle}
+    .tag{font-size:12px;font-weight:700;text-anchor:middle;dominant-baseline:middle}
+    .q{font-size:15px;font-weight:700;fill:#1e293b;text-anchor:middle}
+    .foot{font-size:12px;fill:#94a3b8}
+    .fp{font-size:12.5px;font-weight:700;text-anchor:middle;dominant-baseline:middle}
+    .base{font-size:11.5px;fill:#94a3b8;text-anchor:middle}
   </style>
-  <rect x="0" y="0" width="900" height="400" fill="#0d1117"/>
-  <text class="h" x="450" y="38">프롬프트 → 하네스 → 루프 엔지니어링으로의 진화</text>
+  <rect x="0" y="0" width="900" height="480" fill="url(#bg)"/>
+  <text class="title" x="40" y="50">프롬프트 → 하네스 → 루프 엔지니어링</text>
+  <text class="sub" x="40" y="74">AI를 다루는 방식은 세 단계로 진화한다</text>
+  <circle cx="852" cy="44" r="16" fill="#6366f1"/><text x="852" y="45" class="fp" fill="#fff" font-size="13">09</text>
 
-  <!-- Stage 1 -->
-  <rect x="34" y="66" width="256" height="200" rx="12" fill="#161b22" stroke="#30363d"/>
-  <rect x="136" y="82" width="52" height="24" rx="12" fill="#21262d" stroke="#6e7681"/><text class="tag" x="162" y="95" fill="#adbac7">과거</text>
-  <text class="st" x="162" y="130">프롬프트 엔지니어링</text>
-  <text class="sub" x="162" y="152">대화형 (Ping-Pong)</text>
-  <text class="li" x="162" y="182">한 번의 지시문을 잘 쓰기</text>
-  <text class="li" x="162" y="204">시키고 · 답 읽고 · 다시 시키고</text>
-  <text class="li" x="162" y="226">매 턴마다 사람이 직접 개입</text>
-  <text class="sub" x="162" y="254" fill="#6e7681">다루는 대상: 한 번의 지시</text>
+  <!-- Card 1 -->
+  <rect x="36" y="104" width="264" height="252" rx="16" fill="#fff" stroke="#e2e8f0" filter="url(#sh)"/>
+  <rect x="132" y="122" width="72" height="26" rx="13" fill="#f1f5f9"/><text class="tag" x="168" y="136" fill="#64748b">과거</text>
+  <text class="st" x="168" y="176">프롬프트 엔지니어링</text>
+  <text class="ss" x="168" y="198">대화형 (Ping-Pong)</text>
+  <text class="li" x="168" y="234">한 번의 지시문을 잘 쓰기</text>
+  <text class="li" x="168" y="258">시키고 · 답 읽고 · 다시 시키고</text>
+  <text class="li" x="168" y="282">매 턴마다 사람이 직접 개입</text>
+  <rect x="56" y="308" width="224" height="34" rx="9" fill="#f8fafc"/><text class="base" x="168" y="329">다루는 대상: 한 번의 지시</text>
 
-  <!-- Stage 2 -->
-  <rect x="322" y="66" width="256" height="200" rx="12" fill="#161b22" stroke="#30363d"/>
-  <rect x="424" y="82" width="52" height="24" rx="12" fill="#1c2a3a" stroke="#4a9eff"/><text class="tag" x="450" y="95" fill="#79c0ff">중간</text>
-  <text class="st" x="450" y="130">하네스 엔지니어링</text>
-  <text class="sub" x="450" y="152">스킬형 (Skills / Harness)</text>
-  <text class="li" x="450" y="182">모델을 감싸는 실행 골격 설계</text>
-  <text class="li" x="450" y="204">입력→도구 사용→검증→반복</text>
-  <text class="li" x="450" y="226">에이전트가 알아서 수행</text>
-  <text class="sub" x="450" y="254" fill="#6e7681">다루는 대상: 실행 골격 전체</text>
+  <!-- Card 2 -->
+  <rect x="318" y="104" width="264" height="252" rx="16" fill="#fff" stroke="#e2e8f0" filter="url(#sh)"/>
+  <rect x="414" y="122" width="72" height="26" rx="13" fill="#eff6ff"/><text class="tag" x="450" y="136" fill="#2563eb">중간</text>
+  <text class="st" x="450" y="176">하네스 엔지니어링</text>
+  <text class="ss" x="450" y="198">스킬형 (Skills / Harness)</text>
+  <text class="li" x="450" y="234">모델을 감싸는 실행 골격 설계</text>
+  <text class="li" x="450" y="258">입력→도구 사용→검증→반복</text>
+  <text class="li" x="450" y="282">에이전트가 알아서 수행</text>
+  <rect x="338" y="308" width="224" height="34" rx="9" fill="#f8fafc"/><text class="base" x="450" y="329">다루는 대상: 실행 골격 전체</text>
 
-  <!-- Stage 3 -->
-  <rect x="610" y="66" width="256" height="200" rx="12" fill="#161b22" stroke="#30363d"/>
-  <rect x="712" y="82" width="52" height="24" rx="12" fill="#2d2140" stroke="#a371f7"/><text class="tag" x="738" y="95" fill="#d2a8ff">현재</text>
-  <text class="st" x="738" y="130">루프 엔지니어링</text>
-  <text class="sub" x="738" y="152">시스템형 (System Design)</text>
-  <text class="li" x="738" y="182">골격을 목표 달성까지 반복</text>
-  <text class="li" x="738" y="204">행동→관찰→결정→반복</text>
-  <text class="li" x="738" y="226">"조건 충족까지 반복"만 설계</text>
-  <text class="sub" x="738" y="254" fill="#6e7681">다루는 대상: 반복 구동 시스템</text>
+  <!-- Card 3 -->
+  <rect x="600" y="104" width="264" height="252" rx="16" fill="#fff" stroke="#e2e8f0" filter="url(#sh)"/>
+  <rect x="696" y="122" width="72" height="26" rx="13" fill="#f5f3ff"/><text class="tag" x="732" y="136" fill="#7c3aed">현재</text>
+  <text class="st" x="732" y="176">루프 엔지니어링</text>
+  <text class="ss" x="732" y="198">시스템형 (System Design)</text>
+  <text class="li" x="732" y="234">골격을 목표 달성까지 반복</text>
+  <text class="li" x="732" y="258">행동→관찰→결정→반복</text>
+  <text class="li" x="732" y="282">"조건 충족까지 반복"만 설계</text>
+  <rect x="620" y="308" width="224" height="34" rx="9" fill="#f8fafc"/><text class="base" x="732" y="329">다루는 대상: 반복 구동 시스템</text>
 
   <!-- arrows -->
-  <line x1="292" y1="166" x2="320" y2="166" stroke="#58a6ff" stroke-width="1.5" marker-end="url(#ar2)"/>
-  <line x1="580" y1="166" x2="608" y2="166" stroke="#58a6ff" stroke-width="1.5" marker-end="url(#ar2)"/>
+  <path d="M300 230 L316 230" stroke="#93c5fd" stroke-width="2" marker-end="url(#a)"/>
+  <path d="M582 230 L598 230" stroke="#93c5fd" stroke-width="2" marker-end="url(#a)"/>
 
   <!-- quote -->
-  <rect x="120" y="296" width="660" height="76" rx="10" fill="#0f1b2d" stroke="#1f6feb55"/>
-  <text class="q" x="450" y="326">"프롬프트를 잘 쓰는 단계에서, skills를 설계하는 단계로,</text>
-  <text class="q" x="450" y="350">그리고 AI를 움직이는 시스템을 설계하는 단계로 진화한다."</text>
+  <rect x="120" y="378" width="660" height="66" rx="12" fill="#eef2ff" stroke="#c7d2fe"/>
+  <text class="q" x="450" y="405">"프롬프트를 잘 쓰는 단계 → skills를 설계하는 단계 →</text>
+  <text class="q" x="450" y="428">AI를 움직이는 시스템을 설계하는 단계로 진화한다."</text>
+
+  <!-- footer -->
+  <circle cx="46" cy="462" r="11" fill="#6366f1"/><text x="46" y="463" class="fp" fill="#fff" font-size="11">09</text>
+  <rect x="66" y="459" width="60" height="5" rx="2.5" fill="#6366f1"/><rect x="130" y="459" width="24" height="5" rx="2.5" fill="#cbd5e1"/>
+  <text class="foot" x="860" y="466" text-anchor="end">Claude 정리 노트 · 하네스 / 루프 엔지니어링</text>
 </svg>

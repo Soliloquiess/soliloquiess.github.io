@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 480" font-family="'Segoe UI','Malgun Gothic',sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#eef4fc"/><stop offset="1" stop-color="#f8fafc"/></linearGradient>
+    <filter id="sh" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="2" stdDeviation="5" flood-color="#1e293b" flood-opacity="0.10"/></filter>
+  </defs>
+  <style>
+    .title{font-size:25px;font-weight:800;fill:#0f172a}
+    .sub{font-size:14px;fill:#64748b}
+    .hd{font-size:16px;font-weight:800;text-anchor:middle}
+    .hs{font-size:11.5px;text-anchor:middle}
+    .row{font-size:12px;font-weight:700;fill:#64748b;text-anchor:middle}
+    .v{font-size:12.5px;fill:#334155;text-anchor:middle}
+    .foot{font-size:12px;fill:#94a3b8}
+    .fp{font-size:12px;font-weight:700;text-anchor:middle;dominant-baseline:middle}
+  </style>
+  <rect x="0" y="0" width="900" height="480" fill="url(#bg)"/>
+  <text class="title" x="40" y="50">Ralph Loop vs Goal — 무엇이 다른가</text>
+  <text class="sub" x="40" y="74">같은 "반복 루프"지만, 하나는 외부 스크립트 · 하나는 내장 기능</text>
+  <circle cx="852" cy="44" r="16" fill="#0f172a"/><text x="852" y="45" class="fp" fill="#fff" font-size="12">23</text>
+
+  <!-- headers -->
+  <rect x="40" y="100" width="356" height="52" rx="14" fill="#dbeafe" stroke="#bfdbfe" filter="url(#sh)"/>
+  <text class="hd" x="218" y="124" fill="#1d4ed8">Goal  ·  /goal</text><text class="hs" x="218" y="142" fill="#2563eb">Claude Code 내장 (native)</text>
+  <rect x="504" y="100" width="356" height="52" rx="14" fill="#f5f3ff" stroke="#ddd6fe" filter="url(#sh)"/>
+  <text class="hd" x="682" y="124" fill="#7c3aed">Ralph Loop</text><text class="hs" x="682" y="142" fill="#9333ea">외부 플러그인 (OMC · ouroboros)</text>
+  <circle cx="450" cy="126" r="20" fill="#0f172a"/><text x="450" y="127" class="fp" fill="#fff" font-size="13">VS</text>
+
+  <!-- rows -->
+  <!-- row bg + center label -->
+  <g>
+    <rect x="404" y="170" width="92" height="26" rx="13" fill="#e2e8f0"/><text class="row" x="450" y="184">구현</text>
+    <text class="v" x="218" y="188">내부 Prompt 기반 Stop hook</text>
+    <text class="v" x="682" y="188">외부 bash 반복 (while true)</text>
+  </g>
+  <line x1="40" y1="212" x2="860" y2="212" stroke="#e2e8f0"/>
+  <g>
+    <rect x="392" y="222" width="116" height="26" rx="13" fill="#e2e8f0"/><text class="row" x="450" y="236">세션·컨텍스트</text>
+    <text class="v" x="218" y="240">단일 세션 내 턴 반복 (누적)</text>
+    <text class="v" x="682" y="240">매 반복 새 세션 (깨끗)</text>
+  </g>
+  <line x1="40" y1="264" x2="860" y2="264" stroke="#e2e8f0"/>
+  <g>
+    <rect x="404" y="274" width="92" height="26" rx="13" fill="#e2e8f0"/><text class="row" x="450" y="288">상태</text>
+    <text class="v" x="218" y="292">조건만 유지 (내부 관리)</text>
+    <text class="v" x="682" y="292">파일·git으로 전달</text>
+  </g>
+  <line x1="40" y1="316" x2="860" y2="316" stroke="#e2e8f0"/>
+  <g>
+    <rect x="404" y="326" width="92" height="26" rx="13" fill="#e2e8f0"/><text class="row" x="450" y="340">평가</text>
+    <text class="v" x="218" y="344">작은 모델(Haiku) 자동 평가</text>
+    <text class="v" x="682" y="344">커스텀 검증(hook·명령)</text>
+  </g>
+  <line x1="40" y1="368" x2="860" y2="368" stroke="#e2e8f0"/>
+  <g>
+    <rect x="404" y="378" width="92" height="26" rx="13" fill="#e2e8f0"/><text class="row" x="450" y="392">강점</text>
+    <text class="v" x="218" y="396">간편·빠름 (설정 한 줄)</text>
+    <text class="v" x="682" y="396">복잡한 외부검증·다중 조율</text>
+  </g>
+
+  <!-- guide -->
+  <rect x="40" y="418" width="820" height="26" rx="8" fill="#eef2ff"/>
+  <text class="v" x="450" y="435" fill="#4338ca">선택: 간단한 반복이면 <tspan font-weight="800">Goal</tspan>, 복잡한 외부 검증·오케스트레이션이면 <tspan font-weight="800">Ralph</tspan></text>
+
+  <!-- footer -->
+  <circle cx="46" cy="462" r="11" fill="#0f172a"/><text x="46" y="463" class="fp" fill="#fff" font-size="10">23</text>
+  <rect x="66" y="459" width="60" height="5" rx="2.5" fill="#0f172a"/><rect x="130" y="459" width="24" height="5" rx="2.5" fill="#cbd5e1"/>
+  <text class="foot" x="860" y="466" text-anchor="end">Claude 정리 노트 · Ralph vs Goal</text>
+</svg>

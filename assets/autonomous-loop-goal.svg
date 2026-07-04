@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 470" font-family="'Segoe UI','Malgun Gothic',sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#eef4fc"/><stop offset="1" stop-color="#f8fafc"/></linearGradient>
+    <filter id="sh" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="2" stdDeviation="5" flood-color="#1e293b" flood-opacity="0.10"/></filter>
+    <marker id="a" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#60a5fa"/></marker>
+    <marker id="b" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#2563eb"/></marker>
+    <marker id="g" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#4ade80"/></marker>
+  </defs>
+  <style>
+    .title{font-size:25px;font-weight:800;fill:#0f172a}
+    .sub{font-size:14px;fill:#64748b}
+    .bt{font-size:13px;font-weight:700;fill:#0f172a;text-anchor:middle}
+    .bs{font-size:10.5px;fill:#64748b;text-anchor:middle}
+    .lbl{font-size:12px;font-weight:700;text-anchor:middle}
+    .chip{font-size:11.5px;font-weight:700;text-anchor:middle;dominant-baseline:middle}
+    .code{font-family:'Consolas','Courier New',monospace;font-size:12.5px;text-anchor:middle;dominant-baseline:middle;fill:#1d4ed8}
+    .foot{font-size:12px;fill:#94a3b8}
+    .fp{font-size:12px;font-weight:700;text-anchor:middle;dominant-baseline:middle}
+    .kp{font-size:12px;fill:#334155}
+  </style>
+  <rect x="0" y="0" width="900" height="470" fill="url(#bg)"/>
+  <text class="title" x="40" y="50">자율 코딩 루프와 Goal (/goal)</text>
+  <text class="sub" x="40" y="74">조건이 충족될 때까지 턴을 자동 반복하는 Claude Code 내장 기능</text>
+  <rect x="726" y="30" width="132" height="28" rx="14" fill="#dbeafe"/><text class="chip" x="792" y="45" fill="#1d4ed8">Claude Code native</text>
+
+  <!-- flow -->
+  <rect x="40" y="118" width="190" height="66" rx="14" fill="#dbeafe" stroke="#bfdbfe" filter="url(#sh)"/><text class="bt" x="135" y="146">① 완료 조건 설정</text><text class="code" x="135" y="167">/goal &lt;조건&gt;</text>
+  <rect x="278" y="118" width="170" height="66" rx="14" fill="#fff" stroke="#e2e8f0" filter="url(#sh)"/><text class="bt" x="363" y="146">② Claude 턴 실행</text><text class="bs" x="363" y="167">가능한 만큼 작업</text>
+  <rect x="496" y="118" width="170" height="66" rx="14" fill="#fff" stroke="#e2e8f0" filter="url(#sh)"/><text class="bt" x="581" y="146">③ 조건 평가</text><text class="bs" x="581" y="167">작은 모델(Haiku)이 판단</text>
+  <rect x="714" y="118" width="146" height="66" rx="14" fill="#fff" stroke="#cbd5e1" stroke-width="1.5" filter="url(#sh)"/><text class="bt" x="787" y="146">충족?</text><text class="bs" x="787" y="167">Y / N</text>
+  <path d="M230 151 L276 151" stroke="#60a5fa" stroke-width="2" marker-end="url(#a)"/>
+  <path d="M448 151 L494 151" stroke="#60a5fa" stroke-width="2" marker-end="url(#a)"/>
+  <path d="M666 151 L712 151" stroke="#60a5fa" stroke-width="2" marker-end="url(#a)"/>
+
+  <!-- No loop back -->
+  <path d="M787 184 C787 224, 363 224, 363 186" fill="none" stroke="#2563eb" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#b)"/>
+  <text class="lbl" x="575" y="216" fill="#2563eb">No → 다음 턴 자동 시작 (사용자 입력 불필요)</text>
+
+  <!-- Yes done -->
+  <rect x="704" y="250" width="156" height="46" rx="12" fill="#16a34a" filter="url(#sh)"/><text class="bt" x="782" y="278" fill="#fff">완료 · 정지</text>
+  <path d="M787 240 L787 248" stroke="#4ade80" stroke-width="2" marker-end="url(#g)"/>
+  <text class="lbl" x="812" y="238" fill="#16a34a">Yes</text>
+
+  <!-- key strip -->
+  <rect x="40" y="258" width="632" height="70" rx="12" fill="#eff6ff" stroke="#bfdbfe"/>
+  <text class="kp" x="60" y="284">• 구현: <tspan fill="#2563eb" font-weight="700">Prompt 기반 Stop hook</tspan> — hook은 컨텍스트가 아니라 코드 → <tspan fill="#2563eb" font-weight="700">/compact 후에도 유지</tspan></text>
+  <text class="kp" x="60" y="310">• 세션 재개(--resume) 시 Goal 복원 (턴 수·타이머·토큰 기준선은 리셋, 조건은 유지) · v2.1.139+</text>
+
+  <!-- command pills -->
+  <rect x="40" y="356" width="200" height="34" rx="17" fill="#dbeafe"/><text class="code" x="140" y="374">/goal &lt;조건&gt; · 설정+시작</text>
+  <rect x="256" y="356" width="150" height="34" rx="17" fill="#e2e8f0"/><text class="code" x="331" y="374" fill="#475569">/goal · 상태 조회</text>
+  <rect x="422" y="356" width="150" height="34" rx="17" fill="#e2e8f0"/><text class="code" x="497" y="374" fill="#475569">/goal clear · 해제</text>
+  <text class="bs" x="700" y="377" fill="#94a3b8">Auto mode=도구 자동승인 / Goal=턴 자동반복</text>
+
+  <text class="bs" x="450" y="416" fill="#94a3b8">Goal = 루프 엔지니어링(13번)을 Claude Code가 native로 구현한 것</text>
+
+  <!-- footer -->
+  <circle cx="46" cy="440" r="11" fill="#2563eb"/><text x="46" y="441" class="fp" fill="#fff" font-size="11">22</text>
+  <rect x="66" y="437" width="60" height="5" rx="2.5" fill="#2563eb"/><rect x="130" y="437" width="24" height="5" rx="2.5" fill="#cbd5e1"/>
+  <text class="foot" x="860" y="444" text-anchor="end">Claude 정리 노트 · Goal (/goal)</text>
+</svg>

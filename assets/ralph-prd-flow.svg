@@ -1,85 +1,52 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 440" font-family="'Segoe UI','Malgun Gothic',sans-serif">
   <defs>
-    <marker id="arp" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#8b949e"/></marker>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#eef4fc"/><stop offset="1" stop-color="#f8fafc"/></linearGradient>
+    <filter id="sh" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="2" stdDeviation="5" flood-color="#1e293b" flood-opacity="0.10"/></filter>
+    <marker id="a" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#60a5fa"/></marker>
+    <marker id="g" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#4ade80"/></marker>
   </defs>
   <style>
-    .h{font-size:19px;font-weight:700;text-anchor:middle;fill:#e6edf3}
-    .cap{font-size:13px;text-anchor:middle;fill:#8b949e}
-    .bt{font-size:13px;font-weight:700;text-anchor:middle;dominant-baseline:middle;fill:#e6edf3}
-    .bs{font-size:10.5px;text-anchor:middle;fill:#8b949e}
-    .lb{font-size:11.5px;font-weight:700;text-anchor:middle;fill:#adbac7}
+    .title{font-size:25px;font-weight:800;fill:#0f172a}
+    .sub{font-size:14px;fill:#64748b}
+    .bt{font-size:13px;font-weight:700;fill:#0f172a;text-anchor:middle}
+    .bs{font-size:10.5px;fill:#64748b;text-anchor:middle}
+    .lbl{font-size:12px;font-weight:700}
+    .foot{font-size:12px;fill:#94a3b8}
+    .fp{font-size:12px;font-weight:700;text-anchor:middle;dominant-baseline:middle}
   </style>
-  <rect x="0" y="0" width="900" height="440" fill="#0d1117"/>
-  <text class="h" x="450" y="36">Ralph 실행 흐름 — PRD 작성부터 자율 루프까지</text>
+  <rect x="0" y="0" width="900" height="440" fill="url(#bg)"/>
+  <text class="title" x="40" y="50">Ralph 실행 흐름 — PRD에서 자율 루프까지</text>
+  <text class="sub" x="40" y="74">사람은 PRD를 쓰고, 에이전트가 남은 스토리가 없을 때까지 반복한다</text>
+  <circle cx="852" cy="44" r="16" fill="#a855f7"/><text x="852" y="45" class="fp" fill="#fff" font-size="13">16</text>
 
-  <!-- prep column (사람) -->
-  <rect x="40" y="64" width="200" height="24" rx="6" fill="#1c2a3a"/><text class="lb" x="140" y="80" fill="#79c0ff">사람이 준비 (파트 A)</text>
-  <g>
-    <rect x="60" y="100" width="160" height="56" rx="10" fill="#161b22" stroke="#4a9eff"/>
-    <text class="bt" x="140" y="122">① PRD 작성</text>
-    <text class="bs" x="140" y="142">무엇을 만들지 정의</text>
-  </g>
-  <g>
-    <rect x="60" y="182" width="160" height="56" rx="10" fill="#161b22" stroke="#4a9eff"/>
-    <text class="bt" x="140" y="204">② prd.json 분해</text>
-    <text class="bs" x="140" y="224">작은 user story로</text>
-  </g>
-  <g>
-    <rect x="60" y="264" width="160" height="56" rx="10" fill="#161b22" stroke="#a371f7"/>
-    <text class="bt" x="140" y="286">③ ralph.sh 실행</text>
-    <text class="bs" x="140" y="306">자율 루프 시작</text>
-  </g>
-  <line x1="140" y1="156" x2="140" y2="180" stroke="#8b949e" marker-end="url(#arp)"/>
-  <line x1="140" y1="238" x2="140" y2="262" stroke="#8b949e" marker-end="url(#arp)"/>
+  <!-- prep column -->
+  <text class="lbl" x="130" y="108" fill="#2563eb" text-anchor="middle">사람이 준비 (파트 A)</text>
+  <rect x="40" y="120" width="180" height="52" rx="12" fill="#fff" stroke="#e2e8f0" filter="url(#sh)"/><text class="bt" x="130" y="140">① PRD 작성</text><text class="bs" x="130" y="159">무엇을 만들지 정의</text>
+  <rect x="40" y="192" width="180" height="52" rx="12" fill="#fff" stroke="#e2e8f0" filter="url(#sh)"/><text class="bt" x="130" y="212">② prd.json 분해</text><text class="bs" x="130" y="231">작은 user story로</text>
+  <rect x="40" y="264" width="180" height="52" rx="12" fill="#eef2ff" stroke="#c7d2fe" filter="url(#sh)"/><text class="bt" x="130" y="284">③ ralph.sh 실행</text><text class="bs" x="130" y="303">자율 루프 시작</text>
+  <path d="M130 172 L130 190" stroke="#60a5fa" stroke-width="2" marker-end="url(#a)"/>
+  <path d="M130 244 L130 262" stroke="#60a5fa" stroke-width="2" marker-end="url(#a)"/>
 
-  <!-- loop column (에이전트) -->
-  <rect x="300" y="64" width="360" height="24" rx="6" fill="#12251a"/><text class="lb" x="480" y="80" fill="#7ee787">에이전트가 반복 (자율 루프)</text>
-  <g>
-    <rect x="300" y="100" width="170" height="52" rx="10" fill="#161b22" stroke="#3fb950"/>
-    <text class="bt" x="385" y="120">스토리 선택</text>
-    <text class="bs" x="385" y="140">passes:false 하나</text>
-  </g>
-  <g>
-    <rect x="490" y="100" width="170" height="52" rx="10" fill="#161b22" stroke="#3fb950"/>
-    <text class="bt" x="575" y="120">구현 · 테스트</text>
-    <text class="bs" x="575" y="140">코드 작성 후 실행</text>
-  </g>
-  <g>
-    <rect x="490" y="182" width="170" height="52" rx="10" fill="#161b22" stroke="#3fb950"/>
-    <text class="bt" x="575" y="202">커밋 · 갱신</text>
-    <text class="bs" x="575" y="222">통과 시 passes:true</text>
-  </g>
-  <g>
-    <rect x="300" y="182" width="170" height="52" rx="10" fill="#161b22" stroke="#3fb950"/>
-    <text class="bt" x="385" y="202">진행 기록</text>
-    <text class="bs" x="385" y="222">progress.txt에 학습</text>
-  </g>
-  <!-- loop arrows -->
-  <line x1="470" y1="126" x2="488" y2="126" stroke="#8b949e" marker-end="url(#arp)"/>
-  <line x1="575" y1="152" x2="575" y2="180" stroke="#8b949e" marker-end="url(#arp)"/>
-  <line x1="490" y1="208" x2="472" y2="208" stroke="#8b949e" marker-end="url(#arp)"/>
-  <line x1="385" y1="182" x2="385" y2="154" stroke="#8b949e" marker-end="url(#arp)"/>
-  <text class="bs" x="240" y="123" fill="#6e7681">시작 →</text>
-  <line x1="220" y1="292" x2="300" y2="292" stroke="#8b949e" marker-end="url(#arp)"/>
-  <path d="M300 292 C260 292, 260 126, 298 126" fill="none" stroke="#8b949e" stroke-dasharray="4 3" marker-end="url(#arp)"/>
-
-  <!-- decision -->
-  <g>
-    <rect x="330" y="286" width="120" height="48" rx="10" fill="#161b22" stroke="#d29922"/>
-    <text class="bt" x="390" y="314">남은 스토리?</text>
-  </g>
-  <line x1="385" y1="234" x2="385" y2="284" stroke="#8b949e" marker-end="url(#arp)"/>
-  <path d="M330 310 C260 310, 260 152, 298 130" fill="none" stroke="#3fb950" stroke-dasharray="4 3" marker-end="url(#arp)"/>
-  <text class="bs" x="268" y="240" fill="#7ee787" font-weight="700">Yes ↑</text>
+  <!-- loop container -->
+  <rect x="280" y="112" width="500" height="212" rx="16" fill="#f0fdf4" stroke="#bbf7d0"/>
+  <text class="lbl" x="300" y="134" fill="#15803d">자율 루프 — 남은 스토리가 없을 때까지 반복</text>
+  <rect x="300" y="148" width="200" height="54" rx="12" fill="#fff" stroke="#dcfce7" filter="url(#sh)"/><text class="bt" x="400" y="169">스토리 선택</text><text class="bs" x="400" y="188">passes:false 하나</text>
+  <rect x="560" y="148" width="200" height="54" rx="12" fill="#fff" stroke="#dcfce7" filter="url(#sh)"/><text class="bt" x="660" y="169">구현 · 테스트</text><text class="bs" x="660" y="188">코드 작성 후 실행</text>
+  <rect x="560" y="240" width="200" height="54" rx="12" fill="#fff" stroke="#dcfce7" filter="url(#sh)"/><text class="bt" x="660" y="261">커밋 · 갱신</text><text class="bs" x="660" y="280">통과 시 passes:true</text>
+  <rect x="300" y="240" width="200" height="54" rx="12" fill="#fff" stroke="#dcfce7" filter="url(#sh)"/><text class="bt" x="400" y="261">진행 기록</text><text class="bs" x="400" y="280">progress.txt에 학습</text>
+  <path d="M500 175 L558 175" stroke="#4ade80" stroke-width="2" marker-end="url(#g)"/>
+  <path d="M660 202 L660 238" stroke="#4ade80" stroke-width="2" marker-end="url(#g)"/>
+  <path d="M560 267 L502 267" stroke="#4ade80" stroke-width="2" marker-end="url(#g)"/>
+  <path d="M400 240 L400 204" stroke="#4ade80" stroke-width="2" marker-end="url(#g)"/>
+  <path d="M220 290 C250 290, 260 175, 298 175" fill="none" stroke="#60a5fa" stroke-width="2" marker-end="url(#a)"/>
 
   <!-- done -->
-  <g>
-    <rect x="510" y="286" width="140" height="48" rx="10" fill="#12251a" stroke="#2ea043"/>
-    <text class="bt" x="580" y="314" fill="#7ee787">완료!</text>
-  </g>
-  <line x1="450" y1="310" x2="508" y2="310" stroke="#8b949e" marker-end="url(#arp)"/>
-  <text class="bs" x="480" y="302" fill="#8b949e">No</text>
+  <rect x="356" y="352" width="168" height="48" rx="12" fill="#16a34a" filter="url(#sh)"/><text class="bt" x="440" y="381" fill="#fff">완료 — 모든 스토리 통과</text>
+  <path d="M530 324 C560 340, 500 352, 470 350" fill="none" stroke="#94a3b8" stroke-width="1.6" stroke-dasharray="4 3" marker-end="url(#a)"/>
+  <text class="bs" x="600" y="342" fill="#94a3b8">남은 스토리 없으면 →</text>
 
-  <text class="cap" x="450" y="386">매 반복이 남긴 상태(코드·커밋·progress)를 다음 반복이 이어받는다 — 기억은 파일·git이 담당</text>
-  <text class="cap" x="450" y="410" fill="#6e7681">PRD·prd.json·완료 조건이 명확할수록 루프가 헤매지 않고 수렴한다</text>
+  <!-- footer -->
+  <circle cx="46" cy="416" r="11" fill="#a855f7"/><text x="46" y="417" class="fp" fill="#fff" font-size="11">16</text>
+  <rect x="66" y="413" width="60" height="5" rx="2.5" fill="#a855f7"/><rect x="130" y="413" width="24" height="5" rx="2.5" fill="#cbd5e1"/>
+  <text class="foot" x="860" y="420" text-anchor="end">Claude 정리 노트 · Ralph 실행</text>
 </svg>
