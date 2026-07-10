@@ -25,6 +25,19 @@ const canonical = new URL(Astro.url.pathname, SITE.url).href;
 // 글별 OG 이미지가 있으면 사용, 없으면 기본 이미지
 const ogImage = new URL(image ?? '/assets/img/main_left.jpg', SITE.url).href;
 const twitterCard = image ? 'summary_large_image' : 'summary';
+
+// 사이트 전역 WebSite 구조화 데이터 — 홈에서만 (글 페이지는 BlogPosting을 별도 출력)
+const isHome = Astro.url.pathname === '/' || Astro.url.pathname === '';
+const siteJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: SITE.title,
+  alternateName: SITE.tagline,
+  url: SITE.url,
+  description: SITE.description,
+  inLanguage: 'ko',
+  publisher: { '@type': 'Person', name: SITE.author, url: SITE.url },
+};
 ---
 <!doctype html>
 <html lang="ko">
@@ -45,6 +58,9 @@ const twitterCard = image ? 'summary_large_image' : 'summary';
     <!-- 검색엔진 사이트 인증 (기존 이식) -->
     <meta name="google-site-verification" content={SITE.googleSiteVerification} />
     <meta name="naver-site-verification" content={SITE.naverSiteVerification} />
+
+    <!-- 사이트 전역 구조화 데이터 (홈페이지 한정) -->
+    {isHome && <script type="application/ld+json" set:html={JSON.stringify(siteJsonLd)} />}
 
     <!-- Open Graph -->
     <meta property="og:type" content={type} />

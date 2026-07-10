@@ -1,3 +1,4 @@
 User-agent: *
 Allow: /
-Sitemap: {{ '/sitemap.xml' | relative_url | prepend: site.url }}
+
+Sitemap: https://soliloquiess.github.io/sitemap-index.xml

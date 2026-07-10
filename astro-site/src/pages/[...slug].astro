@@ -42,8 +42,13 @@ const jsonLd = {
   description: data.description || SITE.description,
   url: canonical,
   mainEntityOfPage: canonical,
-  author: { '@type': 'Person', name: SITE.author },
-  publisher: { '@type': 'Organization', name: SITE.title },
+  image: [new URL(`/og/${data.permalink}.png`, SITE.url).href],
+  author: { '@type': 'Person', name: SITE.author, url: SITE.url },
+  publisher: {
+    '@type': 'Organization',
+    name: SITE.title,
+    logo: { '@type': 'ImageObject', url: new URL('/assets/img/main_left.jpg', SITE.url).href },
+  },
   keywords: data.tags.join(', '),
 };
 ---
