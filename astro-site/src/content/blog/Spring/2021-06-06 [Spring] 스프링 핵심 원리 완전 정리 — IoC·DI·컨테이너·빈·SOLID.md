@@ -3,7 +3,7 @@ title: "[Spring] 스프링 핵심 원리 완전 정리 — IoC·DI·컨테이너
 date: 2021-06-06
 category: "Spring"
 tags: ["Spring"]
-description: "스프링 등장 배경(EJB·POJO)부터 객체지향 설계와 SOLID, 순수 자바 AppConfig로 시작하는 IoC·DI, 스프링 컨테이너(BeanFactory·ApplicationContext)·BeanDefinition·싱글톤·컴포넌트 스캔·의존관계 자동 주입까지 스프링 핵심 원리를 하나로 정리한 레퍼런스."
+description: "스프링 등장 배경(EJB·POJO), 객체지향 설계와 SOLID, AppConfig로 시작하는 IoC·DI, 스프링 컨테이너·BeanDefinition·싱글톤·컴포넌트 스캔·의존관계 자동 주입까지 스프링 핵심 원리 정리."
 permalink: "study/2021/06/06/스프링-핵심원리-이해"
 ---
 

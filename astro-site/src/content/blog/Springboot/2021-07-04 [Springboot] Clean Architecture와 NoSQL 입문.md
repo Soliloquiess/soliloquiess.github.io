@@ -3,7 +3,7 @@ title: "[Springboot] Clean Architecture와 NoSQL 입문"
 date: 2021-07-04
 category: "Springboot"
 tags: ["Springboot"]
-description: "Spring 레이어 컴포넌트(@Controller/@Service/@Repository/@Configuration) 역할, WAV 헤더 제거 서비스 실습, Clean Architecture 계층 설계, OOP 인터페이스 기반 DI 원칙, Redis·MongoDB 등 NoSQL 소개를 정리한 노트."
+description: "Spring 레이어 컴포넌트(@Controller/@Service/@Repository) 역할, WAV 헤더 제거 실습, Clean Architecture 계층 설계, 인터페이스 기반 DI 원칙, Redis·MongoDB 등 NoSQL 입문 노트."
 permalink: "study/2021/07/04/백엔드-기초-스터디-6일차"
 ---
 

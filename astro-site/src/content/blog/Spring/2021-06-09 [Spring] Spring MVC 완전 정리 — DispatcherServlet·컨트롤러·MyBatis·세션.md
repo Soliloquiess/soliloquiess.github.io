@@ -3,7 +3,7 @@ title: "[Spring] Spring MVC 완전 정리 — DispatcherServlet·컨트롤러·M
 date: 2021-06-09
 category: "Spring"
 tags: ["Spring"]
-description: "일반 MVC에서 Spring MVC로의 전환부터 DispatcherServlet·HandlerMapping·ViewResolver 흐름, @Controller/@RequestMapping과 파라미터 추출, 3계층+MyBatis 매퍼 연동, 세션·스코프·쿠키, URL 매핑·Properties까지 Spring MVC 핵심을 통합 정리한 학습 기록."
+description: "일반 MVC에서 Spring MVC로, DispatcherServlet·HandlerMapping·ViewResolver 흐름, @Controller/@RequestMapping, 3계층+MyBatis 연동, 세션·스코프·쿠키, URL 매핑까지 Spring MVC 핵심 정리."
 permalink: "study/2021/06/09/SpringMVC-기능들"
 ---
 

@@ -3,7 +3,7 @@ title: "[Springboot] REST API 완전 정리 — 설계 원칙부터 @RestControl
 date: 2023-12-30
 category: "Springboot"
 tags: ["Springboot"]
-description: "REST의 개념·아키텍처 제약 조건부터 Resource·URI 설계, HTTP Methods·Status Codes, @RestController/@ResponseBody와 JSON 응답 구현, MyBatis·JPA 연동, 예외 처리·필터링·버전 관리·실전 예제까지 — Spring Boot RESTful API 개발 전반을 하나로 통합 정리합니다."
+description: "REST 개념·아키텍처 제약부터 URI 설계, HTTP Methods·Status Codes, @RestController와 JSON 응답, MyBatis·JPA 연동, 예외 처리·버전 관리까지 Spring Boot RESTful API 개발 전반을 정리합니다."
 permalink: "study/2023/12/30/springboot-및-Rest-정리"
 ---
 

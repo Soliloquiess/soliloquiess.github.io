@@ -3,7 +3,7 @@ title: "[CS] 웹 기술 핵심 — 브라우저 렌더링·인증·REST·CSR/SSR
 date: 2021-11-13
 category: "CS"
 tags: ["CS"]
-description: "브라우저 동작 방법(렌더링·파싱·DOM), Cookie/Session, HTTP 상태코드, REST API, Web Server vs WAS, OAuth, JWT, 인증 방식, CSR/SSR, 앱 종류(네이티브/웹/하이브리드), Vue vs React, PWA, CSRF/XSS 등 웹 전반 면접 핵심 정리."
+description: "브라우저 렌더링·DOM, Cookie/Session, HTTP 상태코드, REST API, Web Server vs WAS, OAuth·JWT 인증, CSR/SSR, Vue vs React, PWA, CSRF/XSS 등 웹 전반 면접 핵심 정리."
 permalink: "study/2021/11/13/면접-대비-Web"
 ---
 
