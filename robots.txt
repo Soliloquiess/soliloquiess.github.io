@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://soliloquiess.github.io/sitemap-index.xml
+Sitemap: https://soliloquiess.github.io/sitemap.xml

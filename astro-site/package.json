@@ -8,6 +8,7 @@
     "start": "astro dev",
     "prebuild": "node scripts/copy-assets.mjs",
     "build": "astro build && pagefind --site dist",
+    "postbuild": "node scripts/finalize-sitemap.mjs",
     "preview": "astro preview",
     "astro": "astro",
     "migrate": "node scripts/migrate.mjs",
