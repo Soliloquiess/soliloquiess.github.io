@@ -131,3 +131,17 @@ spotlight 효과를 주면서 특정 위치를 강조하는 느낌을 줘도 좋
 > 한 줄 요약: **시안 골라 생성 → (매뉴얼이면) 네 가지 원칙 지시 → `/visual-verdict`로 가독성 점검 → 완성.** 위 예시 프롬프트를 그대로 복붙해 쓰면 된다.
 
 ---
+
+## 6. 실제로 만들어본 예시 — 구독 다이어트 사용자 메뉴얼
+
+> frontend-slides로 직접 만든 "구독 다이어트" 앱의 **사용자 메뉴얼**(38장). 연결부터 해지까지 클릭 단위로 안내하는 매뉴얼형 슬라이드다.
+
+![frontend-slides로 만든 구독 다이어트 사용자 메뉴얼 표지](/assets/frontend-slides-example.png)
+> 그림: frontend-slides 결과 — "USER MANUAL · 사용 설명서" 표지. 다크 그린 테마에 "연결부터 해지까지, 화면을 따라만 하면 되는 클릭 단위 사용 안내서"라는 부제, 방향키·Space로 넘기는 단일 HTML 뷰어(38장).
+
+- 산출물: `subscription-diet/docs/manual/구독다이어트_사용자메뉴얼.html`
+- 같은 프로젝트라도 frontend-slides는 **"사용법 안내(매뉴얼)"** 성격으로 나온다 — slides-grab으로 만든 제품 발표 덱과 결이 다르다(🔗 [slides-grab 노트](/2026/07/11/slides-grab.html)).
+
+> 한 줄 요약: **frontend-slides로 구독 다이어트 사용자 메뉴얼(38장, 단일 HTML)을 만들었다** — "사용 안내"에 초점을 둔 결과물.
+
+---
