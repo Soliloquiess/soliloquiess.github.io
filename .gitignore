@@ -45,3 +45,6 @@ node_modules
 .sass-cache
 .jekyll-metadata
 *.gem
+
+# oh-my-claudecode 로컬 세션 상태 (저장소에 둘 필요 없음)
+.omc/
