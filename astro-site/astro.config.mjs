@@ -63,7 +63,15 @@ export default defineConfig({
   build: { format: 'file' },
   trailingSlash: 'ignore',
   integrations: [
-    sitemap(),
+    // noindex 페이지(암호화된 vault·locked, 암호화 도구)는 사이트맵에서 제외.
+    // 이미 검색에 안 나오지만(내용 암호화 + noindex), "크롤 요청 vs noindex" 모순을
+    // 없애 GSC의 "제출됐으나 noindex로 제외됨" 경고를 방지한다.
+    sitemap({
+      filter: (page) =>
+        !page.includes('/vault') &&
+        !page.includes('/locked') &&
+        !page.includes('/tools/lock'),
+    }),
   ],
   markdown: {
     syntaxHighlight: 'shiki',
