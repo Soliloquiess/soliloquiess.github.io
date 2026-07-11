@@ -25,6 +25,16 @@ permalink: "2026/07/11/slides-grab"
 | 편집 | 프롬프트로 재생성 | 브라우저 편집기에서 bbox 선택 후 부분 수정 |
 | 출력 | 단일 HTML + PDF | HTML + PDF + PPTX(실험)·Figma |
 
+### 언제 뭘 쓰나
+
+| 상황 | 추천 |
+|------|------|
+| 빠르게 깔끔한 발표자료 한 벌, 스타일 고민 줄이고 싶다 | **frontend-slides** |
+| 디테일하게 반복 편집 + 내보내기(PNG·PPTX 등) 세밀 제어·CLI 자동화 | **slides-grab** |
+| 매뉴얼·수업자료처럼 캡처+바운딩박스로 꼼꼼히 | **slides-grab**(Edit 단계) |
+
+비유하면 **frontend-slides = 옷 골라 입기**(완성된 시안 중 선택), **slides-grab = 재봉틀**(만든 뒤 부분부분 고침)에 가깝다.
+
 > 한 줄 요약: **slides-grab = "만든 뒤 영역을 끌어 부분만 고치는" 편집 중심 발표툴** — 한 번에 뽑는 frontend-slides와 대비된다.
 
 ---
