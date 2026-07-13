@@ -1,5 +1,5 @@
 ---
-title: "동그라미재단 AI 아카데미 — Claude Code 4주 수강 후기"
+title: "동그라미재단 후기 — 바이브 코딩 심화 Claude Code 4주 수강 후기"
 date: 2026-07-11T20:00:00+09:00
 category: "Etc"
 tags: ["후기", "Claude", "Claude Code"]
