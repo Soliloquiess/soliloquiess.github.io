@@ -1,6 +1,60 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
+import fs from 'node:fs';
+import path from 'node:path';
+
+// ── 사이트맵 lastmod ──────────────────────────────────────────────
+// @astrojs/sitemap 은 콘텐츠의 frontmatter 날짜를 lastmod 로 자동으로 넣지
+// 않는다. lastmod 가 없으면 Google 은 "바뀔 이유 없는 파일"로 보고 재수집을
+// 계속 미룬다(그래서 GSC '읽은 날짜'가 오래 고정됨). 여기서 각 글의 frontmatter
+// 를 직접 읽어 permalink → 최종수정일 맵을 만들고, serialize 로 주입한다.
+//   - 우선순위: updated(있으면) > date
+//   - 홈(/)에는 가장 최신 글 날짜를 넣어 "새 글 올라옴" 신호를 준다.
+const BLOG_DIR = path.resolve('./src/content/blog');
+
+/** frontmatter 블록에서 key 값을 뽑아 앞뒤 따옴표 제거 */
+function readField(block, key) {
+  const m = block.match(new RegExp('^' + key + '\\s*:\\s*(.+)$', 'm'));
+  return m ? m[1].trim().replace(/^["']|["']$/g, '') : null;
+}
+
+/** URL 경로/퍼머링크를 비교 가능한 형태로 정규화(디코드·슬래시·.html 제거) */
+function normalizePath(p) {
+  return decodeURIComponent(p).replace(/^\/+|\/+$/g, '').replace(/\.html$/, '');
+}
+
+/** permalink → ISO 날짜 문자열 맵 + 전체 최신 날짜 계산 */
+function buildLastmodMap() {
+  const map = new Map();
+  let newest = null;
+  const walk = (dir) => {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      if (entry.name === '_private') continue; // 비공개/암호화 소스 제외
+      const full = path.join(dir, entry.name);
+      if (entry.isDirectory()) { walk(full); continue; }
+      if (!entry.name.endsWith('.md')) continue;
+      try {
+        const raw = fs.readFileSync(full, 'utf8');
+        const fm = raw.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+        if (!fm) continue;
+        const block = fm[1];
+        const permalink = readField(block, 'permalink');
+        const stamp = readField(block, 'updated') || readField(block, 'date');
+        if (!permalink || !stamp) continue;
+        const d = new Date(stamp);
+        if (isNaN(d.getTime())) continue;
+        const iso = d.toISOString();
+        map.set(normalizePath(permalink), iso);
+        if (!newest || iso > newest) newest = iso;
+      } catch { /* 개별 파일 오류는 무시하고 계속 */ }
+    }
+  };
+  if (fs.existsSync(BLOG_DIR)) walk(BLOG_DIR);
+  return { map, newest };
+}
+
+const { map: LASTMOD, newest: NEWEST } = buildLastmodMap();
 
 // 원본이 사라진 상대경로 이미지(깨진 이미지) 제거 — mdast 단계라
 // 코드블록(```) 안의 예제 <img>(type 'code')는 절대 건드리지 않음.
@@ -71,6 +125,13 @@ export default defineConfig({
         !page.includes('/vault') &&
         !page.includes('/locked') &&
         !page.includes('/tools/lock'),
+      // 각 글 URL 에 frontmatter 기반 lastmod 주입. 홈(/)엔 최신 글 날짜.
+      serialize(item) {
+        const key = normalizePath(new URL(item.url).pathname);
+        const iso = key === '' ? NEWEST : LASTMOD.get(key);
+        if (iso) item.lastmod = iso;
+        return item;
+      },
     }),
   ],
   markdown: {
