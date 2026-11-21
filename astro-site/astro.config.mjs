@@ -238,6 +238,8 @@ export default defineConfig({
         const key = normalizePath(new URL(item.url).pathname);
         const iso = key === '' ? NEWEST : (LASTMOD.get(key) ?? DERIVED_LASTMOD.get(key));
         if (iso) item.lastmod = iso;
+        // canonical·내부 링크가 전부 .html 이므로 사이트맵도 맞춘다(불일치 시 GSC가 색인 안 함)
+        if (key !== '' && !item.url.endsWith('.html')) item.url = item.url.replace(/\/$/, '') + '.html';
         return item;
       },
     }),
