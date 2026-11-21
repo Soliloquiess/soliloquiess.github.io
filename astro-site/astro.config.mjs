@@ -223,6 +223,8 @@ export default defineConfig({
   // 기존 Jekyll URL(.../slug.html) 보존을 위해 파일 형식으로 출력
   build: { format: 'file' },
   trailingSlash: 'ignore',
+  // 이관 때 날짜가 하루 밀리거나 통합된 옛 Jekyll 주소(GSC 404 목록) → 현재 주소
+  redirects: JSON.parse(fs.readFileSync('./legacy-redirects.json', 'utf8')),
   integrations: [
     // noindex 페이지(암호화된 vault·locked, 암호화 도구)는 사이트맵에서 제외.
     // 이미 검색에 안 나오지만(내용 암호화 + noindex), "크롤 요청 vs noindex" 모순을
